@@ -1,0 +1,25 @@
+name: SwiftCI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    #- name: Show Build Version
+    #  run: xcodebuild -version
+    # - name: Show Build Settings
+    #   run: xcodebuild -scheme SwiftViz -showBuildSettings
+    # - name: Show Build SDK
+    #   run: xcodebuild -scheme SwiftViz -showsdks
+    - name: Build
+      run: swift build -v
+    - name: Run tests
+      run: swift test --enable-code-coverage -v
