@@ -23,3 +23,5 @@ jobs:
       run: swift build -v
     - name: Run tests
       run: swift test --enable-code-coverage -v
+    - name: Verify formatting
+      run: swiftformat --lint .
