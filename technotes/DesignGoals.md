@@ -47,6 +47,8 @@ Additional marks to potentially develop:
 - `Rule`
 - `Frame`
 
+For more details about specific marks, see [Marks](./Marks.md).
+
 ## Scales
 
 A scale is defined with an input domain and transforms data to an output range.
