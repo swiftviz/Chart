@@ -27,55 +27,13 @@ Each kind of mark tends is effective at displaying a few specific kinds of data.
 As a result, when creating a chart, choose a mark that best fits the information to visually describe.
 Not all visual channels need to be specified, although a few are required for a valid chart.
 
-## Scales
+A list of marks for initial development:
 
-A scale is defined with an input domain and transforms data to an output range.
-The transformation can use different mechanisms, for example a linear or logrithmic scale.
-Because a transformation might result in data outside of a visible range, scales can be configured to drop or clamp values that exceed either the input domain or output range after having been scaled.
-Scales can also be used to transform the value - such as converting a quantitative value into a specific hue or opacity.
+- `Bar`
+- `Dot`
+- `Line`
 
-### Bar Mark
-
-A chart displays a bar mark using a series of bars, either horizontal or vertical.
-The length of the bars (required) can represent quantitative or ordinal data.
-The sets of bars (required) can represent categorical or ordinal data.
-
-Visual Channels:
-
-- `x`
-- `y`
-
-### Dot Mark
-
-A chart displays a dot mark using a collection of shapes, mapped into an area.
-The `x` and `y` (required) coordinates of the position represent quantitative data or ordinal data.
-The `shape` of the mark can represent categorical data.
-The `color` of the mark can represent categorical, ordinal, or quantitative data.
-
-Visual Channels:
-
-- `x`
-- `y`
-- `shape`
-- `color`
-
-### Line Mark
-
-A chart displays a line mark using a line drawn through sequential points.
-The `x` and `y` (required) coordinates of the position represent quantitative data or ordinal data.
-The `color` of the mark can represent categorical, ordinal, or quantitative data.
-The individual points which make up the ends of the line segments can have a `shape` that displays categorical data.
-
-Visual Channels:
-
-- `x`
-- `y`
-- `shape`
-- `color`
-
-### Additional Marks and Capabilities
-
-Additional marks include:
+Additional marks to potentially develop:
 
 - `Area`
 - `Arrow`
@@ -88,6 +46,65 @@ Additional marks include:
 
 - `Rule`
 - `Frame`
+
+## Scales
+
+A scale is defined with an input domain and transforms data to an output range.
+The transformation can use different mechanisms, for example a linear or logrithmic scale.
+Because a transformation might result in data outside of a visible range, scales can be configured to drop or clamp values that exceed either the input domain or output range after having been scaled.
+Scales can also be used to transform the value - such as converting a quantitative value into a specific hue or opacity.
+
+Scales:
+
+- `Linear` - default: Identity (1:1) linear mapping
+- `Log`
+- `Power`
+- `Band` (coerces ordinal position to a location on screen, accomodating spacing between bands, alignment of labels, and explicit widths of bands)
+
+### Color Palletes for Scales
+
+- categorical (equiv to ordinal, returning 8-10 constrasting colors)
+- sequential (linear gradients)
+- cyclical (linear repeating gradient - rainbow)
+- diverging (linear scale diverging from a median)
+
+_(borrowing heavily from Observable)_
+
+Sequential Color Schemes:
+
+- blues
+- greens
+- greys
+- oranges
+- purples
+- reds
+
+- bugn (blue to green)
+- bupu (blue to purple)
+- gnbu (green to blue)
+- orrd (orange to red)
+- pubu (purple to blue)
+- pubugn (purle to blue to green)
+- purd (purple to red)
+- rdpu (red to purple)
+- ylgn (yellow to green)
+- ylgnby (yellow to green to blue)
+- ylorbr (yellow to orange to brown)
+- ylorrd (yellot to orange to red)
+
+Diverging Color Schemes:
+
+- brgr (brown to white to green)
+- prgn (purple to white to green)
+- piyg (pink to white to green)
+- puor (purple to white to orange)
+- rdbu (red to white to blue)
+- rdgy (red to white to grey)
+- rdylbu (red to yellow to white to blue)
+- rdylgn (red to yellow to white to green)
+- spectral (red to yellow to green to blue)
+- burd (blue to white to red)
+- buylrd (blue to white to yellow to red)
 
 ## Transforms
 
@@ -104,3 +121,40 @@ Data can be transformed before it is applied to visual channels:
 
 At the start of this effort, I'm uncertain if there's value in including transforms (other than `stack`) within the declarative structure of a chart.
 The Swift language provides functional programming capabilities that may mean its easier for a developer to do transormations outside of the chart declaration.
+
+## Chart Layout Configuration
+
+- Margins
+  - top: default 0
+  - leading: default 0
+  - trailing: default 0
+  - bottom: default 0
+- Size (width, height) : default to available area from view
+  - lean into specifying any overall size constraint with the `frame` view modifier
+
+### Axis Configuration
+
+default: No axis
+
+- orientation: top, leading, bottom, trailing
+- ticks: (# of requested ticks - default 10)
+- tick size: default 6 pt
+- tick padding: (distance between tick and label) default 3 pt
+- tick rotation: (angle degrees clockwise) default 0
+- ruled: (boolean indicating if the axis extends rules through the background of the chart) - default false
+- line (boolean indicating a line drawn to represent the domain of the scale) - default true
+- label anchor: location of text relative to the end of the tick + padding: default center
+
+## Declarative Structure
+
+_(initial swag)_
+
+```swift
+Chart {
+  BarMark(data: sourceData) {
+    VisualChannel(width, \.node)    // an ordinal/Int value
+    VisualChannel(height, \.latency) // a quantitative/Double value
+      .logScale(0.1, 100).      // an explicit logarithmic scale for latency that maps from 0.1 to 100
+  }
+}
+```
