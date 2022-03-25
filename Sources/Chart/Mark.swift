@@ -7,6 +7,9 @@
 import SwiftUI
 
 public protocol Mark {
+//    var x: CGFloat { get } // mapping for data -> X value for the mark
+//    var y: CGFloat { get }
+    
     var fill: Color { get }
     var stroke: Color { get }
     var title: String { get }
@@ -26,4 +29,14 @@ public extension Mark {
     var title: String {
         return ""
     }
+}
+
+// MARK: MarkBuilder
+
+@resultBuilder
+struct MarkBuilder {
+    static func buildBlock(_ components: VisualChannel<<#InstanceType: TypeOfVisualProperty#>>...) -> [VisualChannel<<#InstanceType: TypeOfVisualProperty#>>]  {
+        return []
+    }
+    
 }

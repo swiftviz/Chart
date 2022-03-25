@@ -10,40 +10,6 @@ import Foundation
 /// A type that can be encoded into the visual property of a mark.
 public protocol TypeOfVisualProperty {
     var visualPropertyType: VisualPropertyType { get }
-    //var visualPropertyValue: VisualPropertyInstance { get }
-}
-
-extension Double: TypeOfVisualProperty {
-    public var visualPropertyType: VisualPropertyType {
-        .quantitative
-    }
-//    public var visualPropertyValue: VisualPropertyInstance {
-//        return VisualPropertyInstance.quantitative(self)
-//    }
-}
-extension Int: TypeOfVisualProperty {
-    public var visualPropertyType: VisualPropertyType {
-        .ordinal
-    }
-//    public var visualPropertyValue: VisualPropertyInstance {
-//        return VisualPropertyInstance.ordinal(self)
-//    }
-}
-extension String: TypeOfVisualProperty {
-    public var visualPropertyType: VisualPropertyType {
-        .categorical
-    }
-//    public var visualPropertyValue: VisualPropertyInstance {
-//        return VisualPropertyInstance.categorical(self)
-//    }
-}
-extension Date: TypeOfVisualProperty {
-    public var visualPropertyType: VisualPropertyType {
-        .temporal
-    }
-//    public var visualPropertyValue: VisualPropertyInstance {
-//        return VisualPropertyInstance.temporal(self)
-//    }
 }
 
 public enum VisualPropertyType {
@@ -53,10 +19,33 @@ public enum VisualPropertyType {
     case categorical // (String)
 }
 
+// MARK: - protocol conformance on types that can represent Visual Properties
+
+extension Double: TypeOfVisualProperty {
+    public var visualPropertyType: VisualPropertyType {
+        .quantitative
+    }
+}
+extension Int: TypeOfVisualProperty {
+    public var visualPropertyType: VisualPropertyType {
+        .ordinal
+    }
+}
+extension String: TypeOfVisualProperty {
+    public var visualPropertyType: VisualPropertyType {
+        .categorical
+    }
+}
+extension Date: TypeOfVisualProperty {
+    public var visualPropertyType: VisualPropertyType {
+        .temporal
+    }
+}
+
 //public struct VisualPropertyInstance<UnderlyingType> {
 //    let type: VisualPropertyType
 //    let value: UnderlyingType
-//    
+//
 //    public init(_ type: VisualPropertyType, _ value: UnderlyingType) {
 //        self.type = type
 //        switch type {
@@ -74,9 +63,9 @@ public enum VisualPropertyType {
 
 
 // struct vs. enum?
-public struct VisualProperty<VisualPropertyInstance> {
+public struct VisualProperty<InstanceType: TypeOfVisualProperty> {
     let name: String
-    let typeAndValue: VisualPropertyInstance
+    let value: InstanceType
     
     // Nope: Static stored properties not supported in generic types,
     // plus this means we need to know the value as we're defining it,
@@ -85,7 +74,7 @@ public struct VisualProperty<VisualPropertyInstance> {
 }
 
 /// A type that provides a the channel mapping to link a property or value to a visual property of a mark.
-public struct VisualChannel<VisualPropertyInstance> {
+public struct VisualChannel<InstanceType: TypeOfVisualProperty> {
     // visual property type of 'Quantitative' accepts value types of 'Double'
     // visual property type of 'Ordinal' accepts value types of 'Int'
     // visual property type of 'Categorical' accepts value types of 'String'
@@ -101,7 +90,7 @@ public struct VisualChannel<VisualPropertyInstance> {
     // a result builder that creates an instance of a Mark. Does that change
     // what type a VisualChannel is and what it's responsible for?
     
-    public init(_ channelName: VisualProperty<VisualPropertyInstance>, _ value: VisualPropertyType) {
+    public init(_ channelName: String, _ value: InstanceType) {
         
     }
     
