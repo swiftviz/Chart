@@ -1,5 +1,14 @@
-public struct Chart {
-    public private(set) var text = "Hello, World!"
+import SwiftUI
 
-    public init() {}
+public struct Chart<Content: View>: View {
+
+    var content: () -> Content
+    
+    public var body: some View {
+        content()
+    }
+    
+    public init(@ViewBuilder _ content: @escaping () -> Content) {
+        self.content = content
+    }
 }
