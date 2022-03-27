@@ -10,9 +10,9 @@ import SwiftUI
 ///
 /// The type infers the number and visual properties of the bars from the data you provide to the visual channels when declaring a bar mark.
 public struct BarMark: Mark {
-    public var x: CGFloat
-    
-    public var y: CGFloat
+//    public var x: CGFloat
+//    
+//    public var y: CGFloat
     
     
     let height: CGFloat //? value cast from with quantitative (Double) or Ordinal (Int) type

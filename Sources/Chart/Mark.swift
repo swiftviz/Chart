@@ -6,9 +6,13 @@
 //
 import SwiftUI
 
+/// A type that represents one or more visual symbols displays in a chart.
+///
+/// A mark describes the configuration of how data is mapped to visual properties relevant to the type of mark.
 public protocol Mark {
-//    var x: CGFloat { get } // mapping for data -> X value for the mark
-//    var y: CGFloat { get }
+    // let mappings: [VisualChannel]
+    // let visibleAxis: [AxisDefn]
+
     
     var fill: Color { get }
     var stroke: Color { get }
@@ -34,8 +38,8 @@ public extension Mark {
 // MARK: MarkBuilder
 
 @resultBuilder
-struct MarkBuilder {
-    static func buildBlock(_ components: VisualChannel<<#InstanceType: TypeOfVisualProperty#>>...) -> [VisualChannel<<#InstanceType: TypeOfVisualProperty#>>]  {
+struct MarkBuilder<MarkType: Mark> {
+    static func buildBlock(_ components: TypeOfVisualChannel...) -> [TypeOfVisualChannel]  {
         return []
     }
     
