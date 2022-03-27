@@ -21,6 +21,11 @@ public enum VisualPropertyType {
 
 // MARK: - protocol conformance on types that can represent Visual Properties
 
+// visual property type of 'Quantitative' accepts value types of 'Double'
+// visual property type of 'Ordinal' accepts value types of 'Int'
+// visual property type of 'Categorical' accepts value types of 'String'
+// visual property type of 'Temporal' accepts value types of 'Date'
+
 extension Double: TypeOfVisualProperty {
     public var visualPropertyType: VisualPropertyType {
         .quantitative
@@ -61,37 +66,77 @@ extension Date: TypeOfVisualProperty {
 //    }
 //}
 
-
-// struct vs. enum?
-public struct VisualProperty<InstanceType: TypeOfVisualProperty> {
-    let name: String
-    let value: InstanceType
-    
-    // Nope: Static stored properties not supported in generic types,
-    // plus this means we need to know the value as we're defining it,
-    // and we won't at that point.
-    //static var x = VisualProperty(name: "x", typeAndValue: .quantitative(0))
+enum RefOfConstant {
+    case reference
+    case constant
 }
-
-/// A type that provides a the channel mapping to link a property or value to a visual property of a mark.
-public struct VisualChannel<InstanceType: TypeOfVisualProperty> {
-    // visual property type of 'Quantitative' accepts value types of 'Double'
-    // visual property type of 'Ordinal' accepts value types of 'Int'
-    // visual property type of 'Categorical' accepts value types of 'String'
-    // visual property type of 'Temporal' accepts value types of 'Date'
+/// A type that provides a mapping to link a property or value to a visual property of a mark.
+///
+/// A ``Mark`` has a number of visual properties that it needs to resolve in order to generate visual symbols on a canvas.
+/// Each property has an associated channel declaration, which indicates that the default value for the mark should be
+/// overridden by the mapping that the channel provides. Some `Mark` properties don't have defaults, in which case they are
+/// required to have a visual channel declaration.
+///
+public struct VisualChannel<MarkType: Mark, DataType, PropertyType: TypeOfVisualProperty>: TypeOfVisualChannel {
+    let markProperty: WritableKeyPath<MarkType, PropertyType>
+    let dataProperty: KeyPath<DataType, PropertyType>?
+    let constantValue: PropertyType?
+    let kindOfChannel: RefOfConstant
     
-    
-    // something like `VisualChannel(width, \.node)` or `VisualChannel(y, 13)`
-    // What's the type of 'width' and/or 'y' in this case? An enumeration case?
-    // A string literal that's converted to a specific mark property?
-    // Is what we're creating a concrete visual property that evaluates the mapping and can be immediately used, or has the mapping properties that something else can use?
-    
-    // The plan is for whatever this struct is and does to be consumed by
-    // a result builder that creates an instance of a Mark. Does that change
-    // what type a VisualChannel is and what it's responsible for?
-    
-    public init(_ channelName: String, _ value: InstanceType) {
-        
+    //var scale: Scale?
+    func partiallyErasedVisualChannel() -> some TypeOfVisualChannel {
+        return self
     }
     
+    // something like `VisualChannel(\BarMark.width, \.node)` or `VisualChannel(y, 13)`
+    // maybe `VisualChannel(\.width, from: \.name)` - does the `from: ` add meaningful semantic context?
+    public init(_ markProperty: WritableKeyPath<MarkType, PropertyType>,
+                from dataProperty: KeyPath<DataType, PropertyType>) {
+        self.markProperty = markProperty
+        self.kindOfChannel = .reference
+        self.dataProperty = dataProperty
+        self.constantValue = nil
+        // self.scale = LinearScale(domain: 0...1)
+        // We need the at least the domain to create it - so we need to know the range of values
+        // before we can instantiate a scale if it's not explicitly declared
+    }
+
+    // something like `VisualChannel(\BarMark.width, \.node)` or `VisualChannel(y, 13)`
+    // maybe `VisualChannel(\.width, from: \.name)` - does the `from: ` add meaningful semantic context?
+    public init(_ markProperty: WritableKeyPath<MarkType, PropertyType>,
+                value: PropertyType) {
+        self.markProperty = markProperty
+        self.kindOfChannel = .constant
+        self.constantValue = value
+        self.dataProperty = nil
+        // self.scale = LinearScale(domain: 0...1)
+        // We need the at least the domain to create it - so we need to know the range of values
+        // before we can instantiate a scale if it's not explicitly declared
+    }
+
+    func writeScaledValue(d: DataType, m: inout MarkType) {
+        let valueFromData: PropertyType
+        switch kindOfChannel {
+        case .reference:
+            guard let dataProperty =  self.dataProperty else {
+                preconditionFailure("keypath for a reference visual channel was null")
+//                return
+            }
+            valueFromData = d[keyPath: dataProperty]
+        case .constant:
+            guard let constantValue = constantValue else {
+                preconditionFailure("keypath for a reference visual channel was null")
+//                return
+            }
+            valueFromData = constantValue
+        }
+        // scale the value here...
+        m[keyPath: self.markProperty] = valueFromData
+    }
+}
+
+struct ErasedVisualChannel<DataType, MarkType> {
+    let boxedType: some VisualChannel<<#MarkType: Mark#>, Any, <#PropertyType: TypeOfVisualProperty#>>
+    let kindOfChannel: RefOfConstant
+    func writeScaledValue(d: DataType, m: inout MarkType)
 }
