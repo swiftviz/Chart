@@ -39,8 +39,7 @@ public extension Mark {
 
 @resultBuilder
 struct MarkBuilder<MarkType: Mark> {
-    static func buildBlock(_ components: TypeOfVisualChannel...) -> [TypeOfVisualChannel]  {
+    static func buildBlock(_ components: AnyVisualChannel<MarkType, Any>...) -> [AnyVisualChannel<MarkType, Any>]  {
         return []
     }
-    
 }

@@ -70,6 +70,14 @@ enum RefOfConstant {
     case reference
     case constant
 }
+
+protocol VisualChannel {
+    associatedtype MarkType: Mark
+    associatedtype DataType
+    
+    func writeScaledValue(d: DataType, m: inout MarkType)
+}
+
 /// A type that provides a mapping to link a property or value to a visual property of a mark.
 ///
 /// A ``Mark`` has a number of visual properties that it needs to resolve in order to generate visual symbols on a canvas.
@@ -77,16 +85,13 @@ enum RefOfConstant {
 /// overridden by the mapping that the channel provides. Some `Mark` properties don't have defaults, in which case they are
 /// required to have a visual channel declaration.
 ///
-public struct VisualChannel<MarkType: Mark, DataType, PropertyType: TypeOfVisualProperty>: TypeOfVisualChannel {
+public struct ConcreteVisualChannel<MarkType: Mark, DataType, PropertyType: TypeOfVisualProperty>: VisualChannel {
     let markProperty: WritableKeyPath<MarkType, PropertyType>
     let dataProperty: KeyPath<DataType, PropertyType>?
     let constantValue: PropertyType?
     let kindOfChannel: RefOfConstant
     
     //var scale: Scale?
-    func partiallyErasedVisualChannel() -> some TypeOfVisualChannel {
-        return self
-    }
     
     // something like `VisualChannel(\BarMark.width, \.node)` or `VisualChannel(y, 13)`
     // maybe `VisualChannel(\.width, from: \.name)` - does the `from: ` add meaningful semantic context?
@@ -120,13 +125,11 @@ public struct VisualChannel<MarkType: Mark, DataType, PropertyType: TypeOfVisual
         case .reference:
             guard let dataProperty =  self.dataProperty else {
                 preconditionFailure("keypath for a reference visual channel was null")
-//                return
             }
             valueFromData = d[keyPath: dataProperty]
         case .constant:
             guard let constantValue = constantValue else {
                 preconditionFailure("keypath for a reference visual channel was null")
-//                return
             }
             valueFromData = constantValue
         }
@@ -135,8 +138,57 @@ public struct VisualChannel<MarkType: Mark, DataType, PropertyType: TypeOfVisual
     }
 }
 
-struct ErasedVisualChannel<DataType, MarkType> {
-    let boxedType: some VisualChannel<<#MarkType: Mark#>, Any, <#PropertyType: TypeOfVisualProperty#>>
-    let kindOfChannel: RefOfConstant
-    func writeScaledValue(d: DataType, m: inout MarkType)
+public struct MappedVisualChannel<MarkType: Mark, DataType, PropertyType: TypeOfVisualProperty>: VisualChannel {
+    let markProperty: WritableKeyPath<MarkType, PropertyType>
+    let dataProperty: KeyPath<DataType, PropertyType>
+    
+    //var scale: Scale?
+    
+    // something like `VisualChannel(\BarMark.width, \.node)`
+    // maybe `VisualChannel(\.width, from: \.name)` - does the `from: ` add meaningful semantic context?
+    public init(_ markProperty: WritableKeyPath<MarkType, PropertyType>,
+                from dataProperty: KeyPath<DataType, PropertyType>) {
+        self.markProperty = markProperty
+    
+        self.dataProperty = dataProperty
+        // self.scale = LinearScale(domain: 0...1)
+        // We need the at least the domain to create it - so we need to know the range of values
+        // before we can instantiate a scale if it's not explicitly declared
+    }
+
+    func writeScaledValue(d: DataType, m: inout MarkType) {
+        let valueFromData: PropertyType = d[keyPath: dataProperty]
+        // scale the value here...
+        m[keyPath: self.markProperty] = valueFromData
+    }
+}
+
+public struct ConstantVisualChannel<MarkType: Mark, DataType, PropertyType: TypeOfVisualProperty> {
+    let markProperty: WritableKeyPath<MarkType, PropertyType>
+    let constantValue: PropertyType
+    
+    //var scale: Scale?
+    
+    // something like `VisualChannel(\.y, 13)`
+    public init(_ markProperty: WritableKeyPath<MarkType, PropertyType>,
+                value: PropertyType) {
+        self.markProperty = markProperty
+        self.constantValue = value
+        // self.scale = LinearScale(domain: 0...1)
+        // We need the at least the domain to create it - so we need to know the range of values
+        // before we can instantiate a scale if it's not explicitly declared
+    }
+
+    func writeScaledValue(d: DataType, m: inout MarkType) {
+        let valueFromConstant = self.constantValue
+        // scale the value here...
+        m[keyPath: self.markProperty] = valueFromConstant
+    }
+}
+
+struct AnyVisualChannel<MarkType: Mark, DataType>: VisualChannel {
+    
+    func writeScaledValue(d: DataType, m: inout MarkType) {
+        
+    }
 }
