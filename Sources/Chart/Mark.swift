@@ -1,6 +1,6 @@
 //
 //  Mark.swift
-//  
+//
 //
 //  Created by Joseph Heck on 3/25/22.
 //
@@ -13,7 +13,6 @@ public protocol Mark {
     // let mappings: [VisualChannel]
     // let visibleAxis: [AxisDefn]
 
-    
     var fill: Color { get }
     var stroke: Color { get }
     var title: String { get }
@@ -23,15 +22,15 @@ public protocol Mark {
 
 public extension Mark {
     var fill: Color {
-        return Color.black
+        Color.black
     }
 
     var stroke: Color {
-        return Color.black
+        Color.black
     }
 
     var title: String {
-        return ""
+        ""
     }
 }
 
@@ -39,7 +38,7 @@ public extension Mark {
 
 @resultBuilder
 struct MarkBuilder<MarkType: Mark> {
-    static func buildBlock(_ components: AnyVisualChannel<MarkType, Any>...) -> [AnyVisualChannel<MarkType, Any>]  {
-        return []
+    static func buildBlock(_: AnyVisualChannel<MarkType, Any>...) -> [AnyVisualChannel<MarkType, Any>] {
+        []
     }
 }

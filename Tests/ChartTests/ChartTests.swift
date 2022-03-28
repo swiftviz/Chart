@@ -1,6 +1,6 @@
 import Chart
-import XCTest
 import SwiftUI
+import XCTest
 
 final class PublicChartTests: XCTestCase {
     func testTypeStubs() throws {
