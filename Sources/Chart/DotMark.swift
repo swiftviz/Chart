@@ -13,9 +13,9 @@ import SwiftUI
 public struct DotMark: Mark {
     public typealias DataType = Any
     public var mappings: [AnyVisualChannel<DotMark, Any>]
-    
+
     public typealias MarkType = Self
     public init() {
-        self.mappings = []
+        mappings = []
     }
 }

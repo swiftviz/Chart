@@ -19,7 +19,6 @@ public protocol Mark {
     var fill: Color { get }
     var stroke: Color { get }
     var title: String { get }
-    
 }
 
 // MARK: - default values for common Mark properties

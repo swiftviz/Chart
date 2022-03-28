@@ -18,9 +18,9 @@ enum Orientation {
 public struct BarMark: Mark {
     public typealias DataType = Any
     public var mappings: [AnyVisualChannel<BarMark, Any>]
-    
+
     public typealias MarkType = Self
-    
+
     var orientation: Orientation = .vertical
 
     let value: Double // ? value cast from with quantitative (Double) or Ordinal (Int) type
@@ -34,7 +34,7 @@ public struct BarMark: Mark {
     public init(_ value: Double, _ category: String) {
         self.value = value
         self.category = category
-        self.mappings = []
+        mappings = []
     }
 
 //    public init(@MarkBuilder<BarMark> ) {
