@@ -8,9 +8,8 @@
 import SwiftUI
 
 public struct Chart<Content: View>: View {
-
     var content: () -> Content
-    
+
     public var body: some View {
         content()
         // if Mark returns a view, then we'll likely assemble these
@@ -18,7 +17,7 @@ public struct Chart<Content: View>: View {
         // to accept a list of [Mark] instances that we compose directly
         // onto an instance of Canvas()
     }
-    
+
     public init(@ViewBuilder _ content: @escaping () -> Content) {
         self.content = content
     }
