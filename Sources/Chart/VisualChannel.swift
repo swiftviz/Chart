@@ -71,12 +71,55 @@ enum RefOfConstant {
     case constant
 }
 
+// MARK: - Visual Channel and Type Erasure Constructs
+
 protocol VisualChannel {
     associatedtype MarkType: Mark
     associatedtype DataType
     
     func writeScaledValue(d: DataType, m: inout MarkType)
 }
+
+// fatal error function (with line numbers to debug) that shows when you've accidentally
+// called a function on what should be an abstract base class.
+internal func _abstract(
+    file: StaticString = #file,
+    line: UInt = #line
+) -> Never {
+    fatalError("Method must be overridden", file: file, line: line)
+}
+
+// the abstract base class, implementing the base methods
+internal class _AnyVisualChannelBox<MarkType: Mark, DataType: Any>: VisualChannel {
+    
+    func writeScaledValue(d: DataType, m: inout MarkType) {
+        _abstract()
+    }
+}
+
+// the "Any" class to hold a reference to a specific type, and forward invocations from
+// the (partially) type-erased class into the concrete, specific class that it holds
+// (which is how we achieve type-erasure)
+final class _VisualChannel<VisualChannelType: VisualChannel>: _AnyVisualChannelBox<VisualChannelType.MarkType, VisualChannelType.DataType> {
+    private var _base: VisualChannelType
+    
+    init(_ base: VisualChannelType) {
+        self._base = base
+    }
+}
+
+// Partially type erased visual channel, with internals (including the type of property that
+// it maps) hidden.
+public struct AnyVisualChannel<MarkStorage: Mark, DataStorage>: VisualChannel {
+
+    private let _box: _AnyVisualChannelBox<MarkStorage, DataStorage>
+    
+    func writeScaledValue(d: DataStorage, m: inout MarkStorage) {
+        _box.writeScaledValue(d: d, m: &m)
+    }
+}
+
+// MARK: - Concrete Visual Channel Types
 
 /// A type that provides a mapping to link a property or value to a visual property of a mark.
 ///
@@ -183,12 +226,5 @@ public struct ConstantVisualChannel<MarkType: Mark, DataType, PropertyType: Type
         let valueFromConstant = self.constantValue
         // scale the value here...
         m[keyPath: self.markProperty] = valueFromConstant
-    }
-}
-
-struct AnyVisualChannel<MarkType: Mark, DataType>: VisualChannel {
-    
-    func writeScaledValue(d: DataType, m: inout MarkType) {
-        
     }
 }
