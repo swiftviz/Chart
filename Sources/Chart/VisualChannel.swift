@@ -247,6 +247,7 @@ struct ChannelBuilder<MarkType: Mark, DataType> {
     static func buildBlock() -> [AnyVisualChannel<MarkType, DataType>] {
         []
     }
+
     // combines a list of provided channels - all of the same type - into the array
     static func buildBlock(_ channels: AnyVisualChannel<MarkType, DataType>...) -> [AnyVisualChannel<MarkType, DataType>] {
         channels
@@ -258,5 +259,4 @@ struct ChannelBuilder<MarkType: Mark, DataType> {
 //            AnyVisualChannel(c)
 //        }
 //    }
-
 }

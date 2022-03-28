@@ -13,9 +13,9 @@ import SwiftUI
 public struct LineMark: Mark {
     public typealias DataType = Any
     public var mappings: [AnyVisualChannel<LineMark, Any>]
-    
+
     public typealias MarkType = Self
     public init() {
-        self.mappings = []
+        mappings = []
     }
 }
