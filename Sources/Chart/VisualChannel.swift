@@ -149,7 +149,7 @@ public struct MappedVisualChannel<SomeDataType, ScaleType: Scale, DataPropertyTy
         scale = LinearScale.create(0.0 ... 1.0) as! ScaleType
         // We need the at least the domain to create it - so we need to know the range of values
         // before we can instantiate a scale if it's not explicitly declared
-        
+
         // It might be nice to have the specific scales Type Erased so that we can
         // store the scale reference as AnyScaleType<InputType, OutputType>: Scale
         // and have a super-optimized `.identity` type that does a 1:1 pass through
@@ -160,12 +160,10 @@ public struct MappedVisualChannel<SomeDataType, ScaleType: Scale, DataPropertyTy
         let valueFromData: DataPropertyType = d[keyPath: dataProperty]
         return scale.scale(valueFromData, from: 0, to: 1)
     }
-    
+
     // modifier type - generics, no impl:
-    
-    func scale<NewScaleType: Scale>(newScale: NewScaleType) where NewScaleType.InputType == DataPropertyType, NewScaleType.OutputType == PropertyType {
-        
-    }
+
+    func scale<NewScaleType: Scale>(newScale _: NewScaleType) where NewScaleType.InputType == DataPropertyType, NewScaleType.OutputType == PropertyType {}
 }
 
 public struct ConstantVisualChannel<SomeDataType, PropertyType: TypeOfVisualProperty> {
