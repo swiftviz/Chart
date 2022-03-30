@@ -131,11 +131,11 @@ public struct MappedVisualChannel<SomeDataType, PropertyType: TypeOfVisualProper
     // a scale has an InputType and OutputType - and we need InputType to match 'PropertyType'
     // from above. And OutputType should probably just be CGFloat since we'll be using it in
     // that context.
-    
+
     // Since the property types could be one of Double, Date, Int, or String - we need scales
     // that take all of those kinds of values as input types so that we can appropriately constrain
     // the generics.
-    
+
     // The two "OutputTypes" that are relevant for our use cases are "CGFloat" for drawing stuff
     // in a GraphicsContext and Color - or some color representation anyway - that can be converted
     // or cast into to a SwiftUI color instance. Since we're doing CoreGraphics dependencies anyway,
@@ -146,7 +146,7 @@ public struct MappedVisualChannel<SomeDataType, PropertyType: TypeOfVisualProper
     // something like `VisualChannel<SomeDataType>(\.node)`
     public init(_ dataProperty: KeyPath<SomeDataType, PropertyType>) {
         self.dataProperty = dataProperty
-        self.scale = LinearScale.create(0.0...1.0)
+        scale = LinearScale.create(0.0 ... 1.0)
         // We need the at least the domain to create it - so we need to know the range of values
         // before we can instantiate a scale if it's not explicitly declared
     }
