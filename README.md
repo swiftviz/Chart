@@ -6,7 +6,7 @@ Declarative charting and visualization to use with SwiftUI
 
 The package is in open development with a goal of making a declarative charting library
 for use with SwiftUI.
-If you found this looking for a charting library you can use immediately, there are several packages immediately available that may provide what you need:
+If you found this looking for a charting library you can use immediately, there are [several packages referenced in the Swift Package Index](https://swiftpackageindex.com/search?query=plot%7Cchart) that may provide what you need:
 
 - [SwiftCharts](https://swiftpackageindex.com/ivanschuetz/SwiftCharts)
 - [SwiftPlot](https://swiftpackageindex.com/KarthikRIyer/swiftplot)
