@@ -10,8 +10,13 @@ The sets of bars (required) can represent categorical or ordinal data.
 
 Visual Channels:
 
-- `height` - required
-- `width` - required
+- `value` - required (quantitative, ordinal can be treated as quantitative)
+- `category` - required (categorical only)
+
+optional parameters:
+
+- orientation [horizontal|vertical] - default vertical & bottom edge
+- ordering - default locale specific based on LTR/RTL language setting, en_US is `LTR`
 
 Common Channels and Defaults:
 
@@ -27,14 +32,19 @@ Common Channels and Defaults:
 
 A chart displays a dot mark using a collection of shapes, mapped into an area.
 The `x` and `y` (required) coordinates of the position represent quantitative data or ordinal data.
-The `shape` of the mark can represent categorical data.
-The `color` of the mark can represent categorical, ordinal, or quantitative data.
+The `shape` of the mark (can represent categorical data)
+The `color` of the mark (can represent categorical, ordinal, or quantitative data)
 
 Visual Channels:
 
 - `x` - required
 - `y` - required
 - `shape` - default to circle
+
+optional parameters:
+
+- orientation [horizontal|vertical] - default vertical & bottom edge
+- ordering - default locale specific based on LTR/RTL language setting, en_US is `LTR`
 
 Common Channels and Defaults:
 
@@ -58,6 +68,11 @@ Visual Channels:
 - `x` - required
 - `y` - required
 - `shape` - default to circle
+
+optional parameters:
+
+- orientation [horizontal|vertical] - default vertical & bottom edge
+- ordering - default locale specific based on LTR/RTL language setting, en_US is `LTR`
 
 Common Channels and Defaults:
 
