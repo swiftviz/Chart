@@ -124,10 +124,10 @@ internal func _abstract(
 
 // MARK: - Concrete Visual Channel Types
 
-public struct MappedVisualChannel<SomeDataType, PropertyType: TypeOfVisualProperty>: VisualChannel {
-    let dataProperty: KeyPath<SomeDataType, PropertyType>
+public struct MappedVisualChannel<SomeDataType, ScaleType: Scale, DataPropertyType, PropertyType: TypeOfVisualProperty>: VisualChannel where ScaleType.InputType == DataPropertyType, ScaleType.OutputType == PropertyType {
+    let dataProperty: KeyPath<SomeDataType, DataPropertyType>
 
-    var scale: LinearScale.DoubleScale // input=Double, output=Float
+    var scale: ScaleType // input=Double, output=Float
     // a scale has an InputType and OutputType - and we need InputType to match 'PropertyType'
     // from above. And OutputType should probably just be CGFloat since we'll be using it in
     // that context.
@@ -144,18 +144,27 @@ public struct MappedVisualChannel<SomeDataType, PropertyType: TypeOfVisualProper
     // https://github.com/swiftviz/SwiftViz/issues/8 as well.
 
     // something like `VisualChannel<SomeDataType>(\.node)`
-    public init(_ dataProperty: KeyPath<SomeDataType, PropertyType>) {
+    public init(_ dataProperty: KeyPath<SomeDataType, DataPropertyType>) {
         self.dataProperty = dataProperty
-        scale = LinearScale.create(0.0 ... 1.0)
+        scale = LinearScale.create(0.0 ... 1.0) as! ScaleType
         // We need the at least the domain to create it - so we need to know the range of values
         // before we can instantiate a scale if it's not explicitly declared
+        
+        // It might be nice to have the specific scales Type Erased so that we can
+        // store the scale reference as AnyScaleType<InputType, OutputType>: Scale
+        // and have a super-optimized `.identity` type that does a 1:1 pass through
+        // with no computation on the value.
     }
 
     func provideScaledValue(d: SomeDataType) -> PropertyType? {
-        let valueFromData: PropertyType = d[keyPath: dataProperty]
-        // scale the value here...
-        // ... return nil if scaling NaN's
-        return valueFromData
+        let valueFromData: DataPropertyType = d[keyPath: dataProperty]
+        return scale.scale(valueFromData, from: 0, to: 1)
+    }
+    
+    // modifier type - generics, no impl:
+    
+    func scale<NewScaleType: Scale>(newScale: NewScaleType) where NewScaleType.InputType == DataPropertyType, NewScaleType.OutputType == PropertyType {
+        
     }
 }
 
