@@ -17,7 +17,7 @@ enum Orientation {
 /// The type infers the number and visual properties of the bars from the data you provide to the visual channels when declaring a bar mark.
 public struct BarMark: Mark {
     public typealias DataType = Any
-    public var mappings: [AnyVisualChannel<BarMark, Any>]
+//    public var mappings: [AnyVisualChannel<BarMark, Any>]
 
     public typealias MarkType = Self
 
@@ -34,7 +34,7 @@ public struct BarMark: Mark {
     public init(_ value: Double, _ category: String) {
         self.value = value
         self.category = category
-        mappings = []
+//        mappings = []
     }
 
 //    public init(@MarkBuilder<BarMark> ) {

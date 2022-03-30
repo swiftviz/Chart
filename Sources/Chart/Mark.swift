@@ -13,7 +13,6 @@ public protocol Mark {
     associatedtype MarkType: Mark
     associatedtype DataType
 
-    @ChannelBuilder<MarkType, DataType> var mappings: [AnyVisualChannel<MarkType, DataType>] { get }
     // let visibleAxis: [AxisDefn]
 
     var fill: Color { get }
