@@ -72,6 +72,9 @@ extension Date: TypeOfVisualProperty {
 
 // MARK: - Visual Channel and Type Erasure Constructs
 
+/// A type that provides the value for a visual property element.
+///
+/// Examples include location, such as an `x` or `y` value, or discrete values such as a `shape` or `color` that indicates a category.
 protocol VisualChannel {
     associatedtype ValueType: TypeOfVisualProperty
     associatedtype SomeDataType: Any
@@ -125,6 +128,7 @@ internal func _abstract(
 
 // MARK: - Concrete Visual Channel Types
 
+/// A channel that provides a mapping from an object's property to a visual property.
 public struct MappedVisualChannel<
     SomeDataType,
     ScaleType: ContinuousScale,
@@ -172,6 +176,7 @@ public struct MappedVisualChannel<
     func scale<NewScaleType: Scale>(newScale _: NewScaleType) where NewScaleType.InputType == DataPropertyType, NewScaleType.OutputType == PropertyType {}
 }
 
+/// A channel that provides a constant value to a visual property.
 public struct ConstantVisualChannel<SomeDataType, PropertyType: TypeOfVisualProperty> {
     let constantValue: PropertyType
 
