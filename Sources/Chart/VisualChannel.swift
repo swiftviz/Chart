@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import SwiftViz
+import SwiftVizScale
 
 /// A type that can be encoded into the visual property of a mark.
 public protocol TypeOfVisualProperty {
@@ -75,8 +75,9 @@ extension Date: TypeOfVisualProperty {
 protocol VisualChannel {
     associatedtype ValueType: TypeOfVisualProperty
     associatedtype SomeDataType: Any
+    associatedtype ScaleType: Scale where ScaleType.OutputType == ValueType
 
-    // var scale: Scale
+    var scale: ScaleType { get }
     func provideScaledValue(d: SomeDataType) -> ValueType?
 }
 
@@ -124,7 +125,12 @@ internal func _abstract(
 
 // MARK: - Concrete Visual Channel Types
 
-public struct MappedVisualChannel<SomeDataType, ScaleType: Scale, DataPropertyType, PropertyType: TypeOfVisualProperty>: VisualChannel where ScaleType.InputType == DataPropertyType, ScaleType.OutputType == PropertyType {
+public struct MappedVisualChannel<
+    SomeDataType,
+    ScaleType: ContinuousScale,
+    DataPropertyType,
+    PropertyType: TypeOfVisualProperty
+>: VisualChannel where ScaleType.InputType == DataPropertyType, ScaleType.OutputType == PropertyType {
     let dataProperty: KeyPath<SomeDataType, DataPropertyType>
 
     var scale: ScaleType // input=Double, output=Float
@@ -146,7 +152,7 @@ public struct MappedVisualChannel<SomeDataType, ScaleType: Scale, DataPropertyTy
     // something like `VisualChannel<SomeDataType>(\.node)`
     public init(_ dataProperty: KeyPath<SomeDataType, DataPropertyType>) {
         self.dataProperty = dataProperty
-        scale = LinearScale.create(0.0 ... 1.0) as! ScaleType
+        scale = LinearScale<DataPropertyType, CGFloat>() as! ScaleType
         // We need the at least the domain to create it - so we need to know the range of values
         // before we can instantiate a scale if it's not explicitly declared
 
