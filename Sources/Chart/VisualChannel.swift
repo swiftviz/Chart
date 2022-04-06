@@ -75,12 +75,10 @@ extension Date: TypeOfVisualProperty {
 /// A channel that provides a mapping from an object's property to a visual property.
 public struct VisualChannel<
     SomeDataType,
-    InputPropertyType: ConvertibleWithDouble & NiceValue,
-    OutputPropertyType: ConvertibleWithDouble & TypeOfVisualProperty,
+    InputPropertyType: ConvertibleWithDouble & NiceValue & TypeOfVisualProperty,
+    OutputPropertyType: ConvertibleWithDouble,
     ScaleType: Scale
-> where ScaleType.InputType == InputPropertyType, ScaleType.OutputType == OutputPropertyType
-{
-    
+> where ScaleType.InputType == InputPropertyType, ScaleType.OutputType == OutputPropertyType {
 //    associatedtype SomeDataType: Any // type that holds the values we'll map from
 //    associatedtype InputValueType: Any // scale input type
 //    associatedtype OutputValueType: TypeOfVisualProperty // constrains to Double, Int, String, and Date
@@ -115,9 +113,9 @@ public struct VisualChannel<
     // something like `VisualChannel<SomeDataType>(\.node)`
     public init(_ dataProperty: KeyPath<SomeDataType, InputPropertyType>) {
         self.dataProperty = dataProperty
-        self.constantValue = nil
+        constantValue = nil
         scale = AnyContinuousScale(LinearScale())
-        self.visualChannelType = .reference
+        visualChannelType = .reference
         // We need the at least the domain to create it - so we need to know the range of values
         // before we can instantiate a scale if it's not explicitly declared
 
@@ -126,13 +124,13 @@ public struct VisualChannel<
         // and have a super-optimized `.identity` type that does a 1:1 pass through
         // with no computation on the value.
     }
-    
+
     // something like `VisualChannel(13.0)`
     public init(_ value: InputPropertyType) {
         constantValue = value
-        self.dataProperty = nil
+        dataProperty = nil
         scale = AnyContinuousScale(LinearScale())
-        self.visualChannelType = .constant
+        visualChannelType = .constant
     }
 
     public func provideScaledValue(d: SomeDataType) -> OutputPropertyType? {
