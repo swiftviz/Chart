@@ -70,86 +70,33 @@ extension Date: TypeOfVisualProperty {
 //    }
 // }
 
-// MARK: - Visual Channel and Type Erasure Constructs
-
-/// A type that provides the value for a visual property element.
-///
-/// Examples include location, such as an `x` or `y` value, or discrete values such as a `shape` or `color` that indicates a category.
-public protocol VisualChannel {
-    associatedtype ValueType: TypeOfVisualProperty
-    associatedtype SomeDataType: Any
-    associatedtype ScaleType: Scale where ScaleType.OutputType == ValueType
-
-    var scale: ScaleType { get }
-    func provideScaledValue(d: SomeDataType) -> ValueType?
-}
-
-// fatal error function (with line numbers to debug) that shows when you've accidentally
-// called a function on what should be an abstract base class.
-internal func _abstract(
-    file: StaticString = #file,
-    line: UInt = #line
-) -> Never {
-    fatalError("Method must be overridden", file: file, line: line)
-}
-
-// the abstract base class, implementing the base methods
-// internal class _AnyVisualChannelBox<MarkType: Mark, DataType: Any>: VisualChannel {
-//    func writeScaledValue(d _: DataType, m _: inout MarkType) {
-//        _abstract()
-//    }
-// }
-
-// the "Any" class to hold a reference to a specific type, and forward invocations from
-// the (partially) type-erased class into the concrete, specific class that it holds
-// (which is how we achieve type-erasure)
-// internal final class _VisualChannel<VisualChannelType: VisualChannel>: _AnyVisualChannelBox<VisualChannelType.MarkType, VisualChannelType.DataType> {
-//    private var _base: VisualChannelType
-//
-//    init(_ base: VisualChannelType) {
-//        _base = base
-//    }
-// }
-
-// Partially type erased visual channel, with internals (including the type of property that
-// it maps) hidden.
-// A partially type-erased visual channel that maps properties from data into a mark.
-// public struct AnyVisualChannel<MarkStorage: Mark, DataStorage>: VisualChannel {
-//    private let _box: _AnyVisualChannelBox<MarkStorage, DataStorage>
-//
-//    init<VC: VisualChannel>(_ base: VC) where VC.MarkType == MarkStorage, VC.DataType == DataStorage {
-//        _box = _VisualChannel(base)
-//    }
-//
-//    func writeScaledValue(d: DataStorage, m: inout MarkStorage) {
-//        _box.writeScaledValue(d: d, m: &m)
-//    }
-// }
-
-// MARK: - Concrete Visual Channel Types
-
-// not type erasure, but type encapsulation
-public enum AVisualChannel<DataType, PropertyType: TypeOfVisualProperty> {
-    case constant(ConstantVisualChannel<DataType, PropertyType>)
-//    case reference(MappedVisualChannel<DataType, PropertyType>)
-}
-
-// encapsulation sequence: ??
-// - first by the kind of mapping (constant, keypath reference, ...)
-//  - next by the type of scale Band, ContinuousScale(Linear, Log, Power), Point, etc
-//    - within ContinuousScale, choice of Linear, Log, Power?
+// MARK: - Visual Channel
 
 /// A channel that provides a mapping from an object's property to a visual property.
-public struct MappedVisualChannel<
+public struct VisualChannel<
     SomeDataType,
-    DataPropertyType: ConvertibleWithDouble & NiceValue,
-    PropertyType: ConvertibleWithDouble & TypeOfVisualProperty
->: VisualChannel
-// where ScaleType.InputType == DataPropertyType, ScaleType.OutputType == PropertyType
+    InputPropertyType: ConvertibleWithDouble & NiceValue,
+    OutputPropertyType: ConvertibleWithDouble & TypeOfVisualProperty,
+    ScaleType: Scale
+> where ScaleType.InputType == InputPropertyType, ScaleType.OutputType == OutputPropertyType
 {
-    let dataProperty: KeyPath<SomeDataType, DataPropertyType>
+    
+//    associatedtype SomeDataType: Any // type that holds the values we'll map from
+//    associatedtype InputValueType: Any // scale input type
+//    associatedtype OutputValueType: TypeOfVisualProperty // constrains to Double, Int, String, and Date
+//    associatedtype ScaleType: Scale where ScaleType.OutputType == OutputValueType, ScaleType.InputType == InputValueType
+    let visualChannelType: KindOfVisualChannel
+    let constantValue: InputPropertyType?
 
-    public var scale: AnyContinuousScale<DataPropertyType, PropertyType> // input=Double, output=Float
+    public enum KindOfVisualChannel {
+        case constant // constant value
+        case reference // keypath reference to incoming data
+        case map // closure that provides a value when provided the incoming data type
+    }
+
+    let dataProperty: KeyPath<SomeDataType, InputPropertyType>?
+
+    public var scale: AnyContinuousScale<InputPropertyType, OutputPropertyType> // input=Double, output=Float
     // a scale has an InputType and OutputType - and we need InputType to match 'PropertyType'
     // from above. And OutputType should probably just be CGFloat since we'll be using it in
     // that context.
@@ -166,9 +113,11 @@ public struct MappedVisualChannel<
     // https://github.com/swiftviz/SwiftViz/issues/8 as well.
 
     // something like `VisualChannel<SomeDataType>(\.node)`
-    public init(_ dataProperty: KeyPath<SomeDataType, DataPropertyType>) {
+    public init(_ dataProperty: KeyPath<SomeDataType, InputPropertyType>) {
         self.dataProperty = dataProperty
+        self.constantValue = nil
         scale = AnyContinuousScale(LinearScale())
+        self.visualChannelType = .reference
         // We need the at least the domain to create it - so we need to know the range of values
         // before we can instantiate a scale if it's not explicitly declared
 
@@ -177,34 +126,34 @@ public struct MappedVisualChannel<
         // and have a super-optimized `.identity` type that does a 1:1 pass through
         // with no computation on the value.
     }
-
-    public func provideScaledValue(d: SomeDataType) -> PropertyType? {
-        let valueFromData: DataPropertyType = d[keyPath: dataProperty]
-        return scale.scale(valueFromData, from: 0, to: 1)
+    
+    // something like `VisualChannel(13.0)`
+    public init(_ value: InputPropertyType) {
+        constantValue = value
+        self.dataProperty = nil
+        scale = AnyContinuousScale(LinearScale())
+        self.visualChannelType = .constant
     }
 
-    // modifier type - generics, no impl:
-
-    func scale<NewScaleType: Scale>(newScale _: NewScaleType) where NewScaleType.InputType == DataPropertyType, NewScaleType.OutputType == PropertyType {}
+    public func provideScaledValue(d: SomeDataType) -> OutputPropertyType? {
+        switch visualChannelType {
+        case .reference:
+            guard let dataProperty = dataProperty else {
+                preconditionFailure("reference link for the requested value is nil")
+            }
+            let valueFromData: InputPropertyType = d[keyPath: dataProperty]
+            return scale.scale(valueFromData, from: 0, to: 1)
+        case .constant:
+            guard let constantValue = constantValue else {
+                preconditionFailure("constant value is nil")
+            }
+            return scale.scale(constantValue, from: 0, to: 1)
+        case .map:
+            preconditionFailure("not yet implemented")
+        }
+    }
 }
 
-/// A channel that provides a constant value to a visual property.
-public struct ConstantVisualChannel<SomeDataType, PropertyType: TypeOfVisualProperty> {
-    let constantValue: PropertyType
-
-    // var scale: Scale?
-
-    // something like `VisualChannel(13.0)`
-    public init(value: PropertyType) {
-        constantValue = value
-        // self.scale = LinearScale(domain: 0...1)
-        // We need the at least the domain to create it - so we need to know the range of values
-        // before we can instantiate a scale if it's not explicitly declared
-    }
-
-    public func provideScaledValue(d _: SomeDataType) -> PropertyType? {
-        let valueFromConstant = constantValue
-        // scale the value here...
-        return valueFromConstant
-    }
+extension VisualChannel where ScaleType == AnyContinuousScale<InputPropertyType, OutputPropertyType> {
+    func scale<NewScaleType: Scale>(newScale _: NewScaleType) {}
 }
