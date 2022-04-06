@@ -8,14 +8,14 @@
 import SwiftUI
 
 public struct Chart<Content: View>: View {
-    
     var chartRenderer = ChartRenderer()
     var markCollection: [MarkType]
-    
+
     public var body: some View {
         chartRenderer.createView(markCollection)
     }
-// classic 'container view' structure
+
+    // classic 'container view' structure
 //    var content: () -> Content
 //    some View {
 //        content()
@@ -28,23 +28,23 @@ public struct Chart<Content: View>: View {
 //    public init(@ViewBuilder _ content: @escaping () -> Content) {
 //        self.content = content
 //    }
-    
+
     public init(@MarkBuilder _ markdecl: @escaping () -> [MarkType]) {
         // somehow convert markdecl into the MarkCollection...
-        self.markCollection = []
+        markCollection = []
     }
 }
 
 class ChartRenderer {
-    
     // pre-process the collection of marks provided to determine what, if any, axis
     // and margins need to be accounted for in rendering out the view.
-    func createView(_ marks: [MarkType]) -> some View {
+    func createView(_: [MarkType]) -> some View {
         Canvas { context, size in
-                context.stroke(
-                    Path(ellipseIn: CGRect(origin: .zero, size: size)),
-                    with: .color(.green),
-                    lineWidth: 4)
+            context.stroke(
+                Path(ellipseIn: CGRect(origin: .zero, size: size)),
+                with: .color(.green),
+                lineWidth: 4
+            )
         }
     }
 }
@@ -59,7 +59,7 @@ public enum MarkType {
 }
 
 @resultBuilder
-public struct MarkBuilder {
+public enum MarkBuilder {
     public static func buildBlock(_ components: BarMark<Any>...) -> [MarkType] {
         var marks: [MarkType] = []
         for bar in components {
@@ -67,6 +67,7 @@ public struct MarkBuilder {
         }
         return marks
     }
+
     public static func buildBlock(_ components: DotMark<Any>...) -> [MarkType] {
         var marks: [MarkType] = []
         for dot in components {
@@ -74,6 +75,7 @@ public struct MarkBuilder {
         }
         return marks
     }
+
     public static func buildBlock(_ components: LineMark<Any>...) -> [MarkType] {
         var marks: [MarkType] = []
         for line in components {
@@ -81,5 +83,4 @@ public struct MarkBuilder {
         }
         return marks
     }
-
 }

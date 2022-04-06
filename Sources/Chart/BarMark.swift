@@ -18,9 +18,9 @@ enum Orientation {
 public struct BarMark<DataSource>: Mark {
     var data: DataSource
     public func symbolsForMark() -> [MarkSymbol] {
-        return []
+        []
     }
-    
+
 //    public var mappings: [AnyVisualChannel<BarMark, Any>]
 
     public typealias MarkType = Self
@@ -41,5 +41,4 @@ public struct BarMark<DataSource>: Mark {
         self.category = category
 //        mappings = []
     }
-
 }

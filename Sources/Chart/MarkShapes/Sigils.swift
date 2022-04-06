@@ -67,11 +67,11 @@ public struct IndividualRect {
     let width: CGFloat
     let height: CGFloat
 
-    var cornerRadius: CGFloat? = nil
-    var cornerRadiusTopLeft: CGFloat? = nil
-    var cornerRadiusTopRight: CGFloat? = nil
-    var cornerRadiusBottomLeft: CGFloat? = nil
-    var cornerRadiusBottomRight: CGFloat? = nil
+    var cornerRadius: CGFloat?
+    var cornerRadiusTopLeft: CGFloat?
+    var cornerRadiusTopRight: CGFloat?
+    var cornerRadiusBottomLeft: CGFloat?
+    var cornerRadiusBottomRight: CGFloat?
 
     let fill: SwiftUI.Color // (https://developer.apple.com/documentation/swiftui/color)
     let stroke: SwiftUI.Color // ? (https://developer.apple.com/documentation/coregraphics/cgcolor)
@@ -85,8 +85,8 @@ public struct IndividualRule {
     let end: CGFloat
     let orientationVertical: Bool
 }
+
 // rule
 // symbol - square, circle, diamond, cross - and insettable to mix
 // text
 // image
-

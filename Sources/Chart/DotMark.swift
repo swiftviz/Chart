@@ -14,12 +14,13 @@ import SwiftVizScale
 public struct DotMark<DataSource>: Mark {
     var data: DataSource
     public func symbolsForMark() -> [MarkSymbol] {
-        return []
+        []
     }
-    
+
     public typealias MarkType = Self
     public init(data: DataSource,
-                x: AVisualChannel<DataSource, Double>) {
+                x _: AVisualChannel<DataSource, Double>)
+    {
         self.data = data
     }
 }
