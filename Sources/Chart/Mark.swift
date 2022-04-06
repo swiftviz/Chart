@@ -11,7 +11,6 @@ import SwiftUI
 /// A mark describes the configuration of how data is mapped to visual properties relevant to the type of mark.
 public protocol Mark {
     associatedtype MarkType: Mark
-    associatedtype DataType
 
     // let visibleAxis: [AxisDefn]
 
@@ -26,6 +25,8 @@ public protocol Mark {
     // - miterLimit: CGFloat
     // - dash: [CGFloat]
     // - dashPhase: CGFloat
+    
+    func symbolsForMark() -> [MarkSymbol]
 }
 
 // MARK: - default values for common Mark properties
