@@ -19,7 +19,7 @@ public struct DotMark<DataSource>: Mark {
 
     public typealias MarkType = Self
     public init(data: DataSource,
-                x _: AVisualChannel<DataSource, Double>)
+                x _: VisualChannel<DataSource, Double>)
     {
         self.data = data
     }
