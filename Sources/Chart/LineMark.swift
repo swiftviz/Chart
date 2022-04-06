@@ -13,9 +13,9 @@ import SwiftUI
 public struct LineMark<DataSource>: Mark {
     var data: DataSource
     public func symbolsForMark() -> [MarkSymbol] {
-        return []
+        []
     }
-    
+
     public typealias DataType = Any
 //    public var mappings: [AnyVisualChannel<LineMark, Any>]
 

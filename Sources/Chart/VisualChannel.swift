@@ -131,7 +131,7 @@ internal func _abstract(
 // not type erasure, but type encapsulation
 public enum AVisualChannel<DataType, PropertyType: TypeOfVisualProperty> {
     case constant(ConstantVisualChannel<DataType, PropertyType>)
-    case reference(MappedVisualChannel<DataType, DataPropertyType, PropertyType>)
+//    case reference(MappedVisualChannel<DataType, PropertyType>)
 }
 
 // encapsulation sequence: ??
@@ -143,13 +143,13 @@ public enum AVisualChannel<DataType, PropertyType: TypeOfVisualProperty> {
 public struct MappedVisualChannel<
     SomeDataType,
     DataPropertyType: ConvertibleWithDouble & NiceValue,
-    PropertyType: TypeOfVisualProperty
+    PropertyType: ConvertibleWithDouble & TypeOfVisualProperty
 >: VisualChannel
 // where ScaleType.InputType == DataPropertyType, ScaleType.OutputType == PropertyType
 {
     let dataProperty: KeyPath<SomeDataType, DataPropertyType>
 
-    public var scale: ScaleType // input=Double, output=Float
+    public var scale: AnyContinuousScale<DataPropertyType, PropertyType> // input=Double, output=Float
     // a scale has an InputType and OutputType - and we need InputType to match 'PropertyType'
     // from above. And OutputType should probably just be CGFloat since we'll be using it in
     // that context.
@@ -168,7 +168,7 @@ public struct MappedVisualChannel<
     // something like `VisualChannel<SomeDataType>(\.node)`
     public init(_ dataProperty: KeyPath<SomeDataType, DataPropertyType>) {
         self.dataProperty = dataProperty
-        scale = LinearScale<DataPropertyType, CGFloat>() as! ScaleType
+        scale = AnyContinuousScale(LinearScale())
         // We need the at least the domain to create it - so we need to know the range of values
         // before we can instantiate a scale if it's not explicitly declared
 
@@ -180,8 +180,7 @@ public struct MappedVisualChannel<
 
     public func provideScaledValue(d: SomeDataType) -> PropertyType? {
         let valueFromData: DataPropertyType = d[keyPath: dataProperty]
-        //let rangedScale = scale.range(from: 0, to: 1)
-        return scale.scale(valueFromData) //, from: 0, to: 1)
+        return scale.scale(valueFromData, from: 0, to: 1)
     }
 
     // modifier type - generics, no impl:

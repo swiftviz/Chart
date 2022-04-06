@@ -7,7 +7,7 @@ struct SampleData {
     let value: Int
 }
 
-//final class PublicChartTests: XCTestCase {
+// final class PublicChartTests: XCTestCase {
 //    let data = SampleData(name: "X", value: 1)
 //    func testTypeStubs() throws {
 //        let chart = Chart {
@@ -15,4 +15,4 @@ struct SampleData {
 //        }
 //        XCTAssertNotNil(chart)
 //    }
-//}
+// }

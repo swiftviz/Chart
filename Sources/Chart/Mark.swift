@@ -25,7 +25,7 @@ public protocol Mark {
     // - miterLimit: CGFloat
     // - dash: [CGFloat]
     // - dashPhase: CGFloat
-    
+
     func symbolsForMark() -> [MarkSymbol]
 }
 
