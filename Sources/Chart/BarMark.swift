@@ -15,8 +15,12 @@ enum Orientation {
 /// A type that represents a series of bars.
 ///
 /// The type infers the number and visual properties of the bars from the data you provide to the visual channels when declaring a bar mark.
-public struct BarMark: Mark {
-    public typealias DataType = Any
+public struct BarMark<DataSource>: Mark {
+    var data: DataSource
+    public func symbolsForMark() -> [MarkSymbol] {
+        return []
+    }
+    
 //    public var mappings: [AnyVisualChannel<BarMark, Any>]
 
     public typealias MarkType = Self
@@ -31,13 +35,11 @@ public struct BarMark: Mark {
     // the available space among the # of categories being displayed with
     // accommodation for optional spacing between the bars.
 
-    public init(_ value: Double, _ category: String) {
+    public init(data: DataSource, _ value: Double, _ category: String) {
+        self.data = data
         self.value = value
         self.category = category
 //        mappings = []
     }
 
-//    public init(@MarkBuilder<BarMark> ) {
-//
-//    }
 }

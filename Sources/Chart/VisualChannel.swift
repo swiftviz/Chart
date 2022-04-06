@@ -75,7 +75,7 @@ extension Date: TypeOfVisualProperty {
 /// A type that provides the value for a visual property element.
 ///
 /// Examples include location, such as an `x` or `y` value, or discrete values such as a `shape` or `color` that indicates a category.
-protocol VisualChannel {
+public protocol VisualChannel {
     associatedtype ValueType: TypeOfVisualProperty
     associatedtype SomeDataType: Any
     associatedtype ScaleType: Scale where ScaleType.OutputType == ValueType
@@ -128,16 +128,28 @@ internal func _abstract(
 
 // MARK: - Concrete Visual Channel Types
 
+// not type erasure, but type encapsulation
+public enum AVisualChannel<DataType, PropertyType: TypeOfVisualProperty> {
+    case constant(ConstantVisualChannel<DataType, PropertyType>)
+    case reference(MappedVisualChannel<DataType, DataPropertyType, PropertyType>)
+}
+
+// encapsulation sequence: ??
+// - first by the kind of mapping (constant, keypath reference, ...)
+//  - next by the type of scale Band, ContinuousScale(Linear, Log, Power), Point, etc
+//    - within ContinuousScale, choice of Linear, Log, Power?
+
 /// A channel that provides a mapping from an object's property to a visual property.
 public struct MappedVisualChannel<
     SomeDataType,
-    ScaleType: ContinuousScale,
-    DataPropertyType,
+    DataPropertyType: ConvertibleWithDouble & NiceValue,
     PropertyType: TypeOfVisualProperty
->: VisualChannel where ScaleType.InputType == DataPropertyType, ScaleType.OutputType == PropertyType {
+>: VisualChannel
+// where ScaleType.InputType == DataPropertyType, ScaleType.OutputType == PropertyType
+{
     let dataProperty: KeyPath<SomeDataType, DataPropertyType>
 
-    var scale: ScaleType // input=Double, output=Float
+    public var scale: ScaleType // input=Double, output=Float
     // a scale has an InputType and OutputType - and we need InputType to match 'PropertyType'
     // from above. And OutputType should probably just be CGFloat since we'll be using it in
     // that context.
@@ -166,9 +178,10 @@ public struct MappedVisualChannel<
         // with no computation on the value.
     }
 
-    func provideScaledValue(d: SomeDataType) -> PropertyType? {
+    public func provideScaledValue(d: SomeDataType) -> PropertyType? {
         let valueFromData: DataPropertyType = d[keyPath: dataProperty]
-        return scale.scale(valueFromData, from: 0, to: 1)
+        //let rangedScale = scale.range(from: 0, to: 1)
+        return scale.scale(valueFromData) //, from: 0, to: 1)
     }
 
     // modifier type - generics, no impl:
@@ -190,7 +203,7 @@ public struct ConstantVisualChannel<SomeDataType, PropertyType: TypeOfVisualProp
         // before we can instantiate a scale if it's not explicitly declared
     }
 
-    func provideScaledValue(d _: SomeDataType) -> PropertyType? {
+    public func provideScaledValue(d _: SomeDataType) -> PropertyType? {
         let valueFromConstant = constantValue
         // scale the value here...
         return valueFromConstant
