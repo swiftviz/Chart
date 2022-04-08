@@ -15,7 +15,9 @@ class BarMarkTests: XCTestCase {
     }
 
     func testBarMarkInitializer() throws {
-        let x = BarMark(data: [SampleData(name: "X", value: 1)], 1, "z")
+        let x = BarMark(data: [SampleData(name: "X", value: 1)],
+                        value: QuantitativeVisualChannel(1),
+                        category: BandVisualChannel("Z"))
         XCTAssertNotNil(x)
     }
 }

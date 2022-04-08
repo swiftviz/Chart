@@ -70,31 +70,32 @@ extension Date: TypeOfVisualProperty {
 //    }
 // }
 
-// MARK: - Visual Channel
+// MARK: - Visual Channel - Continuous/Quantitative
+
+/// A value that indicates the how the visual channel provides its value.
+public enum KindOfVisualChannel {
+    /// The visual channel uses a constant value that you provide.
+    case constant
+    /// The visual channel uses a key path to reference a property on the objects that you provide.
+    case reference
+    /// The visual channel uses a closure that provides a value when provided with the associated data type.
+    case map
+}
 
 /// A channel that provides a mapping from an object's property to a visual property.
-public struct VisualChannel<
+public struct QuantitativeVisualChannel<
     SomeDataType,
-    InputPropertyType: ConvertibleWithDouble & NiceValue & TypeOfVisualProperty,
-    OutputPropertyType: ConvertibleWithDouble,
-    ScaleType: Scale
-> where ScaleType.InputType == InputPropertyType, ScaleType.OutputType == OutputPropertyType {
-//    associatedtype SomeDataType: Any // type that holds the values we'll map from
-//    associatedtype InputValueType: Any // scale input type
-//    associatedtype OutputValueType: TypeOfVisualProperty // constrains to Double, Int, String, and Date
-//    associatedtype ScaleType: Scale where ScaleType.OutputType == OutputValueType, ScaleType.InputType == InputValueType
+    InputPropertyType: ConvertibleWithDouble & NiceValue & TypeOfVisualProperty & Comparable,
+    OutputPropertyType: ConvertibleWithDouble
+> {
+    typealias OutputPropertyType = CGFloat
+
     let visualChannelType: KindOfVisualChannel
     let constantValue: InputPropertyType?
-
-    public enum KindOfVisualChannel {
-        case constant // constant value
-        case reference // keypath reference to incoming data
-        case map // closure that provides a value when provided the incoming data type
-    }
-
     let dataProperty: KeyPath<SomeDataType, InputPropertyType>?
+    let closure: ((SomeDataType) -> OutputPropertyType)?
 
-    public var scale: AnyContinuousScale<InputPropertyType, OutputPropertyType> // input=Double, output=Float
+    public var scale: AnyContinuousScale<InputPropertyType, OutputPropertyType>
     // a scale has an InputType and OutputType - and we need InputType to match 'PropertyType'
     // from above. And OutputType should probably just be CGFloat since we'll be using it in
     // that context.
@@ -112,9 +113,11 @@ public struct VisualChannel<
 
     // something like `VisualChannel<SomeDataType>(\.node)`
     public init(_ dataProperty: KeyPath<SomeDataType, InputPropertyType>) {
+        typealias ScaleType = AnyContinuousScale<InputPropertyType, OutputPropertyType>
         self.dataProperty = dataProperty
         constantValue = nil
-        scale = AnyContinuousScale(LinearScale())
+        closure = nil
+        scale = AnyContinuousScale<InputPropertyType, OutputPropertyType>(LinearScale())
         visualChannelType = .reference
         // We need the at least the domain to create it - so we need to know the range of values
         // before we can instantiate a scale if it's not explicitly declared
@@ -129,8 +132,149 @@ public struct VisualChannel<
     public init(_ value: InputPropertyType) {
         constantValue = value
         dataProperty = nil
+        closure = nil
         scale = AnyContinuousScale(LinearScale())
         visualChannelType = .constant
+    }
+
+    public init(_ closure: @escaping (SomeDataType) -> OutputPropertyType) {
+        constantValue = nil
+        dataProperty = nil
+        self.closure = closure
+        scale = AnyContinuousScale(LinearScale())
+        visualChannelType = .map
+    }
+
+    public func provideScaledValue(d: SomeDataType) -> OutputPropertyType? {
+        switch visualChannelType {
+        case .reference:
+            guard let dataProperty = dataProperty else {
+                preconditionFailure("reference link for the requested value is nil")
+            }
+            let valueFromData: InputPropertyType = d[keyPath: dataProperty]
+            return scale.scale(valueFromData, from: 0, to: 1)
+        case .constant:
+            guard let constantValue = constantValue else {
+                preconditionFailure("constant value is nil")
+            }
+            return scale.scale(constantValue, from: 0, to: 1)
+        case .map:
+            preconditionFailure("not yet implemented")
+        }
+    }
+
+    public mutating func scale(_ kind: ContinuousScaleType) {
+        scale = scale.scaleType(kind)
+    }
+}
+
+// MARK: - Visual Channel - Discrete/Band
+
+/// A channel that provides a mapping from an object's property to a visual property.
+public struct BandVisualChannel<
+    SomeDataType
+> {
+    let visualChannelType: KindOfVisualChannel
+    let constantValue: String?
+    let dataProperty: KeyPath<SomeDataType, String>?
+    let closure: ((SomeDataType) -> String)?
+
+    public var scale: BandScale<String, CGFloat>
+
+    // something like `VisualChannel<SomeDataType>(\.node)`
+    public init(_ dataProperty: KeyPath<SomeDataType, String>) {
+        self.dataProperty = dataProperty
+        constantValue = nil
+        closure = nil
+        scale = BandScale<String, CGFloat>()
+        visualChannelType = .reference
+    }
+
+    // something like `BandVisualChannel("sixth")`
+    public init(_ value: String) {
+        constantValue = value
+        dataProperty = nil
+        closure = nil
+        scale = BandScale<String, CGFloat>()
+        visualChannelType = .constant
+    }
+
+    public init(_ closure: @escaping (SomeDataType) -> String) {
+        constantValue = nil
+        dataProperty = nil
+        self.closure = closure
+        scale = BandScale<String, CGFloat>()
+        visualChannelType = .map
+    }
+
+    public func provideScaledValue(d: SomeDataType) -> Band<String, CGFloat>? {
+        switch visualChannelType {
+        case .reference:
+            guard let dataProperty = dataProperty else {
+                preconditionFailure("reference link for the requested value is nil")
+            }
+            let valueFromData: String = d[keyPath: dataProperty]
+            return scale.scale(valueFromData, from: 0, to: 1)
+        case .constant:
+            guard let constantValue = constantValue else {
+                preconditionFailure("constant value is nil")
+            }
+            return scale.scale(constantValue, from: 0, to: 1)
+        case .map:
+            preconditionFailure("not yet implemented")
+        }
+    }
+}
+
+// MARK: - Visual Channel - Discrete/Point
+
+/// A channel that provides a mapping from an object's property to a visual property.
+public struct DiscreteVisualChannel<
+    SomeDataType,
+    InputPropertyType: ConvertibleWithDouble & NiceValue & TypeOfVisualProperty & Comparable,
+    OutputPropertyType: ConvertibleWithDouble
+> {
+    typealias OutputPropertyType = CGFloat
+
+    let visualChannelType: KindOfVisualChannel
+    let constantValue: InputPropertyType?
+    let dataProperty: KeyPath<SomeDataType, InputPropertyType>?
+    let closure: ((SomeDataType) -> OutputPropertyType)?
+
+    public var scale: PointScale<InputPropertyType, OutputPropertyType>
+
+    // something like `VisualChannel<SomeDataType>(\.node)`
+    public init(_ dataProperty: KeyPath<SomeDataType, InputPropertyType>) {
+        typealias ScaleType = AnyContinuousScale<InputPropertyType, OutputPropertyType>
+        self.dataProperty = dataProperty
+        constantValue = nil
+        closure = nil
+        scale = PointScale<InputPropertyType, OutputPropertyType>()
+        visualChannelType = .reference
+        // We need the at least the domain to create it - so we need to know the range of values
+        // before we can instantiate a scale if it's not explicitly declared
+
+        // It might be nice to have the specific scales Type Erased so that we can
+        // store the scale reference as AnyScaleType<InputType, OutputType>: Scale
+        // and have a super-optimized `.identity` type that does a 1:1 pass through
+        // with no computation on the value.
+    }
+
+    // something like `VisualChannel(13.0)`
+    public init(_ value: InputPropertyType) {
+        constantValue = value
+        dataProperty = nil
+        closure = nil
+        scale = PointScale<InputPropertyType, OutputPropertyType>()
+        visualChannelType = .constant
+    }
+
+    public init(_ closure: @escaping (SomeDataType) -> OutputPropertyType) {
+        constantValue = nil
+        dataProperty = nil
+        self.closure = closure
+        scale = PointScale<InputPropertyType, OutputPropertyType>()
+        visualChannelType = .map
     }
 
     public func provideScaledValue(d: SomeDataType) -> OutputPropertyType? {
@@ -152,6 +296,10 @@ public struct VisualChannel<
     }
 }
 
-extension VisualChannel where ScaleType == AnyContinuousScale<InputPropertyType, OutputPropertyType> {
-    func scale<NewScaleType: Scale>(newScale _: NewScaleType) {}
-}
+// MARK: - Visual Channel - Discrete/Color
+
+// MARK: - Visual Channel - Continuous/Color
+
+// MARK: - Visual Channel - Discrete/Shape
+
+// TBD: need channels to provide Color, and another to provide a Shape for symbols (DotMark)

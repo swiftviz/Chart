@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import SwiftVizScale
 
 /// A type that represents a series of bars.
 ///
 /// The type infers the number and visual properties of the bars from the data you provide to the visual channels when declaring a bar mark.
 public struct LineMark<DataSource>: Mark {
-    var data: DataSource
+    var data: [DataSource]
     public func symbolsForMark() -> [MarkSymbol] {
         []
     }
@@ -20,8 +21,10 @@ public struct LineMark<DataSource>: Mark {
 //    public var mappings: [AnyVisualChannel<LineMark, Any>]
 
     public typealias MarkType = Self
-    public init(data: DataSource) {
+    public init(data: [DataSource],
+                x _: QuantitativeVisualChannel<DataSource, Double, CGFloat>,
+                y _: QuantitativeVisualChannel<DataSource, Double, CGFloat>)
+    {
         self.data = data
-//        mappings = []
     }
 }
