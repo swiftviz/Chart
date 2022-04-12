@@ -85,11 +85,8 @@ public enum KindOfVisualChannel {
 /// A channel that provides a mapping from an object's property to a visual property.
 public struct QuantitativeVisualChannel<
     SomeDataType,
-    InputPropertyType: ConvertibleWithDouble & NiceValue & TypeOfVisualProperty & Comparable,
-
-    OutputPropertyType: ConvertibleWithDouble
-> {
-    typealias OutputPropertyType = CGFloat
+    InputPropertyType: ConvertibleWithDouble & NiceValue & TypeOfVisualProperty & Comparable> {
+    public typealias OutputPropertyType = CGFloat
 
     let visualChannelType: KindOfVisualChannel
     let constantValue: InputPropertyType?
@@ -232,10 +229,9 @@ public struct BandVisualChannel<
 /// A channel that provides a mapping from an object's property to a visual property.
 public struct DiscreteVisualChannel<
     SomeDataType,
-    InputPropertyType: ConvertibleWithDouble & NiceValue & TypeOfVisualProperty & Comparable,
-    OutputPropertyType: ConvertibleWithDouble
+    InputPropertyType: ConvertibleWithDouble & NiceValue & TypeOfVisualProperty & Comparable
 > {
-    typealias OutputPropertyType = CGFloat
+    public typealias OutputPropertyType = CGFloat
 
     let visualChannelType: KindOfVisualChannel
     let constantValue: InputPropertyType?
