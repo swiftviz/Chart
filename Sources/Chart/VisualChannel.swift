@@ -170,9 +170,7 @@ public struct QuantitativeVisualChannel<
 // MARK: - Visual Channel - Discrete/Band
 
 /// A channel that provides a mapping from an object's property to a visual property.
-public struct BandVisualChannel<
-    SomeDataType
-> {
+public struct BandVisualChannel<SomeDataType> {
     let visualChannelType: KindOfVisualChannel
     let constantValue: String?
     let dataProperty: KeyPath<SomeDataType, String>?
