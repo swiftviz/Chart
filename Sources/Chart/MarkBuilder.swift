@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  MarkBuilder.swift
 //
 //
 //  Created by Joseph Heck on 4/7/22.
@@ -16,28 +16,29 @@ public enum MarkType {
     case line(LineMark<Any>)
 }
 
+// reference for result builders:
+// https://docs.swift.org/swift-book/ReferenceManual/Attributes.html
+// https://docs.swift.org/swift-book/LanguageGuide/AdvancedOperators.html#ID630
+
 @resultBuilder
 public enum MarkBuilder {
-    public static func buildBlock(_ components: BarMark<Any>...) -> [MarkType] {
-        var marks: [MarkType] = []
-        for bar in components {
-            marks.append(MarkType.bar(bar))
-        }
-        return marks
+    
+    static func buildExpression(_ element: BarMark<Any>) -> MarkType {
+        return MarkType.bar(element)
+    }
+    
+    static func buildExpression(_ element: DotMark<Any>) -> MarkType {
+        return MarkType.dot(element)
+    }
+    
+    static func buildExpression(_ element: LineMark<Any>) -> MarkType {
+        return MarkType.line(element)
     }
 
-    public static func buildBlock(_ components: DotMark<Any>...) -> [MarkType] {
+    public static func buildBlock(_ components: MarkType...) -> [MarkType] {
         var marks: [MarkType] = []
-        for dot in components {
-            marks.append(MarkType.dot(dot))
-        }
-        return marks
-    }
-
-    public static func buildBlock(_ components: LineMark<Any>...) -> [MarkType] {
-        var marks: [MarkType] = []
-        for line in components {
-            marks.append(MarkType.line(line))
+        for mark in components {
+            marks.append(mark)
         }
         return marks
     }
