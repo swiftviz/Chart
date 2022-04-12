@@ -22,8 +22,8 @@ public struct LineMark<DataSource>: Mark {
 
     public typealias MarkType = Self
     public init(data: [DataSource],
-                x _: QuantitativeVisualChannel<DataSource, Double, CGFloat>,
-                y _: QuantitativeVisualChannel<DataSource, Double, CGFloat>)
+                x _: QuantitativeVisualChannel<DataSource, Double>,
+                y _: QuantitativeVisualChannel<DataSource, Double>)
     {
         self.data = data
     }

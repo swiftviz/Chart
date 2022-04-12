@@ -18,7 +18,7 @@ enum Orientation {
 /// The type infers the number and visual properties of the bars from the data you provide to the visual channels when declaring a bar mark.
 public struct BarMark<DataSource>: Mark {
     var data: [DataSource]
-    let value: QuantitativeVisualChannel<DataSource, Double, CGFloat>
+    let value: QuantitativeVisualChannel<DataSource, Double> //, CGFloat
     let category: BandVisualChannel<DataSource>
 
     public func symbolsForMark(rangeLower _: CGFloat, rangeHigher _: CGFloat) -> [MarkSymbol] {
@@ -29,7 +29,7 @@ public struct BarMark<DataSource>: Mark {
 
     var orientation: Orientation = .vertical
 
-    public init(data: [DataSource], value: QuantitativeVisualChannel<DataSource, Double, CGFloat>, category: BandVisualChannel<DataSource>) {
+    public init(data: [DataSource], value: QuantitativeVisualChannel<DataSource, Double>, category: BandVisualChannel<DataSource>) {
         self.data = data
         self.value = value
         self.category = category
