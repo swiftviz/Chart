@@ -85,8 +85,8 @@ public enum KindOfVisualChannel {
 /// A channel that provides a mapping from an object's property to a visual property.
 public struct QuantitativeVisualChannel<
     SomeDataType,
-    InputPropertyType: ConvertibleWithDouble & NiceValue & TypeOfVisualProperty & Comparable
-        ,
+    InputPropertyType: ConvertibleWithDouble & NiceValue & TypeOfVisualProperty & Comparable,
+
     OutputPropertyType: ConvertibleWithDouble
 > {
     typealias OutputPropertyType = CGFloat

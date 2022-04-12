@@ -13,7 +13,7 @@ import SwiftVizScale
 /// The type infers the number and visual properties of the bars from the data you provide to the visual channels when declaring a bar mark.
 public struct LineMark<DataSource>: Mark {
     var data: [DataSource]
-    public func symbolsForMark(rangeLower: CGFloat, rangeHigher: CGFloat) -> [MarkSymbol] {
+    public func symbolsForMark(rangeLower _: CGFloat, rangeHigher _: CGFloat) -> [MarkSymbol] {
         []
     }
 
