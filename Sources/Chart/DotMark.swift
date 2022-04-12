@@ -16,7 +16,9 @@ public struct DotMark<DataSource>: Mark {
     let x: QuantitativeVisualChannel<DataSource, Double, CGFloat>
     let y: QuantitativeVisualChannel<DataSource, Double, CGFloat>
 
-    public func symbolsForMark() -> [MarkSymbol] {
+    public func symbolsForMark(rangeLower: CGFloat, rangeHigher: CGFloat) -> [MarkSymbol] {
+        // - apply the range onto the various VisualChannel scales, or pass it along when creating
+        //   the symbols with final values. (from VisualChannel.provideScaledValue()
         []
     }
 

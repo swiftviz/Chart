@@ -85,7 +85,8 @@ public enum KindOfVisualChannel {
 /// A channel that provides a mapping from an object's property to a visual property.
 public struct QuantitativeVisualChannel<
     SomeDataType,
-    InputPropertyType: ConvertibleWithDouble & NiceValue & TypeOfVisualProperty & Comparable,
+    InputPropertyType: ConvertibleWithDouble & NiceValue & TypeOfVisualProperty & Comparable
+        ,
     OutputPropertyType: ConvertibleWithDouble
 > {
     typealias OutputPropertyType = CGFloat
@@ -145,19 +146,19 @@ public struct QuantitativeVisualChannel<
         visualChannelType = .map
     }
 
-    public func provideScaledValue(d: SomeDataType) -> OutputPropertyType? {
+    public func provideScaledValue(d: SomeDataType, rangeLower: OutputPropertyType, rangeHigher: OutputPropertyType) -> OutputPropertyType? {
         switch visualChannelType {
         case .reference:
             guard let dataProperty = dataProperty else {
                 preconditionFailure("reference link for the requested value is nil")
             }
             let valueFromData: InputPropertyType = d[keyPath: dataProperty]
-            return scale.scale(valueFromData, from: 0, to: 1)
+            return scale.scale(valueFromData, from: rangeLower, to: rangeHigher)
         case .constant:
             guard let constantValue = constantValue else {
                 preconditionFailure("constant value is nil")
             }
-            return scale.scale(constantValue, from: 0, to: 1)
+            return scale.scale(constantValue, from: rangeLower, to: rangeHigher)
         case .map:
             preconditionFailure("not yet implemented")
         }
@@ -207,19 +208,19 @@ public struct BandVisualChannel<
         visualChannelType = .map
     }
 
-    public func provideScaledValue(d: SomeDataType) -> Band<String, CGFloat>? {
+    public func provideScaledValue(d: SomeDataType, rangeLower: CGFloat, rangeHigher: CGFloat) -> Band<String, CGFloat>? {
         switch visualChannelType {
         case .reference:
             guard let dataProperty = dataProperty else {
                 preconditionFailure("reference link for the requested value is nil")
             }
             let valueFromData: String = d[keyPath: dataProperty]
-            return scale.scale(valueFromData, from: 0, to: 1)
+            return scale.scale(valueFromData, from: rangeLower, to: rangeHigher)
         case .constant:
             guard let constantValue = constantValue else {
                 preconditionFailure("constant value is nil")
             }
-            return scale.scale(constantValue, from: 0, to: 1)
+            return scale.scale(constantValue, from: rangeLower, to: rangeHigher)
         case .map:
             preconditionFailure("not yet implemented")
         }
@@ -277,19 +278,19 @@ public struct DiscreteVisualChannel<
         visualChannelType = .map
     }
 
-    public func provideScaledValue(d: SomeDataType) -> OutputPropertyType? {
+    public func provideScaledValue(d: SomeDataType, rangeLower: OutputPropertyType, rangeHigher: OutputPropertyType) -> OutputPropertyType? {
         switch visualChannelType {
         case .reference:
             guard let dataProperty = dataProperty else {
                 preconditionFailure("reference link for the requested value is nil")
             }
             let valueFromData: InputPropertyType = d[keyPath: dataProperty]
-            return scale.scale(valueFromData, from: 0, to: 1)
+            return scale.scale(valueFromData, from: rangeLower, to: rangeHigher)
         case .constant:
             guard let constantValue = constantValue else {
                 preconditionFailure("constant value is nil")
             }
-            return scale.scale(constantValue, from: 0, to: 1)
+            return scale.scale(constantValue, from: rangeLower, to: rangeHigher)
         case .map:
             preconditionFailure("not yet implemented")
         }
