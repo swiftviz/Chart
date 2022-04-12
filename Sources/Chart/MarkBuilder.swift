@@ -22,17 +22,16 @@ public enum MarkType {
 
 @resultBuilder
 public enum MarkBuilder {
-    
     static func buildExpression(_ element: BarMark<Any>) -> MarkType {
-        return MarkType.bar(element)
+        MarkType.bar(element)
     }
-    
+
     static func buildExpression(_ element: DotMark<Any>) -> MarkType {
-        return MarkType.dot(element)
+        MarkType.dot(element)
     }
-    
+
     static func buildExpression(_ element: LineMark<Any>) -> MarkType {
-        return MarkType.line(element)
+        MarkType.line(element)
     }
 
     public static func buildBlock(_ components: MarkType...) -> [MarkType] {

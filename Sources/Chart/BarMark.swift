@@ -21,7 +21,7 @@ public struct BarMark<DataSource>: Mark {
     let value: QuantitativeVisualChannel<DataSource, Double, CGFloat>
     let category: BandVisualChannel<DataSource>
 
-    public func symbolsForMark(rangeLower: CGFloat, rangeHigher: CGFloat) -> [MarkSymbol] {
+    public func symbolsForMark(rangeLower _: CGFloat, rangeHigher _: CGFloat) -> [MarkSymbol] {
         []
     }
 
