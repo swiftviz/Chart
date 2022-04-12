@@ -92,7 +92,7 @@ public struct QuantitativeVisualChannel<
     let visualChannelType: KindOfVisualChannel
     let constantValue: InputPropertyType?
     let dataProperty: KeyPath<SomeDataType, InputPropertyType>?
-    let closure: ((SomeDataType) -> OutputPropertyType)?
+    let closure: ((SomeDataType) -> InputPropertyType)?
 
     public var scale: AnyContinuousScale<InputPropertyType, OutputPropertyType>
     // a scale has an InputType and OutputType - and we need InputType to match 'PropertyType'
@@ -136,12 +136,37 @@ public struct QuantitativeVisualChannel<
         visualChannelType = .constant
     }
 
-    public init(_ closure: @escaping (SomeDataType) -> OutputPropertyType) {
+    public init(_ closure: @escaping (SomeDataType) -> InputPropertyType) {
         constantValue = nil
         dataProperty = nil
         self.closure = closure
         scale = AnyContinuousScale(LinearScale())
         visualChannelType = .map
+    }
+
+    public func applyDomain(_ values: [SomeDataType]) -> Self {
+        switch visualChannelType {
+        case .constant:
+            return self
+        case .reference:
+            guard let path = dataProperty else {
+                preconditionFailure("Attempted to apply domain for a reference channel with a null key path.")
+            }
+            let listOfValues = values.map { data in
+                data[keyPath: path]
+            }
+            var copyOfSelf = self
+            copyOfSelf.scale = scale.domain(listOfValues, nice: true)
+            return copyOfSelf
+        case .map:
+            guard let closure = closure else {
+                preconditionFailure("Attempted to apply domain for a map channel with a null closure.")
+            }
+            let listOfValues = values.map { closure($0) }
+            var copyOfSelf = self
+            copyOfSelf.scale = scale.domain(listOfValues, nice: true)
+            return copyOfSelf
+        }
     }
 
     public func provideScaledValue(d: SomeDataType, rangeLower: OutputPropertyType, rangeHigher: OutputPropertyType) -> OutputPropertyType? {
@@ -204,6 +229,31 @@ public struct BandVisualChannel<SomeDataType> {
         visualChannelType = .map
     }
 
+    public func applyDomain(_ values: [SomeDataType]) -> Self {
+        switch visualChannelType {
+        case .constant:
+            return self
+        case .reference:
+            guard let path = dataProperty else {
+                preconditionFailure("Attempted to apply domain for a reference channel with a null key path.")
+            }
+            let listOfValues = values.map { data in
+                data[keyPath: path]
+            }
+            var copyOfSelf = self
+            copyOfSelf.scale = scale.domain(listOfValues)
+            return copyOfSelf
+        case .map:
+            guard let closure = closure else {
+                preconditionFailure("Attempted to apply domain for a map channel with a null closure.")
+            }
+            let listOfValues = values.map { closure($0) }
+            var copyOfSelf = self
+            copyOfSelf.scale = scale.domain(listOfValues)
+            return copyOfSelf
+        }
+    }
+
     public func provideScaledValue(d: SomeDataType, rangeLower: CGFloat, rangeHigher: CGFloat) -> Band<String, CGFloat>? {
         switch visualChannelType {
         case .reference:
@@ -235,7 +285,7 @@ public struct DiscreteVisualChannel<
     let visualChannelType: KindOfVisualChannel
     let constantValue: InputPropertyType?
     let dataProperty: KeyPath<SomeDataType, InputPropertyType>?
-    let closure: ((SomeDataType) -> OutputPropertyType)?
+    let closure: ((SomeDataType) -> InputPropertyType)?
 
     public var scale: PointScale<InputPropertyType, OutputPropertyType>
 
@@ -265,12 +315,37 @@ public struct DiscreteVisualChannel<
         visualChannelType = .constant
     }
 
-    public init(_ closure: @escaping (SomeDataType) -> OutputPropertyType) {
+    public init(_ closure: @escaping (SomeDataType) -> InputPropertyType) {
         constantValue = nil
         dataProperty = nil
         self.closure = closure
         scale = PointScale<InputPropertyType, OutputPropertyType>()
         visualChannelType = .map
+    }
+
+    public func applyDomain(_ values: [SomeDataType]) -> Self {
+        switch visualChannelType {
+        case .constant:
+            return self
+        case .reference:
+            guard let path = dataProperty else {
+                preconditionFailure("Attempted to apply domain for a reference channel with a null key path.")
+            }
+            let listOfValues = values.map { data in
+                data[keyPath: path]
+            }
+            var copyOfSelf = self
+            copyOfSelf.scale = scale.domain(listOfValues)
+            return copyOfSelf
+        case .map:
+            guard let closure = closure else {
+                preconditionFailure("Attempted to apply domain for a map channel with a null closure.")
+            }
+            let listOfValues = values.map { closure($0) }
+            var copyOfSelf = self
+            copyOfSelf.scale = scale.domain(listOfValues)
+            return copyOfSelf
+        }
     }
 
     public func provideScaledValue(d: SomeDataType, rangeLower: OutputPropertyType, rangeHigher: OutputPropertyType) -> OutputPropertyType? {
