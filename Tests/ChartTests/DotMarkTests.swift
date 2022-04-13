@@ -16,7 +16,7 @@ class DotMarkTests: XCTestCase {
 
     func testDotMarkInitializer() throws {
         let x = DotMark(data: [SampleData(xValue: 2, yValue: 3)],
-                        x: QuantitativeVisualChannel(3),
+                        x: QuantitativeVisualChannel(\.xValue),
                         y: QuantitativeVisualChannel(167))
         XCTAssertNotNil(x)
     }
