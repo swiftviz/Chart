@@ -16,8 +16,8 @@ class LineMarkTests: XCTestCase {
 
     func testLineMarkInitializer() throws {
         let x = LineMark(data: [SampleData(xValue: 2, yValue: 3), SampleData(xValue: 3, yValue: 4)],
-                         x: QuantitativeVisualChannel(\SampleData.xValue),
-                         y: QuantitativeVisualChannel(\SampleData.yValue))
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
         XCTAssertNotNil(x)
     }
 }
