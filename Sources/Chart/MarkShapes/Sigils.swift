@@ -1,5 +1,10 @@
 import SwiftUI
 
+/// A type that represents an individual symbol to draw within a chart context.
+///
+/// `MarkSymbol` provides a single type collection point to gather the individual symbols
+/// for use by ``Chart/ChartRenderer`` to draw those symbols at the appropriate location
+/// for chart visualization.
 public enum MarkSymbol {
     case point(IndividualPoint)
     case line(IndividualLine)
@@ -9,10 +14,10 @@ public enum MarkSymbol {
     case image(Image)
 }
 
-/// A type that represents an individual data point symbol for a mark can render itself into a graphics context.
-protocol RenderableSymbol {
-    func render(mark: MarkSymbol, in context: inout GraphicsContext)
-}
+///// A type that represents an individual data point symbol for a mark can render itself into a graphics context.
+// protocol RenderableSymbol {
+//    func render(mark: MarkSymbol, in context: inout GraphicsContext)
+// }
 
 // Do we separate out data and rendering, or include the rendering capability into
 // the individual data mark kind of thing?
@@ -86,7 +91,6 @@ public struct IndividualRule {
     let orientationVertical: Bool
 }
 
-// rule
 // symbol - square, circle, diamond, cross - and insettable to mix
 // text
 // image
