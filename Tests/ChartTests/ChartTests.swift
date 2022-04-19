@@ -15,9 +15,9 @@ final class PublicChartTests: XCTestCase {
 
     func testTypeStubs() throws {
         let chart = Chart {
-//            BarMark(data: [SampleData(name: "X", value: 1)],
-//                            value: QuantitativeVisualChannel(1),
-//                            category: BandVisualChannel("Z"))
+            BarMark(data: [SampleData(name: "X", value: 1)],
+                    value: QuantitativeVisualChannel(1),
+                    category: BandVisualChannel("Z"))
         }
         XCTAssertNotNil(chart)
     }
