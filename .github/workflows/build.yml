@@ -20,14 +20,20 @@ jobs:
       run: xcodebuild -version
 
     # - name: Show Build Settings
-    #   run: xcodebuild -scheme SwiftViz -showBuildSettings
-    # - name: Show Build SDK
-    #   run: xcodebuild -scheme SwiftViz -showsdks
+    #   run: xcodebuild -scheme Chart -showBuildSettings
+
+    - name: Show Build SDK
+      run: xcodebuild -scheme Chart -showsdks
+      
+    - name: Show Build SDK
+      run: xcodebuild -scheme Chart -showdestinations
+
     #- name: Build
     #  run: swift build -v
 
     - name: Run tests
-      run: swift test --enable-code-coverage -v
+      # run: swift test --enable-code-coverage -v
+      run: xcodebuild test -scheme Chart -destination platform=macOS
 
         #- name: check against API breaking changes
         #  run: swift package diagnose-api-breaking-changes 0.5.0
