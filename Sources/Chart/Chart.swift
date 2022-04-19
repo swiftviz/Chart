@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-public struct Chart<Content: View>: View {
+public struct Chart: View {
     var chartRenderer = ChartRenderer()
-    var markCollection: [MarkType]
+    var markCollection: [AnyMark]
 
     /* execution flow notes:
 
@@ -42,24 +42,10 @@ public struct Chart<Content: View>: View {
      */
 
     public var body: some View {
-        chartRenderer.createView(markCollection)
+        return chartRenderer.createView(markCollection)
     }
 
-    // classic 'container view' structure
-//    var content: () -> Content
-//    some View {
-//        content()
-//        // if Mark returns a view, then we'll likely assemble these
-//        // as a ZStack, otherwise we'll need to update the generic signature
-//        // to accept a list of [Mark] instances that we compose directly
-//        // onto an instance of Canvas()
-//    }
-
-//    public init(@ViewBuilder _ content: @escaping () -> Content) {
-//        self.content = content
-//    }
-
-    public init(@MarkBuilder _ markdecl: @escaping () -> [MarkType]) {
+    public init(@MarkBuilder _ markdecl: @escaping () -> [AnyMark]) {
         // somehow convert markdecl into the MarkCollection...
         markCollection = markdecl()
     }
@@ -68,8 +54,9 @@ public struct Chart<Content: View>: View {
 class ChartRenderer {
     // pre-process the collection of marks provided to determine what, if any, axis
     // and margins need to be accounted for in rendering out the view.
-    func createView(_: [MarkType]) -> some View {
-        Canvas { context, size in
+    
+    func createView(_: [AnyMark]) -> some View {
+        return Canvas { context, size in
             // walk the collection of marks
             // - first determine any insets needed for axis defined within them
             // - then iterate through the whole set, provide the range available, and get
