@@ -5,6 +5,7 @@
 //  Created by Joseph Heck on 4/7/22.
 //
 
+import CoreGraphics
 import Foundation
 
 // MARK: - collection access to different kinds of 'mark' templates
