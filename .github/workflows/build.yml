@@ -39,9 +39,13 @@ jobs:
     #   run: swift test --enable-code-coverage -v
 
     - name: build and test
-      run: xcodebuild clean test -scheme '${{ matrix.run-config['scheme'] }}' -destination '${{ matrix.run-config['destination'] }}' -showBuildTimingSummary
-        #- name: check against API breaking changes
-        #  run: swift package diagnose-api-breaking-changes 0.5.0
+      run: xcodebuild test -scheme '${{ matrix.run-config['scheme'] }}' -destination '${{ matrix.run-config['destination'] }}' -showBuildTimingSummary -enableCodeCoverage YES build test
+
+    - name: Upload coverage to CodeCov with GithubAction
+      uses: codecov/codecov-actions@v1.2.1
+
+    #- name: check against API breaking changes
+    #  run: swift package diagnose-api-breaking-changes 0.5.0
 
     # - name: env review
     #   run: env
