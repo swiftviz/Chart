@@ -46,7 +46,8 @@ public struct Chart: View {
     }
 
     public init(@MarkBuilder _ markdecl: @escaping () -> [AnyMark]) {
-        // somehow convert markdecl into the MarkCollection...
+        // invoke the closure to get the declared sets of marks as a list of AnyMark
+        // that we can pass into the renderer to evaluate into individual symbols.
         markCollection = markdecl()
     }
 }
