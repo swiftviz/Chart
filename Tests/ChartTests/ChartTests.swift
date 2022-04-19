@@ -7,12 +7,18 @@ struct SampleData {
     let value: Int
 }
 
-// final class PublicChartTests: XCTestCase {
-//    let data = SampleData(name: "X", value: 1)
-//    func testTypeStubs() throws {
-//        let chart = Chart {
-//            BarMark(data: data, 1, "x")
-//        }
-//        XCTAssertNotNil(chart)
-//    }
-// }
+ final class PublicChartTests: XCTestCase {
+     struct SampleData {
+         let name: String
+         let value: Int
+     }
+
+    func testTypeStubs() throws {
+        let chart = Chart {
+//            BarMark(data: [SampleData(name: "X", value: 1)],
+//                            value: QuantitativeVisualChannel(1),
+//                            category: BandVisualChannel("Z"))
+        }
+        XCTAssertNotNil(chart)
+    }
+ }
