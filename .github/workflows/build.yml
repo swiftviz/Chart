@@ -28,7 +28,7 @@ jobs:
 
     # - name: Show Build SDK
     #   run: xcodebuild -scheme Chart -showsdks
-      
+
     - name: Show Destinations
       run: xcodebuild -scheme '${{ matrix.run-config['scheme'] }}' -showdestinations
 
@@ -42,7 +42,7 @@ jobs:
       run: xcodebuild test -scheme '${{ matrix.run-config['scheme'] }}' -destination '${{ matrix.run-config['destination'] }}' -showBuildTimingSummary -enableCodeCoverage YES build test
 
     - name: Upload coverage to CodeCov with GithubAction
-      uses: codecov/codecov-actions@v1.2.1
+      uses: codecov/codecov-action@v1.2.1
 
     #- name: check against API breaking changes
     #  run: swift package diagnose-api-breaking-changes 0.5.0
@@ -52,7 +52,7 @@ jobs:
 
     - name: Verify formatting
       run: swiftformat --lint .
-    
+
     # - name: Prepare Code Coverage
     #   run: xcrun llvm-cov export -format="lcov" .build/debug/ChartPackageTests.xctest/Contents/MacOS/ChartPackageTests -instr-profile .build/debug/codecov/default.profdata > info.lcov
 
