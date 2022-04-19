@@ -42,16 +42,3 @@ public extension Mark {
         ""
     }
 }
-
-/// A type-erased Mark.
-public struct AnyMark: Mark {
-    private let wrappedSymbolsForMark: (_ rangeLower: CGFloat, _ rangeHigher: CGFloat) -> [MarkSymbol]
-
-    public init<T: Mark>(_ specificMark: T) {
-        wrappedSymbolsForMark = specificMark.symbolsForMark(rangeLower:rangeHigher:)
-    }
-
-    public func symbolsForMark(rangeLower: CGFloat, rangeHigher: CGFloat) -> [MarkSymbol] {
-        wrappedSymbolsForMark(rangeLower, rangeHigher)
-    }
-}

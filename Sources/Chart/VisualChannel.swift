@@ -10,9 +10,19 @@ import SwiftVizScale
 
 /// A type that can be encoded into the visual property of a mark.
 public protocol TypeOfVisualProperty {
+    /// The kind of visual property this property maps into by default.
     var visualPropertyType: VisualPropertyType { get }
 }
 
+/// A type that represents a kind of visual property.
+///
+/// The types include the following continuous types:
+/// - `quantitative`, typically represented by `Double`
+/// - `temporal`, typically represented by `Date`
+///
+/// And discrete types:
+/// - `ordinal`, typically represented by `Int`
+/// - `categorical`, typically represented by `String`
 public enum VisualPropertyType {
     case quantitative // (Double)
     case ordinal // (Int)
@@ -50,25 +60,6 @@ extension Date: TypeOfVisualProperty {
         .temporal
     }
 }
-
-// public struct VisualPropertyInstance<UnderlyingType> {
-//    let type: VisualPropertyType
-//    let value: UnderlyingType
-//
-//    public init(_ type: VisualPropertyType, _ value: UnderlyingType) {
-//        self.type = type
-//        switch type {
-//        case .quantitative:
-//            self.value = value
-//        case .ordinal:
-//            self.value = value
-//        case .temporal:
-//            self.value = value
-//        case .categorical:
-//            self.value = value
-//        }
-//    }
-// }
 
 // MARK: - Visual Channel - Continuous/Quantitative
 
@@ -117,7 +108,6 @@ public struct QuantitativeVisualChannel<
     ///
     /// example: `VisualChannel<SomeDataType>(\.node)`
     public init(_ dataProperty: KeyPath<SomeDataType, InputPropertyType>) {
-        typealias ScaleType = AnyContinuousScale<InputPropertyType, OutputPropertyType>
         self.dataProperty = dataProperty
         constantValue = nil
         closure = nil
@@ -409,7 +399,6 @@ public struct DiscreteVisualChannel<
     ///
     /// example: `VisualChannel<SomeDataType>(\.node)`
     public init(_ dataProperty: KeyPath<SomeDataType, InputPropertyType>) {
-        typealias ScaleType = AnyContinuousScale<InputPropertyType, OutputPropertyType>
         self.dataProperty = dataProperty
         constantValue = nil
         closure = nil

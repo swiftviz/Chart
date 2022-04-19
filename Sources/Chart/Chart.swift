@@ -52,11 +52,11 @@ public struct Chart: View {
     }
 }
 
-class ChartRenderer {
+public class ChartRenderer {
     // pre-process the collection of marks provided to determine what, if any, axis
     // and margins need to be accounted for in rendering out the view.
 
-    func createView(_: [AnyMark]) -> some View {
+    public func createView(_: [AnyMark]) -> some View {
         Canvas { context, size in
             // walk the collection of marks
             // - first determine any insets needed for axis defined within them
