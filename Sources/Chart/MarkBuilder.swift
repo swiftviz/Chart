@@ -15,15 +15,15 @@ import Foundation
 
 @resultBuilder
 public enum MarkBuilder {
-    static func buildExpression(_ element: BarMark<Any>) -> [AnyMark] {
+    public static func buildExpression<T>(_ element: BarMark<T>) -> [AnyMark] {
         [AnyMark(element)]
     }
 
-    static func buildExpression(_ element: DotMark<Any>) -> [AnyMark] {
+    public static func buildExpression<T>(_ element: DotMark<T>) -> [AnyMark] {
         [AnyMark(element)]
     }
 
-    static func buildExpression(_ element: LineMark<Any>) -> [AnyMark] {
+    public static func buildExpression<T>(_ element: LineMark<T>) -> [AnyMark] {
         [AnyMark(element)]
     }
 
