@@ -42,7 +42,7 @@ public struct Chart: View {
      */
 
     public var body: some View {
-        return chartRenderer.createView(markCollection)
+        chartRenderer.createView(markCollection)
     }
 
     public init(@MarkBuilder _ markdecl: @escaping () -> [AnyMark]) {
@@ -54,9 +54,9 @@ public struct Chart: View {
 class ChartRenderer {
     // pre-process the collection of marks provided to determine what, if any, axis
     // and margins need to be accounted for in rendering out the view.
-    
+
     func createView(_: [AnyMark]) -> some View {
-        return Canvas { context, size in
+        Canvas { context, size in
             // walk the collection of marks
             // - first determine any insets needed for axis defined within them
             // - then iterate through the whole set, provide the range available, and get
