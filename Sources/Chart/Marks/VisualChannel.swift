@@ -9,7 +9,6 @@ import CoreGraphics
 import Foundation
 import SwiftVizScale
 
-
 // MARK: - Visual Channel - Continuous/Quantitative
 
 /// A value that indicates the how the visual channel provides its value.

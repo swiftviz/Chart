@@ -51,4 +51,3 @@ public struct Chart: View {
         markCollection = markdecl()
     }
 }
-
