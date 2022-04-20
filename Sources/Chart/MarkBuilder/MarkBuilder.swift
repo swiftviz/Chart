@@ -13,7 +13,6 @@ import Foundation
 // https://docs.swift.org/swift-book/ReferenceManual/Attributes.html
 // https://docs.swift.org/swift-book/LanguageGuide/AdvancedOperators.html#ID630
 
-
 @resultBuilder
 public enum MarkBuilder {
     // DEV NOTE: all of these builder expressions need to be `public static func` - miss
