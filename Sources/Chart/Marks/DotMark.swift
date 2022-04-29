@@ -31,8 +31,10 @@ public struct DotMark<DataSource>: Mark {
         //   the symbols with final values. (from VisualChannel.provideScaledValue()
         var symbols: [MarkSymbol] = []
         for pointData in data {
-            if let xValue = x.scaledValue(data: pointData, rangeLower: low, rangeHigher: high), let yValue = y.scaledValue(data: pointData, rangeLower: low, rangeHigher: high)  {
-                let newPoint = IndividualPoint(x: xValue, y: yValue, shape: PlotSymbol(Circle()))
+            if let xValue = x.scaledValue(data: pointData, rangeLower: low, rangeHigher: high),
+               let yValue = y.scaledValue(data: pointData, rangeLower: low, rangeHigher: high)
+            {
+                let newPoint = IndividualPoint(x: xValue, y: yValue, shape: PlotShape(Circle()))
                 symbols.append(.point(newPoint))
             }
         }

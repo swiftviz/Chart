@@ -1,6 +1,6 @@
 //
 //  PlotSymbol.swift
-//  
+//
 //
 //  Created by Joseph Heck on 4/28/22.
 //
@@ -8,11 +8,20 @@
 import SwiftUI
 
 /// A type-erased shape used to plot individual symbols for a mark.
-public struct PlotSymbol: Shape {
+public struct PlotShape: Shape {
     var toPath: (CGRect) -> Path
     let fill: SwiftUI.Color // (https://developer.apple.com/documentation/swiftui/color)
     let stroke: SwiftUI.Color // ? (https://developer.apple.com/documentation/coregraphics/cgcolor)
-    let style: SwiftUI.StrokeStyle
+    let style: SwiftUI.StrokeStyle // linewidth, cap, join, miter, dash, and dash-phase
+
+    let x: ShapeRole = .fill // SwiftUI default (per docs)?
+
+    // ?? Should this be an insettable-shape instead? Or in addition? Do I want or need to inset these shapes inside another?
+    // base shapes available:
+    // - Circle, Rectangle, Ellipse, Capsule, RoundedRectangle
+
+    // shape's `role` seems to imply either stroked or filled, but not often both. I'm not sure
+    // what 'separator' means in terms of role, and how SwiftUI interprets that.
 
     /// Creates a PlotSymbol  from the shape you provide.
     /// - Parameter shape: The shape of the symbol.
@@ -46,7 +55,7 @@ public struct PlotSymbol: Shape {
     //
 
     public func path(in rect: CGRect) -> Path {
-        return toPath(rect).strokedPath(style)
+        // return path based on role?
+        toPath(rect).strokedPath(style)
     }
-
 }
