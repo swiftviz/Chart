@@ -29,17 +29,16 @@ public struct IndividualLine {
     let x2: CGFloat
     let y2: CGFloat
 
-    let shape: PlotSymbol
+    let shape: PlotShape
     // var title: String { get } ?
 }
-
 
 // ?? make generic versions of this that can draw their "shape" into the space provided?
 public struct IndividualPoint {
     let x: CGFloat
     let y: CGFloat
 
-    let shape: PlotSymbol
+    let shape: PlotShape
     // var title: String { get } ?
 }
 
@@ -57,7 +56,7 @@ public struct IndividualRect {
     var cornerRadiusBottomLeft: CGFloat?
     var cornerRadiusBottomRight: CGFloat?
 
-    let shape: PlotSymbol
+    let shape: PlotShape
     // var title: String { get } ?
 }
 
