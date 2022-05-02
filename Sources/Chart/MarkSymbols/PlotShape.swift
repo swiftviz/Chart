@@ -9,17 +9,17 @@ import SwiftUI
 
 /// A type-erased shape used to plot individual symbols for a mark.
 public struct PlotShape: Shape {
-    // use our own enumeration, or leverage ShapeRole from SwiftUI (avail iOS 15/macOS 12)
-    // ShapeRole. ShapeRole also has stroke and fill, but also includes `separator` without
-    // a lot of detail of what that means. And there's nothing that explicitly says `do both`.
-//    public enum DrawingMode {
-//        case stroke
-//        case fill
-//        case both
-//    }
-    // shape's `role` seems to imply either stroked or filled, but not often both. I'm not sure
-    // what 'separator' means in terms of role, and how SwiftUI interprets that.
-    let mode: ShapeRole
+    
+    /// A type that determines how the path that makes up the plot shape is rendered.
+    public enum DrawingMode {
+        /// The path is drawn as a stroked line.
+        case stroke
+        /// The path is filled.
+        case fill
+    }
+    
+    /// The mode use to render the path returned by the shape.
+    let mode: DrawingMode
 
     var toPath: (CGRect) -> Path
     // fillShading instead of fillColor? (https://developer.apple.com/documentation/swiftui/graphicscontext/shading)
@@ -39,7 +39,7 @@ public struct PlotShape: Shape {
         fillColor: Color = Color.clear,
         strokeColor: Color = Color.black,
         style: StrokeStyle = StrokeStyle(lineWidth: 1),
-        mode: ShapeRole = .fill
+        mode: DrawingMode = .fill
     ) {
         toPath = shape.path(in:)
         self.fillColor = fillColor

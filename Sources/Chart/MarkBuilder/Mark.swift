@@ -24,7 +24,7 @@ public protocol Mark {
     // - dash: [CGFloat]
     // - dashPhase: CGFloat
 
-    func symbolsForMark(rangeLower: CGFloat, rangeHigher: CGFloat) -> [MarkSymbol]
+    func symbolsForMark(in: CGRect) -> [MarkSymbol]
 }
 
 // MARK: - default values for common Mark properties

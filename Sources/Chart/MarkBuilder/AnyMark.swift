@@ -20,13 +20,13 @@ public struct AnyMark: Mark {
     // the type-erasure to "reach in" and manipulate the domains to allow them to be expanded and/or synchronized,
     // let alone read to determine a corrected domain for each symbol.
 
-    private let wrappedSymbolsForMark: (_ rangeLower: CGFloat, _ rangeHigher: CGFloat) -> [MarkSymbol]
+    private let wrappedSymbolsForMark: (_: CGRect) -> [MarkSymbol]
 
     public init<T: Mark>(_ specificMark: T) {
-        wrappedSymbolsForMark = specificMark.symbolsForMark(rangeLower:rangeHigher:)
+        wrappedSymbolsForMark = specificMark.symbolsForMark(in:)
     }
 
-    public func symbolsForMark(rangeLower: CGFloat, rangeHigher: CGFloat) -> [MarkSymbol] {
-        wrappedSymbolsForMark(rangeLower, rangeHigher)
+    public func symbolsForMark(in rect: CGRect) -> [MarkSymbol] {
+        wrappedSymbolsForMark(rect)
     }
 }

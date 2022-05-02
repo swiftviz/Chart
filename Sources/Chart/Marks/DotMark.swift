@@ -26,13 +26,13 @@ public struct DotMark<DataSource>: Mark {
         y = yChannel.applyDomain(data)
     }
 
-    public func symbolsForMark(rangeLower low: CGFloat, rangeHigher high: CGFloat) -> [MarkSymbol] {
+    public func symbolsForMark(in rect: CGRect) -> [MarkSymbol] {
         // - apply the range onto the various VisualChannel scales, or pass it along when creating
         //   the symbols with final values. (from VisualChannel.provideScaledValue()
         var symbols: [MarkSymbol] = []
         for pointData in data {
-            if let xValue = x.scaledValue(data: pointData, rangeLower: low, rangeHigher: high),
-               let yValue = y.scaledValue(data: pointData, rangeLower: low, rangeHigher: high)
+            if let xValue = x.scaledValue(data: pointData, rangeLower: rect.origin.x, rangeHigher: rect.origin.x + rect.size.width),
+               let yValue = y.scaledValue(data: pointData, rangeLower: rect.origin.y, rangeHigher: rect.origin.y + rect.size.height)
             {
                 let newPoint = IndividualPoint(x: xValue, y: yValue, shape: PlotShape(Circle()), size: 1)
                 symbols.append(.point(newPoint))
