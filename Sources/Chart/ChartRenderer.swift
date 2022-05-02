@@ -11,7 +11,6 @@ public class ChartRenderer {
     // and margins need to be accounted for in rendering out the view.
 
     public func createView(_ marks: [AnyMark]) -> some View {
-        
         // init(opaque: Bool = false,
         //      colorMode: ColorRenderingMode = .nonLinear,
         //      rendersAsynchronously: Bool = false,
@@ -29,8 +28,8 @@ public class ChartRenderer {
                 // - render them into the canvas based on the mode of the shape
                 for marksymbol in mark.symbolsForMark(in: drawArea) {
                     switch marksymbol {
-                    case .point(let individualPoint):
-                        let symbolRect: CGRect = CGRect(origin: CGPoint(x: individualPoint.x, y: individualPoint.y), size: individualPoint.size)
+                    case let .point(individualPoint):
+                        let symbolRect: CGRect = .init(origin: CGPoint(x: individualPoint.x, y: individualPoint.y), size: individualPoint.size)
                         switch individualPoint.shape.mode {
                         case .stroke:
                             context.stroke(
@@ -44,15 +43,15 @@ public class ChartRenderer {
                                 with: .color(individualPoint.shape.fillColor)
                             )
                         }
-                    case .line(let individualLine):
+                    case let .line(individualLine):
                         fatalError("not yet implemented: \(individualLine)")
-                    case .rect(let individualRect):
+                    case let .rect(individualRect):
                         fatalError("not yet implemented: \(individualRect)")
-                    case .rule(let individualRule):
+                    case let .rule(individualRule):
                         fatalError("not yet implemented: \(individualRule)")
-                    case .text(let text):
+                    case let .text(text):
                         fatalError("not yet implemented: \(text)")
-                    case .image(let image):
+                    case let .image(image):
                         fatalError("not yet implemented: \(image)")
                     }
                 }

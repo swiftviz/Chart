@@ -26,7 +26,7 @@ public struct LineMark<DataSource>: Mark {
         y = yChannel.applyDomain(data)
     }
 
-    public func symbolsForMark(in: CGRect) -> [MarkSymbol] {
+    public func symbolsForMark(in _: CGRect) -> [MarkSymbol] {
         // - apply the range onto the various VisualChannel scales, or pass it along when creating
         //   the symbols with final values. (from VisualChannel.provideScaledValue()
         []
