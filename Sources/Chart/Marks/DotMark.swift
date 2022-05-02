@@ -34,7 +34,7 @@ public struct DotMark<DataSource>: Mark {
             if let xValue = x.scaledValue(data: pointData, rangeLower: low, rangeHigher: high),
                let yValue = y.scaledValue(data: pointData, rangeLower: low, rangeHigher: high)
             {
-                let newPoint = IndividualPoint(x: xValue, y: yValue, shape: PlotShape(Circle()))
+                let newPoint = IndividualPoint(x: xValue, y: yValue, shape: PlotShape(Circle()), size: 1)
                 symbols.append(.point(newPoint))
             }
         }
