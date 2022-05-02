@@ -9,32 +9,44 @@ import SwiftUI
 
 /// A type-erased shape used to plot individual symbols for a mark.
 public struct PlotShape: Shape {
-    var toPath: (CGRect) -> Path
-    let fill: SwiftUI.Color // (https://developer.apple.com/documentation/swiftui/color)
-    let stroke: SwiftUI.Color // ? (https://developer.apple.com/documentation/coregraphics/cgcolor)
-    let style: SwiftUI.StrokeStyle // linewidth, cap, join, miter, dash, and dash-phase
+    
+    // use our own enumeration, or leverage ShapeRole from SwiftUI (avail iOS 15/macOS 12)
+    // ShapeRole. ShapeRole also has stroke and fill, but also includes `separator` without
+    // a lot of detail of what that means. And there's nothing that explicitly says `do both`.
+//    public enum DrawingMode {
+//        case stroke
+//        case fill
+//        case both
+//    }
+    // shape's `role` seems to imply either stroked or filled, but not often both. I'm not sure
+    // what 'separator' means in terms of role, and how SwiftUI interprets that.
+    let mode: ShapeRole
 
-    let x: ShapeRole = .fill // SwiftUI default (per docs)?
+    var toPath: (CGRect) -> Path
+    // fillShading instead of fillColor? (https://developer.apple.com/documentation/swiftui/graphicscontext/shading)
+    let fillColor: SwiftUI.Color // (https://developer.apple.com/documentation/swiftui/color)
+    // strokeShading instead of strokeColor?
+    let strokeColor: SwiftUI.Color // ? (https://developer.apple.com/documentation/coregraphics/cgcolor)
+    let style: SwiftUI.StrokeStyle // linewidth, cap, join, miter, dash, and dash-phase
 
     // ?? Should this be an insettable-shape instead? Or in addition? Do I want or need to inset these shapes inside another?
     // base shapes available:
     // - Circle, Rectangle, Ellipse, Capsule, RoundedRectangle
 
-    // shape's `role` seems to imply either stroked or filled, but not often both. I'm not sure
-    // what 'separator' means in terms of role, and how SwiftUI interprets that.
-
     /// Creates a PlotSymbol  from the shape you provide.
     /// - Parameter shape: The shape of the symbol.
     public init<T: Shape>(
         _ shape: T,
-        fill: Color = Color.clear,
-        stroke: Color = Color.black,
-        style: StrokeStyle = StrokeStyle(lineWidth: 1)
+        fillColor: Color = Color.clear,
+        strokeColor: Color = Color.black,
+        style: StrokeStyle = StrokeStyle(lineWidth: 1),
+        mode: ShapeRole = .fill
     ) {
         toPath = shape.path(in:)
-        self.fill = fill
-        self.stroke = stroke
+        self.fillColor = fillColor
+        self.strokeColor = strokeColor
         self.style = style
+        self.mode = mode
     }
 
     // maybe use/infer from https://developer.apple.com/documentation/swiftui/strokestyle
@@ -56,6 +68,6 @@ public struct PlotShape: Shape {
 
     public func path(in rect: CGRect) -> Path {
         // return path based on role?
-        toPath(rect).strokedPath(style)
+        toPath(rect)
     }
 }
