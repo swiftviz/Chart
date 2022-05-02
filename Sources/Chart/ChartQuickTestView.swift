@@ -1,6 +1,6 @@
 //
 //  ChartQuickTestView.swift
-//  
+//
 //
 //  Created by Joseph Heck on 5/2/22.
 //
@@ -15,8 +15,8 @@ struct ChartQuickTestView: View {
     var body: some View {
         Chart {
             PointMark(data: [SampleData(xValue: 2, yValue: 3)],
-                            x: QuantitativeVisualChannel(\.xValue),
-                            y: QuantitativeVisualChannel(167))
+                      x: QuantitativeVisualChannel(\.xValue),
+                      y: QuantitativeVisualChannel(167))
         }
     }
 }
