@@ -29,5 +29,17 @@ import SwiftUI
     }
 
 #elseif os(macOS)
+    extension Snapshotting where Value: SwiftUI.View, Format == NSImage {
+        static func image(
+            precision: Float = 1,
+            size: CGSize? = nil
+        ) -> Snapshotting {
+            Snapshotting<NSViewController, NSImage>.image(
+                precision: precision,
+                size: size
+            )
+            .pullback(NSHostingController.init(rootView:))
+        }
+    }
 
 #endif
