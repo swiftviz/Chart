@@ -12,7 +12,7 @@ import SwiftVizScale
 /// A type that represents a series of bars.
 ///
 /// The type infers the number and visual properties of the bars from the data you provide to the visual channels when declaring a bar mark.
-public struct DotMark<DataSource>: Mark {
+public struct PointMark<DataSource>: Mark {
     let data: [DataSource]
     let x: QuantitativeVisualChannel<DataSource, Double>
     let y: QuantitativeVisualChannel<DataSource, Double>

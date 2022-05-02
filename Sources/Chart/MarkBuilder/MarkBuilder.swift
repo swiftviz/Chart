@@ -23,7 +23,7 @@ public enum MarkBuilder {
         [AnyMark(element)]
     }
 
-    public static func buildExpression<T>(_ element: DotMark<T>) -> [AnyMark] {
+    public static func buildExpression<T>(_ element: PointMark<T>) -> [AnyMark] {
         [AnyMark(element)]
     }
 
