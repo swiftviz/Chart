@@ -18,15 +18,15 @@ public class ChartRenderer {
             //   the marks (symbolsForMark), which in turns needs to pass through or use
             //   the range provided with the visualChannel's internal scale to get the
             //   explicit values from the data.
-            
+
             // `symbolsForMark(rangeLower: CGFloat, rangeHigher: CGFloat) -> [MarkSymbol]`
             // MarkSymbol is an enum with the kind of thing you're rendering and some sizes, paths
             // either broad structs or lines, or a symbol. The symbols all return a Path
             // shape.toPath(CGRect) -> Path
-            
+
             // context.stroke vs. context.fill
             // both also take a GraphicsContext.Shading as a second parameter (rather than a Color)
-            
+
             context.stroke(
                 Path(ellipseIn: CGRect(origin: .zero, size: size)),
                 with: .color(.green),

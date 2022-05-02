@@ -9,7 +9,6 @@ import SwiftUI
 
 /// A type-erased shape used to plot individual symbols for a mark.
 public struct PlotShape: Shape {
-    
     // use our own enumeration, or leverage ShapeRole from SwiftUI (avail iOS 15/macOS 12)
     // ShapeRole. ShapeRole also has stroke and fill, but also includes `separator` without
     // a lot of detail of what that means. And there's nothing that explicitly says `do both`.

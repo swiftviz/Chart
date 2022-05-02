@@ -24,7 +24,7 @@ public struct IndividualLine {
     // var title: String { get } ?
     let shape: PlotShape
     let size: CGSize
-    
+
     init(x1: CGFloat, y1: CGFloat, x2: CGFloat, y2: CGFloat, shape: PlotShape, size: CGFloat) {
         self.x1 = x1
         self.y1 = y1
@@ -33,7 +33,7 @@ public struct IndividualLine {
         self.shape = shape
         self.size = CGSize(width: size, height: size)
     }
-    
+
     init(x1: CGFloat, y1: CGFloat, x2: CGFloat, y2: CGFloat, shape: PlotShape, size: CGSize) {
         self.x1 = x1
         self.y1 = y1
@@ -42,7 +42,6 @@ public struct IndividualLine {
         self.shape = shape
         self.size = size
     }
-
 }
 
 // ?? make generic versions of this that can draw their "shape" into the space provided?
@@ -60,14 +59,13 @@ public struct IndividualPoint {
         self.shape = shape
         self.size = CGSize(width: size, height: size)
     }
-    
+
     init(x: CGFloat, y: CGFloat, shape: PlotShape, size: CGSize) {
         self.x = x
         self.y = y
         self.shape = shape
         self.size = size
     }
-
 }
 
 public struct IndividualRect {
@@ -86,7 +84,7 @@ public struct IndividualRect {
 
     // let shape: PlotShape ? do we want to plot a symbol
     // - in the middle of the rect perhaps, or at the corner or edge?
-    
+
     // var title: String { get } ?
 }
 
