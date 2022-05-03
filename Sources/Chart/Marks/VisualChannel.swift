@@ -78,7 +78,7 @@ public struct QuantitativeVisualChannel<
         constantValue = value
         dataProperty = nil
         closure = nil
-        scale = AnyContinuousScale(LinearScale())
+        scale = AnyContinuousScale(LinearScale().domain([value]))
         visualChannelType = .constant
     }
 
