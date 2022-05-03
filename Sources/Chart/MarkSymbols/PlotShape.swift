@@ -35,8 +35,8 @@ public struct PlotShape: Shape {
     /// - Parameter shape: The shape of the symbol.
     public init<T: Shape>(
         _ shape: T,
-        fillColor: Color = Color.clear,
-        strokeColor: Color = Color.black,
+        fillColor: Color = Color.primary,
+        strokeColor: Color = Color.primary,
         style: StrokeStyle = StrokeStyle(lineWidth: 1),
         mode: DrawingMode = .fill
     ) {
