@@ -55,6 +55,5 @@ public struct LineMark<DataSource>: Mark {
             previousData = pointData
         }
         return symbols
-
     }
 }
