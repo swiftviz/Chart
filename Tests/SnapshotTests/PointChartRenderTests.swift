@@ -11,12 +11,11 @@ struct SampleData {
 private let referenceSize = CGSize(width: 300, height: 200)
 
 final class PointChartRenderTests: XCTestCase {
-    
     func testChartImageRendering() throws {
         guard #available(macOS 12, *) else {
             throw XCTSkip("Skipping test except on macOS 12+.")
         }
-        
+
         let chart = Chart {
             PointMark(data: [SampleData(xValue: 2, yValue: 3), SampleData(xValue: 3, yValue: 5)],
                       x: QuantitativeVisualChannel(\.xValue),
