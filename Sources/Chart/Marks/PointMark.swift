@@ -27,15 +27,15 @@ public struct PointMark<DataSource>: Mark {
     }
 
     public func symbolsForMark(in rect: CGRect) -> [MarkSymbol] {
-        // - apply the range onto the various VisualChannel scales, or pass it along when creating
-        //   the symbols with final values. (from VisualChannel.provideScaledValue()
+        let xScale = x.range(rangeLower: rect.origin.x, rangeHigher: rect.origin.x + rect.size.width)
+        let yScale = y.range(rangeLower: rect.origin.y, rangeHigher: rect.origin.y + rect.size.height)
         var symbols: [MarkSymbol] = []
         print("Creating symbols within rect: \(rect)")
-        print("X scale: \(x.scale)")
-        print("Y scale: \(y.scale)")
+        print("X scale: \(xScale)")
+        print("Y scale: \(yScale)")
         for pointData in data {
-            if let xValue = x.scaledValue(data: pointData, rangeLower: rect.origin.x, rangeHigher: rect.origin.x + rect.size.width),
-               let yValue = y.scaledValue(data: pointData, rangeLower: rect.origin.y, rangeHigher: rect.origin.y + rect.size.height)
+            if let xValue = xScale.scaledValue(data: pointData),
+               let yValue = yScale.scaledValue(data: pointData)
             {
                 let newPoint = IndividualPoint(x: xValue, y: yValue, shape: PlotShape(Circle()), size: 5)
                 symbols.append(.point(newPoint))
