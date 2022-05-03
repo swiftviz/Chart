@@ -23,7 +23,7 @@ final class PointChartRenderTests: XCTestCase {
         )
     }
 
-    func testChartImageRenderingPreconditionFailure() throws {
+    func testChartImageRenderingSinglePoint() throws {
         let chart = Chart {
             PointMark(data: [SampleData(xValue: 2, yValue: 3)],
                       x: QuantitativeVisualChannel(\.xValue),

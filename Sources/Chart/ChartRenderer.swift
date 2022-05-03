@@ -20,10 +20,22 @@ public class ChartRenderer {
         Canvas { context, size in
             // walk the collection of marks (`AnyMark`)
             // - first determine any insets needed for axis defined within them (TBD)
-
+            let width: CGFloat
+            let height: CGFloat
+            if size.width > 10 {
+                width = size.width - 10
+            } else {
+                width = size.width
+            }
+            if size.height > 10 {
+                height = size.height - 10
+            } else {
+                height = size.height
+            }
             // - then calculate the marks for the provided drawing area
-            let drawArea = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
+            let drawArea = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: width, height: height))
             for mark in marks {
+//                print("Mark: \(mark)")
                 // - and iterate through each of the individual symbols
                 // - render them into the canvas based on the mode of the shape
                 for marksymbol in mark.symbolsForMark(in: drawArea) {
