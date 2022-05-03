@@ -22,6 +22,18 @@ final class PointChartRenderTests: XCTestCase {
             as: .image(size: referenceSize)
         )
     }
+
+    func testChartImageRenderingPreconditionFailure() throws {
+        let chart = Chart {
+            PointMark(data: [SampleData(xValue: 2, yValue: 3)],
+                      x: QuantitativeVisualChannel(\.xValue),
+                      y: QuantitativeVisualChannel(167))
+        }
+        assertSnapshot(
+            matching: chart.referenceFrame(),
+            as: .image(size: referenceSize)
+        )
+    }
 }
 
 private extension SwiftUI.View {
