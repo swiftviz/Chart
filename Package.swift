@@ -36,7 +36,8 @@ let package = Package(
         ),
         .testTarget(
             name: "SnapshotTests",
-            dependencies: ["Chart", .product(name: "SwiftVizScale", package: "Scale"), .product(name: "SnapshotTesting", package: "swift-snapshot-testing")]
+            dependencies: ["Chart", .product(name: "SwiftVizScale", package: "Scale"), .product(name: "SnapshotTesting", package: "swift-snapshot-testing")],
+            resources: [.process("__SnapShots__")]
         ),
         .testTarget(
             name: "DocTests",
