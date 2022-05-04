@@ -43,11 +43,13 @@ public struct LineMark<DataSource>: Mark {
                 let newPoint = IndividualPoint(x: xValue, y: yValue, shape: PlotShape(Circle()), size: 5)
                 symbols.append(.point(newPoint))
                 print(" .. \(newPoint)")
+                // There won't be a line for the first point, but all following points
+                // include a line from the current point back to the previous point.
                 if let previousData = previousData,
                    let x2Value = xScale.scaledValue(data: previousData),
                    let y2Value = yScale.scaledValue(data: previousData)
                 {
-                    let lineBack = IndividualLine(x1: xValue, y1: yValue, x2: x2Value, y2: y2Value, shape: PlotShape(Circle()), size: 1)
+                    let lineBack = IndividualLine(x1: xValue, y1: yValue, x2: x2Value, y2: y2Value, size: 1)
                     symbols.append(.line(lineBack))
                     print(" .. \(lineBack)")
                 }
