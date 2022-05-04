@@ -41,20 +41,7 @@ public class ChartRenderer {
                 for marksymbol in mark.symbolsForMark(in: drawArea) {
                     switch marksymbol {
                     case let .point(individualPoint):
-                        let symbolRect: CGRect = .init(origin: CGPoint(x: individualPoint.x, y: individualPoint.y), size: individualPoint.size)
-                        switch individualPoint.shape.mode {
-                        case .stroke:
-                            context.stroke(
-                                individualPoint.shape.toPath(symbolRect),
-                                with: .color(individualPoint.shape.strokeColor),
-                                style: individualPoint.shape.style
-                            )
-                        case .fill:
-                            context.fill(
-                                individualPoint.shape.toPath(symbolRect),
-                                with: .color(individualPoint.shape.fillColor)
-                            )
-                        }
+                        self.drawPoint(point: individualPoint, context: &context)
                     case let .line(individualLine):
                         fatalError("not yet implemented: \(individualLine)")
                     case let .rect(individualRect):
@@ -68,11 +55,23 @@ public class ChartRenderer {
                     }
                 }
             }
-//            context.stroke(
-//                Path(ellipseIn: CGRect(origin: .zero, size: size)),
-//                with: .color(.green),
-//                lineWidth: 4
-//            )
+        }
+    }
+
+    private func drawPoint(point: IndividualPoint, context: inout GraphicsContext) {
+        let symbolRect: CGRect = .init(origin: CGPoint(x: point.x, y: point.y), size: point.size)
+        switch point.shape.mode {
+        case .stroke:
+            context.stroke(
+                point.shape.toPath(symbolRect),
+                with: .color(point.shape.strokeColor),
+                style: point.shape.style
+            )
+        case .fill:
+            context.fill(
+                point.shape.toPath(symbolRect),
+                with: .color(point.shape.fillColor)
+            )
         }
     }
 }
