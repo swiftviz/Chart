@@ -22,25 +22,29 @@ public struct IndividualLine {
     let y2: CGFloat
 
     // var title: String { get } ?
-    let shape: PlotShape
+    let strokeColor: SwiftUI.Color // ? (https://developer.apple.com/documentation/coregraphics/cgcolor)
+    let style: SwiftUI.StrokeStyle // linewidth, cap, join, miter, dash, and dash-phase
+
     let size: CGSize
 
-    init(x1: CGFloat, y1: CGFloat, x2: CGFloat, y2: CGFloat, shape: PlotShape, size: CGFloat) {
+    init(x1: CGFloat, y1: CGFloat, x2: CGFloat, y2: CGFloat, size: CGFloat, color: SwiftUI.Color = .primary, style: SwiftUI.StrokeStyle = StrokeStyle()) {
         self.x1 = x1
         self.y1 = y1
         self.x2 = x2
         self.y2 = y2
-        self.shape = shape
         self.size = CGSize(width: size, height: size)
+        self.strokeColor = color
+        self.style = style
     }
 
-    init(x1: CGFloat, y1: CGFloat, x2: CGFloat, y2: CGFloat, shape: PlotShape, size: CGSize) {
+    init(x1: CGFloat, y1: CGFloat, x2: CGFloat, y2: CGFloat, size: CGSize, color: SwiftUI.Color = .primary, style: SwiftUI.StrokeStyle = StrokeStyle()) {
         self.x1 = x1
         self.y1 = y1
         self.x2 = x2
         self.y2 = y2
-        self.shape = shape
         self.size = size
+        self.strokeColor = color
+        self.style = style
     }
 }
 
