@@ -7,16 +7,16 @@
 
 import SwiftUI
 
+/// A type that determines how the path that makes up the plot shape is rendered.
+public enum DrawingMode {
+    /// The path is drawn as a stroked line.
+    case stroke
+    /// The path is filled.
+    case fill
+}
+
 /// A type-erased shape used to plot individual symbols for a mark.
 public struct PlotShape: Shape {
-    /// A type that determines how the path that makes up the plot shape is rendered.
-    public enum DrawingMode {
-        /// The path is drawn as a stroked line.
-        case stroke
-        /// The path is filled.
-        case fill
-    }
-
     /// The mode use to render the path returned by the shape.
     let mode: DrawingMode
 

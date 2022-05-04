@@ -7,9 +7,13 @@
 import SwiftUI
 import SwiftVizScale
 
-enum Orientation {
+/// The orientation of the bars within a bar chart
+public enum Orientation {
+    /// The bar represents value vertically on a chart.
     case vertical
+    /// The bar represents value horizontally on a chart.
     case horizontal
+    /// The bar represents value depth within a chart.
     case depth
 }
 
@@ -28,9 +32,47 @@ public struct BarMark<DataSource>: Mark {
         self.category = category.applyDomain(data)
     }
 
-    public func symbolsForMark(in _: CGRect) -> [MarkSymbol] {
+    public func symbolsForMark(in rect: CGRect) -> [MarkSymbol] {
         // - apply the range onto the various VisualChannel scales, or pass it along when creating
         //   the symbols with final values. (from VisualChannel.provideScaledValue()
-        []
+        var symbols: [MarkSymbol] = []
+        print("Creating symbols within rect: \(rect)")
+        switch orientation {
+        case .vertical:
+            let xScale = category.range(rangeLower: rect.origin.x, rangeHigher: rect.origin.x + rect.size.width)
+            let yScale = value.range(rangeLower: rect.origin.y, rangeHigher: rect.origin.y + rect.size.height)
+            print("X scale: \(xScale)")
+            print("Y scale: \(yScale)")
+            for pointData in data {
+                if let xBand = xScale.scaledValue(data: pointData),
+                   let yValue = yScale.scaledValue(data: pointData)
+                {
+                    let symbolRect = CGRect(x: xBand.lower, y: 0, width: xBand.higher - xBand.lower, height: yValue)
+                    let newPoint = IndividualRect(rect: symbolRect, category: xBand.value)
+                    symbols.append(.rect(newPoint))
+                    print(" .. \(newPoint)")
+                }
+            }
+
+        case .horizontal:
+            let xScale = value.range(rangeLower: rect.origin.x, rangeHigher: rect.origin.x + rect.size.width)
+            let yScale = category.range(rangeLower: rect.origin.y, rangeHigher: rect.origin.y + rect.size.height)
+            print("X scale: \(xScale)")
+            print("Y scale: \(yScale)")
+            for pointData in data {
+                if let xValue = xScale.scaledValue(data: pointData),
+                   let yBand = yScale.scaledValue(data: pointData)
+                {
+                    let symbolRect = CGRect(x: 0, y: yBand.lower, width: xValue, height: yBand.higher - yBand.lower)
+                    let newPoint = IndividualRect(rect: symbolRect, category: yBand.value)
+                    symbols.append(.rect(newPoint))
+                    print(" .. \(newPoint)")
+                }
+            }
+        case .depth:
+            fatalError("Not yet implemented")
+        }
+
+        return symbols
     }
 }

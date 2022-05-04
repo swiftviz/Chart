@@ -33,7 +33,7 @@ public struct IndividualLine {
         self.x2 = x2
         self.y2 = y2
         self.size = CGSize(width: size, height: size)
-        self.strokeColor = color
+        strokeColor = color
         self.style = style
     }
 
@@ -43,7 +43,7 @@ public struct IndividualLine {
         self.x2 = x2
         self.y2 = y2
         self.size = size
-        self.strokeColor = color
+        strokeColor = color
         self.style = style
     }
 }
@@ -74,18 +74,29 @@ public struct IndividualPoint {
 
 public struct IndividualRect {
     let category: String
-    let x: CGFloat
-    let y: CGFloat
 
-    let width: CGFloat
-    let height: CGFloat
-
+    let rect: CGRect
+    let mode: DrawingMode
     var cornerRadius: CGFloat?
+
     var cornerRadiusTopLeft: CGFloat?
     var cornerRadiusTopRight: CGFloat?
     var cornerRadiusBottomLeft: CGFloat?
     var cornerRadiusBottomRight: CGFloat?
 
+    let strokeColor: SwiftUI.Color // ? (https://developer.apple.com/documentation/coregraphics/cgcolor)
+    let fillColor: SwiftUI.Color // ? (https://developer.apple.com/documentation/coregraphics/cgcolor)
+    let style: SwiftUI.StrokeStyle // linewidth, cap, join, miter, dash, and dash-phase
+
+    init(rect: CGRect, category: String, cornerRadius: CGFloat? = nil, mode: DrawingMode = .fill, strokeColor: SwiftUI.Color = .primary, fillColor: SwiftUI.Color = .primary, style: SwiftUI.StrokeStyle = StrokeStyle()) {
+        self.rect = rect
+        self.category = category
+        self.mode = mode
+        self.cornerRadius = cornerRadius
+        self.strokeColor = strokeColor
+        self.fillColor = fillColor
+        self.style = style
+    }
     // let shape: PlotShape ? do we want to plot a symbol
     // - in the middle of the rect perhaps, or at the corner or edge?
 
