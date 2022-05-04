@@ -22,6 +22,8 @@ public class ChartRenderer {
             // - first determine any insets needed for axis defined within them (TBD)
             let width: CGFloat
             let height: CGFloat
+            // hacky stuff to be removed and replaced with proper insets - this made it easier to see
+            // what's getting drawn and where...
             if size.width > 10 {
                 width = size.width - 10
             } else {
