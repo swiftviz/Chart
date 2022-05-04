@@ -7,7 +7,7 @@
 import SwiftUI
 import SwiftVizScale
 
-/// The orientation of the bars within a bar chart
+/// The orientation of the quantitative value for a bar chart.
 public enum Orientation {
     /// The bar represents value vertically on a chart.
     case vertical
@@ -32,6 +32,9 @@ public struct BarMark<DataSource>: Mark {
         self.category = category.applyDomain(data)
     }
 
+    /// Creates a list of symbols to render into a rectangular drawing area that you specify.
+    /// - Parameter in: The rectangle into which to scale and draw the symbols.
+    /// - Returns: A list of symbol data structures with the information needed to draw them onto a canvas or into CoreGraphics context.
     public func symbolsForMark(in rect: CGRect) -> [MarkSymbol] {
         // - apply the range onto the various VisualChannel scales, or pass it along when creating
         //   the symbols with final values. (from VisualChannel.provideScaledValue()

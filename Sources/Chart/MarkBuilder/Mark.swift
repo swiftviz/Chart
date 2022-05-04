@@ -10,8 +10,6 @@ import SwiftUI
 ///
 /// A mark describes the configuration of how data is mapped to visual properties relevant to the type of mark.
 public protocol Mark {
-    // let visibleAxis: [AxisDefn]
-
     var fill: Color { get }
     var stroke: Color { get } // ? (https://developer.apple.com/documentation/coregraphics/cgcolor)
     var title: String { get }
@@ -24,6 +22,9 @@ public protocol Mark {
     // - dash: [CGFloat]
     // - dashPhase: CGFloat
 
+    /// Creates a list of symbols to render into a rectangular drawing area that you specify.
+    /// - Parameter in: The rectangle into which to scale and draw the symbols.
+    /// - Returns: A list of symbol data structures with the information needed to draw them onto a canvas or into CoreGraphics context.
     func symbolsForMark(in: CGRect) -> [MarkSymbol]
 }
 
@@ -31,11 +32,11 @@ public protocol Mark {
 
 public extension Mark {
     var fill: Color {
-        Color.black
+        Color.primary
     }
 
     var stroke: Color {
-        Color.black
+        Color.primary
     }
 
     var title: String {

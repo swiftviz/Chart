@@ -26,6 +26,9 @@ public struct PointMark<DataSource>: Mark {
         y = yChannel.applyDomain(data)
     }
 
+    /// Creates a list of symbols to render into a rectangular drawing area that you specify.
+    /// - Parameter in: The rectangle into which to scale and draw the symbols.
+    /// - Returns: A list of symbol data structures with the information needed to draw them onto a canvas or into CoreGraphics context.
     public func symbolsForMark(in rect: CGRect) -> [MarkSymbol] {
         let xScale = x.range(rangeLower: rect.origin.x, rangeHigher: rect.origin.x + rect.size.width)
         let yScale = y.range(rangeLower: rect.origin.y, rangeHigher: rect.origin.y + rect.size.height)
