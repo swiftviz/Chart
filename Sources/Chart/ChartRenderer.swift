@@ -61,7 +61,7 @@ public class ChartRenderer {
     }
 
     private func drawLine(line: IndividualLine, context: inout GraphicsContext) {
-        let linePath: Path = Path { p in
+        let linePath = Path { p in
             p.move(to: line.startPoint)
             p.addLine(to: line.endPoint)
         }

@@ -3,12 +3,12 @@ import SnapshotTesting
 import SwiftUI
 import XCTest
 
-
 final class PointChartRenderTests: XCTestCase {
     struct SampleData {
         let xValue: Double
         let yValue: Double
     }
+
     #if os(macOS)
         func testPointChartImageRendering() throws {
             let chart = Chart {
