@@ -51,9 +51,9 @@ public struct BarMark<DataSource>: Mark {
                    let yValue = yScale.scaledValue(data: pointData)
                 {
                     let symbolRect = CGRect(x: xBand.lower, y: 0, width: xBand.higher - xBand.lower, height: yValue)
-                    let newPoint = IndividualRect(rect: symbolRect, category: xBand.value)
-                    symbols.append(.rect(newPoint))
-                    print(" .. \(newPoint)")
+                    let barSymbol = IndividualRect(rect: symbolRect, category: xBand.value)
+                    symbols.append(.rect(barSymbol))
+                    print(" .. \(barSymbol)")
                 }
             }
 
@@ -67,9 +67,9 @@ public struct BarMark<DataSource>: Mark {
                    let yBand = yScale.scaledValue(data: pointData)
                 {
                     let symbolRect = CGRect(x: 0, y: yBand.lower, width: xValue, height: yBand.higher - yBand.lower)
-                    let newPoint = IndividualRect(rect: symbolRect, category: yBand.value)
-                    symbols.append(.rect(newPoint))
-                    print(" .. \(newPoint)")
+                    let barSymbol = IndividualRect(rect: symbolRect, category: yBand.value)
+                    symbols.append(.rect(barSymbol))
+                    print(" .. \(barSymbol)")
                 }
             }
         case .depth:
