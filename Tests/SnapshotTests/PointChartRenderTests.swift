@@ -3,14 +3,14 @@ import SnapshotTesting
 import SwiftUI
 import XCTest
 
-struct SampleData {
-    let xValue: Double
-    let yValue: Double
-}
 
 final class PointChartRenderTests: XCTestCase {
+    struct SampleData {
+        let xValue: Double
+        let yValue: Double
+    }
     #if os(macOS)
-        func testChartImageRendering() throws {
+        func testPointChartImageRendering() throws {
             let chart = Chart {
                 PointMark(data: [SampleData(xValue: 2, yValue: 3), SampleData(xValue: 3, yValue: 5)],
                           x: QuantitativeVisualChannel(\.xValue),
@@ -22,7 +22,7 @@ final class PointChartRenderTests: XCTestCase {
             )
         }
 
-        func testChartImageRenderingSinglePoint() throws {
+        func testPointChartImageRenderingSinglePoint() throws {
             let chart = Chart {
                 PointMark(data: [SampleData(xValue: 2, yValue: 3)],
                           x: QuantitativeVisualChannel(\.xValue),

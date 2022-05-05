@@ -20,29 +20,33 @@ public struct IndividualLine {
 
     let x2: CGFloat
     let y2: CGFloat
+    
+    var startPoint: CGPoint {
+        return CGPoint(x: x1, y: y1)
+    }
+    
+    var endPoint: CGPoint {
+        return CGPoint(x: x2, y: y2)
+    }
 
     // var title: String { get } ?
     let strokeColor: SwiftUI.Color // ? (https://developer.apple.com/documentation/coregraphics/cgcolor)
     let style: SwiftUI.StrokeStyle // linewidth, cap, join, miter, dash, and dash-phase
-
-    let size: CGSize
 
     init(x1: CGFloat, y1: CGFloat, x2: CGFloat, y2: CGFloat, size: CGFloat, color: SwiftUI.Color = .primary, style: SwiftUI.StrokeStyle = StrokeStyle()) {
         self.x1 = x1
         self.y1 = y1
         self.x2 = x2
         self.y2 = y2
-        self.size = CGSize(width: size, height: size)
         strokeColor = color
         self.style = style
     }
 
-    init(x1: CGFloat, y1: CGFloat, x2: CGFloat, y2: CGFloat, size: CGSize, color: SwiftUI.Color = .primary, style: SwiftUI.StrokeStyle = StrokeStyle()) {
+    init(x1: CGFloat, y1: CGFloat, x2: CGFloat, y2: CGFloat, color: SwiftUI.Color = .primary, style: SwiftUI.StrokeStyle = StrokeStyle()) {
         self.x1 = x1
         self.y1 = y1
         self.x2 = x2
         self.y2 = y2
-        self.size = size
         strokeColor = color
         self.style = style
     }
