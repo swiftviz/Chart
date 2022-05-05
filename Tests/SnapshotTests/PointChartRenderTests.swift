@@ -8,8 +8,6 @@ struct SampleData {
     let yValue: Double
 }
 
-private let referenceSize = CGSize(width: 300, height: 200)
-
 final class PointChartRenderTests: XCTestCase {
     #if os(macOS)
         func testChartImageRendering() throws {
@@ -36,10 +34,4 @@ final class PointChartRenderTests: XCTestCase {
             )
         }
     #endif
-}
-
-private extension SwiftUI.View {
-    func referenceFrame() -> some View {
-        frame(width: referenceSize.width, height: referenceSize.height)
-    }
 }
