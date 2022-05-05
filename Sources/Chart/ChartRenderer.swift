@@ -45,7 +45,7 @@ public class ChartRenderer {
                     case let .point(individualPoint):
                         self.drawPoint(point: individualPoint, context: &context)
                     case let .line(individualLine):
-                        fatalError("not yet implemented: \(individualLine)")
+                        self.drawLine(line: individualLine, context: &context)
                     case let .rect(individualRect):
                         fatalError("not yet implemented: \(individualRect)")
                     case let .rule(individualRule):
@@ -58,6 +58,14 @@ public class ChartRenderer {
                 }
             }
         }
+    }
+
+    private func drawLine(line: IndividualLine, context: inout GraphicsContext) {
+        let linePath: Path = Path { p in
+            p.move(to: line.startPoint)
+            p.addLine(to: line.endPoint)
+        }
+        context.stroke(linePath, with: .color(line.strokeColor), style: line.style)
     }
 
     private func drawPoint(point: IndividualPoint, context: inout GraphicsContext) {
