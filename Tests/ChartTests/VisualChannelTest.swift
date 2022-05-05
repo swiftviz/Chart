@@ -5,6 +5,7 @@
 //  Created by Joseph Heck on 4/6/22.
 //
 
+import Chart
 import XCTest
 
 class VisualChannelTest: XCTestCase {
@@ -20,5 +21,12 @@ class VisualChannelTest: XCTestCase {
             xValue = x
             yValue = y
         }
+    }
+
+    let data = SampleData("X", 3, Double.pi, 5.0)
+
+    func testQuantitativeChannelConstant() throws {
+        let x = QuantitativeVisualChannel<SampleData, Int>(\.value)
+        XCTAssertNotNil(x)
     }
 }

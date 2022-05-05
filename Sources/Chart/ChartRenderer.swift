@@ -51,7 +51,7 @@ public class ChartRenderer {
                     case let .line(individualLine):
                         self.drawLine(line: individualLine, context: &context)
                     case let .rect(individualRect):
-                        fatalError("not yet implemented: \(individualRect)")
+                        self.drawRect(bar: individualRect, context: &context)
                     case let .rule(individualRule):
                         fatalError("not yet implemented: \(individualRule)")
                     case let .text(text):
@@ -62,14 +62,6 @@ public class ChartRenderer {
                 }
             }
         }
-    }
-
-    private func drawLine(line: IndividualLine, context: inout GraphicsContext) {
-        let linePath = Path { p in
-            p.move(to: line.startPoint)
-            p.addLine(to: line.endPoint)
-        }
-        context.stroke(linePath, with: .color(line.strokeColor), style: line.style)
     }
 
     private func drawPoint(point: IndividualPoint, context: inout GraphicsContext) {
@@ -88,6 +80,24 @@ public class ChartRenderer {
                 point.shape.toPath(symbolRect),
                 with: .color(point.shape.fillColor)
             )
+        }
+    }
+
+    private func drawLine(line: IndividualLine, context: inout GraphicsContext) {
+        let linePath = Path { p in
+            p.move(to: line.startPoint)
+            p.addLine(to: line.endPoint)
+        }
+        context.stroke(linePath, with: .color(line.strokeColor), style: line.style)
+    }
+
+    private func drawRect(bar: IndividualRect, context: inout GraphicsContext) {
+        let rectPath = Path(bar.rect)
+        switch bar.mode {
+        case .stroke:
+            context.stroke(rectPath, with: .color(bar.strokeColor), style: bar.style)
+        case .fill:
+            context.fill(rectPath, with: .color(bar.strokeColor))
         }
     }
 }
