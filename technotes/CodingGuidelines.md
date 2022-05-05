@@ -16,7 +16,7 @@ Write new code in Swift 5. This library builds over Swift 5.5 and is meant to wo
 
 We use assertions and preconditions (assertions are hit only when running a debug build; preconditions will crash a release build). We also allow force-unwrapping of optionals as a shorthand for a precondition failure, though these should be used sparingly.
 
-Interal elements should be marked private as often as possible. APIs should be exactly what’s needed and not more.
+Internal elements should be marked private as often as possible. APIs should be exactly what’s needed and not more.
 
 ## Code organization
 
