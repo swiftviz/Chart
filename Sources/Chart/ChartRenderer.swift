@@ -6,6 +6,20 @@
 //
 import SwiftUI
 
+extension CGRect {
+    /// Returns a new CGRect with the values inset evenly by the value you provide.
+    /// - Parameter amount: The amount to inset the edges of the rect.
+    func inset(amount: CGFloat) -> CGRect? {
+        if size.width <= amount * 2 || size.height <= amount * 2 {
+            return nil
+        }
+        return CGRect(x: origin.x + amount,
+                      y: origin.y + amount,
+                      width: size.width - (2 * amount),
+                      height: size.height - (2 * amount))
+    }
+}
+
 public class ChartRenderer {
     // pre-process the collection of marks provided to determine what, if any, axis
     // and margins need to be accounted for in rendering out the view.
@@ -20,22 +34,12 @@ public class ChartRenderer {
         Canvas { context, size in
             // walk the collection of marks (`AnyMark`)
             // - first determine any insets needed for axis defined within them (TBD)
-            let width: CGFloat
-            let height: CGFloat
-            // hacky stuff to be removed and replaced with proper insets - this made it easier to see
-            // what's getting drawn and where...
-            if size.width > 10 {
-                width = size.width - 10
-            } else {
-                width = size.width
-            }
-            if size.height > 10 {
-                height = size.height - 10
-            } else {
-                height = size.height
-            }
+
+            let fullDrawArea = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
+            let drawArea: CGRect = fullDrawArea.inset(amount: 5) ?? fullDrawArea
+
             // - then calculate the marks for the provided drawing area
-            let drawArea = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: width, height: height))
+
             for mark in marks {
 //                print("Mark: \(mark)")
                 // - and iterate through each of the individual symbols
@@ -69,7 +73,9 @@ public class ChartRenderer {
     }
 
     private func drawPoint(point: IndividualPoint, context: inout GraphicsContext) {
-        let symbolRect: CGRect = .init(origin: CGPoint(x: point.x, y: point.y), size: point.size)
+        // explicitly offset so the center of the shape is at the point.x, point.y location
+        let origin = CGPoint(x: point.x - point.size.width / 2, y: point.y - point.size.height / 2)
+        let symbolRect: CGRect = .init(origin: origin, size: point.size)
         switch point.shape.mode {
         case .stroke:
             context.stroke(
