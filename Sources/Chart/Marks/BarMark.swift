@@ -24,12 +24,13 @@ public struct BarMark<DataSource>: Mark {
     let data: [DataSource]
     let value: QuantitativeVisualChannel<DataSource, Double>
     let category: BandVisualChannel<DataSource>
-    let orientation: Orientation = .vertical
+    let orientation: Orientation
 
-    public init(data: [DataSource], value: QuantitativeVisualChannel<DataSource, Double>, category: BandVisualChannel<DataSource>) {
+    public init(orientation: Orientation = .vertical, data: [DataSource], value: QuantitativeVisualChannel<DataSource, Double>, category: BandVisualChannel<DataSource>) {
         self.data = data
         self.value = value.applyDomain(data)
         self.category = category.applyDomain(data)
+        self.orientation = orientation
     }
 
     /// Creates a list of symbols to render into a rectangular drawing area that you specify.
@@ -50,7 +51,7 @@ public struct BarMark<DataSource>: Mark {
                 if let xBand = xScale.scaledValue(data: pointData),
                    let yValue = yScale.scaledValue(data: pointData)
                 {
-                    let symbolRect = CGRect(x: xBand.lower, y: 0, width: xBand.higher - xBand.lower, height: yValue)
+                    let symbolRect = CGRect(x: xBand.lower + rect.origin.x, y: rect.height - yValue + rect.origin.y, width: xBand.higher - xBand.lower, height: yValue)
                     let barSymbol = IndividualRect(rect: symbolRect, category: xBand.value)
                     symbols.append(.rect(barSymbol))
                     print(" .. \(barSymbol)")
@@ -66,7 +67,7 @@ public struct BarMark<DataSource>: Mark {
                 if let xValue = xScale.scaledValue(data: pointData),
                    let yBand = yScale.scaledValue(data: pointData)
                 {
-                    let symbolRect = CGRect(x: 0, y: yBand.lower, width: xValue, height: yBand.higher - yBand.lower)
+                    let symbolRect = CGRect(x: rect.origin.x, y: rect.height - yBand.higher + rect.origin.y, width: xValue, height: yBand.higher - yBand.lower)
                     let barSymbol = IndividualRect(rect: symbolRect, category: yBand.value)
                     symbols.append(.rect(barSymbol))
                     print(" .. \(barSymbol)")

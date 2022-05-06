@@ -15,7 +15,7 @@ final class PointChartRenderTests: XCTestCase {
                 PointMark(data: [SampleData(xValue: 2, yValue: 3), SampleData(xValue: 3, yValue: 5)],
                           x: QuantitativeVisualChannel(\.xValue),
                           y: QuantitativeVisualChannel(167))
-            }
+            }.border(.blue)
             assertSnapshot(
                 matching: chart.referenceFrame(),
                 as: .image(size: referenceSize)
@@ -27,7 +27,7 @@ final class PointChartRenderTests: XCTestCase {
                 PointMark(data: [SampleData(xValue: 2, yValue: 3)],
                           x: QuantitativeVisualChannel(\.xValue),
                           y: QuantitativeVisualChannel(167))
-            }
+            }.border(.blue)
             assertSnapshot(
                 matching: chart.referenceFrame(),
                 as: .image(size: referenceSize)
