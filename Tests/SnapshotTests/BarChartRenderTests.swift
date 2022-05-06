@@ -16,16 +16,30 @@ final class BarChartRenderTests: XCTestCase {
         SampleData(name: "D", value: 7),
     ]
     #if os(macOS)
-        func testBarChartImageRendering() throws {
+        func testVerticalBarChartImageRendering() throws {
             let chart = Chart {
                 BarMark(data: self.data,
                         value: QuantitativeVisualChannel(\.value),
                         category: BandVisualChannel(\.name))
-            }
+            }.border(.blue)
             assertSnapshot(
                 matching: chart.referenceFrame(),
                 as: .image(size: referenceSize)
             )
         }
+
+        func testHorizontalBarChartImageRendering() throws {
+            let chart = Chart {
+                BarMark(orientation: .horizontal,
+                        data: self.data,
+                        value: QuantitativeVisualChannel(\.value),
+                        category: BandVisualChannel(\.name))
+            }.border(.blue)
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
     #endif
 }

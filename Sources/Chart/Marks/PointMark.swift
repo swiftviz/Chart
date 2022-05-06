@@ -30,8 +30,8 @@ public struct PointMark<DataSource>: Mark {
     /// - Parameter in: The rectangle into which to scale and draw the symbols.
     /// - Returns: A list of symbol data structures with the information needed to draw them onto a canvas or into CoreGraphics context.
     public func symbolsForMark(in rect: CGRect) -> [MarkSymbol] {
-        let xScale = x.range(rangeLower: rect.origin.x, rangeHigher: rect.origin.x + rect.size.width)
-        let yScale = y.range(rangeLower: rect.origin.y, rangeHigher: rect.origin.y + rect.size.height)
+        let xScale = x.range(rangeLower: 0, rangeHigher: rect.size.width)
+        let yScale = y.range(rangeLower: 0, rangeHigher: rect.size.height)
         var symbols: [MarkSymbol] = []
         print("Creating symbols within rect: \(rect)")
         print("X scale: \(xScale)")
@@ -40,7 +40,7 @@ public struct PointMark<DataSource>: Mark {
             if let xValue = xScale.scaledValue(data: pointData),
                let yValue = yScale.scaledValue(data: pointData)
             {
-                let newPoint = IndividualPoint(x: xValue, y: yValue, shape: PlotShape(Circle()), size: 5)
+                let newPoint = IndividualPoint(x: xValue + rect.origin.x, y: rect.height - yValue + rect.origin.y, shape: PlotShape(Circle()), size: 5)
                 symbols.append(.point(newPoint))
                 print(" .. \(newPoint)")
             }

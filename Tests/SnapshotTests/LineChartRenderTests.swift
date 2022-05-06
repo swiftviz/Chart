@@ -21,7 +21,7 @@ final class LineChartRenderTests: XCTestCase {
                 LineMark(data: self.data,
                          x: QuantitativeVisualChannel(\.xValue),
                          y: QuantitativeVisualChannel(\.yValue))
-            }
+            }.border(.blue)
             assertSnapshot(
                 matching: chart.referenceFrame(),
                 as: .image(size: referenceSize)
