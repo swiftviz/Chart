@@ -27,7 +27,7 @@ public enum MarkBuilder {
         [AnyMark(element)]
     }
 
-    public static func buildExpression<T>(_ element: LineMark<T>) -> [AnyMark] {
+    public static func buildExpression<T,X,Y>(_ element: LineMark<T,X,Y>) -> [AnyMark] {
         [AnyMark(element)]
     }
 
