@@ -12,8 +12,8 @@ import SwiftVizScale
 /// A type that represents a series of bars.
 ///
 /// The type infers the number and visual properties of the bars from the data you provide to the visual channels when declaring a bar mark.
-public struct LineMark<DataSource,XType,YType>: Mark
-where XType: ConvertibleWithDouble & NiceValue & TypeOfVisualProperty, YType: ConvertibleWithDouble & NiceValue & TypeOfVisualProperty
+public struct LineMark<DataSource, XType, YType>: Mark
+    where XType: ConvertibleWithDouble & NiceValue & TypeOfVisualProperty, YType: ConvertibleWithDouble & NiceValue & TypeOfVisualProperty
 {
     let data: [DataSource]
     let x: QuantitativeVisualChannel<DataSource, XType>

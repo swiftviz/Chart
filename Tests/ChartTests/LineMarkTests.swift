@@ -25,22 +25,20 @@ class LineMarkTests: XCTestCase {
 
     let data = [
         SampleData("X", 3, Double.pi, 5.0),
-        SampleData("Y", 4, Double.pi, 7.0)
+        SampleData("Y", 4, Double.pi, 7.0),
     ]
-        
 
     func testLineMarkInitializer() throws {
-        let x = LineMark(data: self.data,
+        let x = LineMark(data: data,
                          x: QuantitativeVisualChannel(\.xValue),
                          y: QuantitativeVisualChannel(\.yValue))
         XCTAssertNotNil(x)
     }
 
     func testDifferentLineMarkInitializer() throws {
-        let x = LineMark(data: self.data,
+        let x = LineMark(data: data,
                          x: QuantitativeVisualChannel(\.value),
                          y: QuantitativeVisualChannel(\.yValue))
         XCTAssertNotNil(x)
     }
-
 }

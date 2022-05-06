@@ -24,11 +24,12 @@ internal enum KindOfVisualChannel {
 /// A channel that provides a mapping from an object's property to a visual property.
 public struct QuantitativeVisualChannel<
     SomeDataType,
-    InputPropertyType: ConvertibleWithDouble & NiceValue & TypeOfVisualProperty & Comparable
+    InputPropertyType: ConvertibleWithDouble & NiceValue & Comparable
 > {
     /// The type that is presented after scaling or transforming the value referenced by the channel.
     public typealias OutputPropertyType = CGFloat
 
+//    public typealias InputPropertyType =
     /// The reference mechanism used to provide the value for the channel.
     private let visualChannelType: KindOfVisualChannel
     private let constantValue: InputPropertyType?
