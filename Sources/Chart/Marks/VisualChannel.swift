@@ -25,7 +25,7 @@ internal enum KindOfVisualChannel {
 public struct QuantitativeVisualChannel<SomeDataType> {
     /// The type that is presented after scaling or transforming the value referenced by the channel.
     public typealias OutputPropertyType = CGFloat
-    
+
     private let valueProvider: (SomeDataType) -> Double
 
     public var scale = AnyContinuousScale<Double, OutputPropertyType>(LinearScale())
@@ -48,10 +48,9 @@ public struct QuantitativeVisualChannel<SomeDataType> {
     ///
     /// example: `VisualChannel(13.0)`
     public init<T: ConvertibleWithDouble>(_ value: T) {
-        valueProvider = { dataSource in
+        valueProvider = { _ in
             value.toDouble()
         }
-
     }
 
     /// Creates a new visual channel that returns a value using the closure that you provide.
@@ -60,7 +59,6 @@ public struct QuantitativeVisualChannel<SomeDataType> {
         valueProvider = { dataSource in
             closure(dataSource).toDouble()
         }
-
     }
 
     /// Returns a new visual channel with the domain for its scale set using the series of values provided to the channel.
@@ -89,7 +87,7 @@ public struct QuantitativeVisualChannel<SomeDataType> {
     ///
     /// Set the range for the visual channel's scale using ``range(rangeLower:rangeHigher:)`` before using this method to retrieve a scaled value.
     public func scaledValue(data: SomeDataType) -> OutputPropertyType? {
-        return scale.scale(valueProvider(data))
+        scale.scale(valueProvider(data))
     }
 
     /// Returns the value referenced from the data you provide by the channel, scaled into the range defined by the range values you provide.
@@ -102,7 +100,7 @@ public struct QuantitativeVisualChannel<SomeDataType> {
     /// This method is useful for a single lookup of a value, but for processing more than a handful of values it is more efficient to update the visual channel
     /// using ``range(rangeLower:rangeHigher:)``, then call ``scaledValue(data:)`` iteratively on the updated channel.
     public func scaledValue(data: SomeDataType, rangeLower: OutputPropertyType, rangeHigher: OutputPropertyType) -> OutputPropertyType? {
-        return scale.scale(valueProvider(data), from: rangeLower, to: rangeHigher)
+        scale.scale(valueProvider(data), from: rangeLower, to: rangeHigher)
     }
 
     // MARK: - VisualChannel Modifier Methods
@@ -119,7 +117,7 @@ public struct QuantitativeVisualChannel<SomeDataType> {
 /// A channel that provides a mapping from an object's property to a visual property.
 public struct BandVisualChannel<SomeDataType> {
     private let valueProvider: (SomeDataType) -> String
-    
+
     public var scale = BandScale<String, CGFloat>()
 
     /// Creates a new visual channel that references a property using the key-path you provide.
@@ -127,8 +125,8 @@ public struct BandVisualChannel<SomeDataType> {
     ///
     /// example: `VisualChannel<SomeDataType>(\.node)`
     public init(_ dataProperty: KeyPath<SomeDataType, String>) {
-        self.valueProvider = { dataSource in
-            return dataSource[keyPath: dataProperty]
+        valueProvider = { dataSource in
+            dataSource[keyPath: dataProperty]
         }
     }
 
@@ -137,16 +135,16 @@ public struct BandVisualChannel<SomeDataType> {
     ///
     /// example: `BandVisualChannel("sixth")`
     public init(_ value: String) {
-        self.valueProvider = { dataSource in
-            return value
+        valueProvider = { _ in
+            value
         }
     }
 
     /// Creates a new visual channel that returns a value using the closure that you provide.
     /// - Parameter closure: A closure that accepts the data provided to the visual channel and returns a value to use for the visual channel.
     public init(_ closure: @escaping (SomeDataType) -> String) {
-        self.valueProvider = { dataSource in
-            return closure(dataSource)
+        valueProvider = { dataSource in
+            closure(dataSource)
         }
     }
 
@@ -190,7 +188,7 @@ public struct BandVisualChannel<SomeDataType> {
     /// This method is useful for a single lookup of a value, but for processing more than a handful of values it is more efficient to update the visual channel
     /// using ``range(rangeLower:rangeHigher:)``, then call ``scaledValue(data:)`` iteratively on the updated channel.
     public func scaledValue(data: SomeDataType, rangeLower: CGFloat, rangeHigher: CGFloat) -> Band<String, CGFloat>? {
-        return scale.scale(valueProvider(data), from: rangeLower, to: rangeHigher)
+        scale.scale(valueProvider(data), from: rangeLower, to: rangeHigher)
     }
 }
 
@@ -202,7 +200,7 @@ public struct DiscreteVisualChannel<SomeDataType> {
     public typealias OutputPropertyType = CGFloat
 
     private let valueProvider: (SomeDataType) -> String
-    
+
     public var scale = PointScale<String, OutputPropertyType>()
 
     /// Creates a new visual channel that references a property using the key-path you provide.
@@ -210,8 +208,8 @@ public struct DiscreteVisualChannel<SomeDataType> {
     ///
     /// example: `VisualChannel<SomeDataType>(\.node)`
     public init(_ dataProperty: KeyPath<SomeDataType, String>) {
-        self.valueProvider = { dataSource in
-            return dataSource[keyPath: dataProperty]
+        valueProvider = { dataSource in
+            dataSource[keyPath: dataProperty]
         }
     }
 
@@ -220,16 +218,16 @@ public struct DiscreteVisualChannel<SomeDataType> {
     ///
     /// example: `BandVisualChannel("sixth")`
     public init(_ value: String) {
-        self.valueProvider = { dataSource in
-            return value
+        valueProvider = { _ in
+            value
         }
     }
 
     /// Creates a new visual channel that returns a value using the closure that you provide.
     /// - Parameter closure: A closure that accepts the data provided to the visual channel and returns a value to use for the visual channel.
     public init(_ closure: @escaping (SomeDataType) -> String) {
-        self.valueProvider = { dataSource in
-            return closure(dataSource)
+        valueProvider = { dataSource in
+            closure(dataSource)
         }
     }
 
