@@ -26,9 +26,9 @@ class VisualChannelTest: XCTestCase {
     let data = SampleData("X", 3, Double.pi, 5.0)
 
     func testQuantitativeChannelConstant() throws {
-        let x = QuantitativeVisualChannel<SampleData, Int>(\.value)
-        XCTAssertNotNil(x)
-        let y = QuantitativeVisualChannel<SampleData, Double>(\.xValue)
-        XCTAssertNotNil(y)
+        let intChannel = QuantitativeVisualChannel<SampleData>(\.value)
+        XCTAssertNotNil(intChannel)
+        let doubleChannel = QuantitativeVisualChannel<SampleData>(\.xValue)
+        XCTAssertNotNil(doubleChannel)
     }
 }
