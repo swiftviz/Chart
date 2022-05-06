@@ -14,12 +14,12 @@ import SwiftVizScale
 /// The type infers the number and visual properties of the bars from the data you provide to the visual channels when declaring a bar mark.
 public struct PointMark<DataSource>: Mark {
     let data: [DataSource]
-    let x: QuantitativeVisualChannel<DataSource, Double>
-    let y: QuantitativeVisualChannel<DataSource, Double>
+    let x: QuantitativeVisualChannel<DataSource>
+    let y: QuantitativeVisualChannel<DataSource>
 
     public init(data: [DataSource],
-                x xChannel: QuantitativeVisualChannel<DataSource, Double>,
-                y yChannel: QuantitativeVisualChannel<DataSource, Double>)
+                x xChannel: QuantitativeVisualChannel<DataSource>,
+                y yChannel: QuantitativeVisualChannel<DataSource>)
     {
         self.data = data
         x = xChannel.applyDomain(data)
