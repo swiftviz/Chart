@@ -11,16 +11,6 @@ import SwiftVizScale
 
 // MARK: - Visual Channel - Continuous/Quantitative
 
-/// A value that indicates the how the visual channel provides its value.
-internal enum KindOfVisualChannel {
-    /// The visual channel uses a constant value that you provide.
-    case constant
-    /// The visual channel uses a key path to reference a property on the objects that you provide.
-    case reference
-    /// The visual channel uses a closure that provides a value when provided with the associated data type.
-    case map
-}
-
 /// A channel that provides a mapping from an object's property to a visual property.
 public struct QuantitativeVisualChannel<SomeDataType> {
     /// The type that is presented after scaling or transforming the value referenced by the channel.
