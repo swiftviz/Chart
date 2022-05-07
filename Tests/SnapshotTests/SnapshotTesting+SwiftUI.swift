@@ -49,6 +49,6 @@ let referenceSize = CGSize(width: 300, height: 200)
 
 extension SwiftUI.View {
     func referenceFrame() -> some View {
-        frame(width: referenceSize.width, height: referenceSize.height)
+        frame(width: referenceSize.width, height: referenceSize.height).ignoresSafeArea()
     }
 }
