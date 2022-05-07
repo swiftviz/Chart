@@ -40,6 +40,5 @@ final class BarChartRenderTests: XCTestCase {
                 as: .image(size: referenceSize)
             )
         }
-
     #endif
 }
