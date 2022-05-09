@@ -42,7 +42,6 @@ import SwiftUI
             .pullback(NSHostingController.init(rootView:))
         }
     }
-
 #endif
 
 let referenceSize = CGSize(width: 300, height: 200)
