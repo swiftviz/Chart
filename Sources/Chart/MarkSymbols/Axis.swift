@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Axis {
+public struct Axis {
     /// The direction a tick is draw from an axis.
     public enum TickOrientation {
         /// The tick is drawn from the axis inward towards the chart.
