@@ -8,7 +8,7 @@ import SwiftUI
 import SwiftVizScale
 
 /// The orientation of the quantitative value for a bar chart.
-public enum Orientation {
+public enum ChartOrientation {
     /// The bar represents value vertically on a chart.
     case vertical
     /// The bar represents value horizontally on a chart.
@@ -24,9 +24,9 @@ public struct BarMark<DataSource>: Mark {
     let data: [DataSource]
     let value: QuantitativeVisualChannel<DataSource>
     let category: BandVisualChannel<DataSource>
-    let orientation: Orientation
+    let orientation: ChartOrientation
 
-    public init(orientation: Orientation = .vertical, data: [DataSource], value: QuantitativeVisualChannel<DataSource>, category: BandVisualChannel<DataSource>) {
+    public init(orientation: ChartOrientation = .vertical, data: [DataSource], value: QuantitativeVisualChannel<DataSource>, category: BandVisualChannel<DataSource>) {
         self.data = data
         self.value = value.applyDomain(data)
         self.category = category.applyDomain(data)
