@@ -11,22 +11,26 @@ import Foundation
 public struct ChartSpec {
     // The marks that make up the symbols of the chart
     let marks: [AnyMark]
+    let axis: [Axis.AxisLocation: Axis]
 
     /// Creates a new, default chart declaration.
     public init() {
         marks = []
+        axis = [:]
     }
 
     /// Creates a new chart declaration with a mark you provide.
     /// - Parameter mark: A mark declaration.
     public init(mark: AnyMark) {
         marks = [mark]
+        axis = [:]
     }
 
     /// Creates a new chart declaration with the marks you provide.
     /// - Parameter marks: A list of mark declarations.
     public init(marks: [AnyMark]) {
         self.marks = marks
+        axis = [:]
     }
 
     /// Returns a new chart declaration that is the combination of the original specification and the specification you provide.

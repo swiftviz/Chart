@@ -17,7 +17,7 @@ struct Axis {
     }
 
     /// The edge of the chart to draw the axis.
-    public enum AxisLocation {
+    public enum AxisLocation: Hashable {
         case top
         case bottom
         case leading
