@@ -32,8 +32,8 @@ public enum ChartBuilder {
     }
 
     public static func buildBlock(_ components: ChartSpec...) -> ChartSpec {
-        components.reduce(ChartSpec(), { partialResult, newSpec in
+        components.reduce(ChartSpec()) { partialResult, newSpec in
             partialResult.merging(newSpec)
-        })
+        }
     }
 }
