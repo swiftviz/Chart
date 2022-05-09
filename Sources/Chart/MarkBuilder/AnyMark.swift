@@ -10,7 +10,6 @@ import Foundation
 
 /// A type-erased Mark.
 public struct AnyMark: Mark {
-
     private let wrappedSymbolsForMark: (_: CGRect) -> [MarkSymbol]
 
     public init<T: Mark>(_ specificMark: T) {

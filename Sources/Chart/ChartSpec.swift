@@ -1,35 +1,34 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Joseph Heck on 5/9/22.
 //
 
 import Foundation
 
-
 /// A declarative chart specification.
 public struct ChartSpec {
     // The marks that make up the symbols of the chart
     let marks: [AnyMark]
-    
+
     /// Creates a new, default chart declaration.
     public init() {
-        self.marks = []
+        marks = []
     }
-    
+
     /// Creates a new chart declaration with a mark you provide.
     /// - Parameter mark: A mark declaration.
     public init(mark: AnyMark) {
-        self.marks = [mark]
+        marks = [mark]
     }
-    
+
     /// Creates a new chart declaration with the marks you provide.
     /// - Parameter marks: A list of mark declarations.
     public init(marks: [AnyMark]) {
         self.marks = marks
     }
-    
+
     /// Returns a new chart declaration that is the combination of the original specification and the specification you provide.
     /// - Parameter spec: A chart specification to merge.
     public func merging(_ spec: ChartSpec) -> ChartSpec {
