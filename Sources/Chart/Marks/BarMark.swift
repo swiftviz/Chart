@@ -25,12 +25,14 @@ public struct BarMark<DataSource>: Mark {
     let value: QuantitativeVisualChannel<DataSource>
     let category: BandVisualChannel<DataSource>
     let orientation: ChartOrientation
+    let axis: [Axis.AxisLocation: Axis]
 
     public init(orientation: ChartOrientation = .vertical, data: [DataSource], value: QuantitativeVisualChannel<DataSource>, category: BandVisualChannel<DataSource>) {
         self.data = data
         self.value = value.applyDomain(data)
         self.category = category.applyDomain(data)
         self.orientation = orientation
+        axis = [:]
     }
 
     /// Creates a list of symbols to render into a rectangular drawing area that you specify.

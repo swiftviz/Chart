@@ -13,6 +13,7 @@ public protocol Mark {
     var fill: Color { get }
     var stroke: Color { get } // ? (https://developer.apple.com/documentation/coregraphics/cgcolor)
     var title: String { get }
+//    var axis: [Axis.AxisLocation: Axis] { get }
 
     // maybe use/infer from https://developer.apple.com/documentation/swiftui/strokestyle
     // - lineWidth: CGFloat
