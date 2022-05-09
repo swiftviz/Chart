@@ -12,11 +12,19 @@ import SwiftVizScale
 // MARK: - Visual Channel - Continuous/Quantitative
 
 /// A channel that provides a mapping from an object's property to a visual property.
+///
+/// This visual channel converts the value you provide into the type Double, and returns a final
+/// value as `CGFloat` scaled to the range you provide.
 public struct QuantitativeVisualChannel<SomeDataType> {
     /// The type that is presented after scaling or transforming the value referenced by the channel.
     public typealias OutputPropertyType = CGFloat
 
     private let valueProvider: (SomeDataType) -> Double
+    // The `valueProvider` captures the specifics of the type being provided within its closure
+    // so the overall VisualChannel doesn't need to expose that detail as an additional generic
+    // type. This lets us initialize the visual channel with a keypath, constant, or a closure
+    // that ultimately converts to a Double type, which this channel uses internally to then
+    // scale and apply to the range later provided.
 
     public var scale = AnyContinuousScale<Double, OutputPropertyType>(LinearScale())
     // a scale has an InputType and OutputType - and we need InputType to match 'PropertyType'
@@ -105,6 +113,9 @@ public struct QuantitativeVisualChannel<SomeDataType> {
 // MARK: - Visual Channel - Discrete/Band
 
 /// A channel that provides a mapping from an object's property to a visual property.
+///
+/// This visual channel converts the value you provide into the type String to represent a category,
+/// and returns a final value as a `Band` with values scaled to the range you provide.
 public struct BandVisualChannel<SomeDataType> {
     private let valueProvider: (SomeDataType) -> String
 
@@ -185,6 +196,9 @@ public struct BandVisualChannel<SomeDataType> {
 // MARK: - Visual Channel - Discrete/Point
 
 /// A channel that provides a mapping from an object's property to a visual property.
+///
+/// This visual channel converts the value you provide into the type String to represent a category,
+/// and returns a final value as `CGFloat` scaled to the range you provide.
 public struct DiscreteVisualChannel<SomeDataType> {
     /// The type that is presented after scaling or transforming the value referenced by the channel.
     public typealias OutputPropertyType = CGFloat
