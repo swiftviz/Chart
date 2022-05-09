@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct Chart: View {
     var chartRenderer = ChartRenderer()
-    var markCollection: [AnyMark]
+    var specCollection: ChartSpec
 
     /* execution flow notes:
 
@@ -42,12 +42,12 @@ public struct Chart: View {
      */
 
     public var body: some View {
-        chartRenderer.createView(markCollection)
+        chartRenderer.createView(specCollection)
     }
 
-    public init(@MarkBuilder _ markdecl: @escaping () -> [AnyMark]) {
+    public init(@ChartBuilder _ chartDecl: @escaping () -> ChartSpec) {
         // invoke the closure to get the declared sets of marks as a list of AnyMark
         // that we can pass into the renderer to evaluate into individual symbols.
-        markCollection = markdecl()
+        specCollection = chartDecl()
     }
 }

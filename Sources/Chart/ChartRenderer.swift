@@ -20,11 +20,11 @@ extension CGRect {
     }
 }
 
-public class ChartRenderer {
+class ChartRenderer {
     // pre-process the collection of marks provided to determine what, if any, axis
     // and margins need to be accounted for in rendering out the view.
 
-    public func createView(_ marks: [AnyMark]) -> some View {
+    func createView(_ specification: ChartSpec) -> some View {
         // init(opaque: Bool = false,
         //      colorMode: ColorRenderingMode = .nonLinear,
         //      rendersAsynchronously: Bool = false,
@@ -40,7 +40,7 @@ public class ChartRenderer {
 
             // - then calculate the marks for the provided drawing area
 
-            for mark in marks {
+            for mark in specification.marks {
 //                print("Mark: \(mark)")
                 // - and iterate through each of the individual symbols
                 // - render them into the canvas based on the mode of the shape
