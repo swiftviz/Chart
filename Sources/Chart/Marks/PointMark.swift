@@ -16,6 +16,14 @@ public struct PointMark<DataSource>: Mark {
     let data: [DataSource]
     let x: QuantitativeVisualChannel<DataSource>
     let y: QuantitativeVisualChannel<DataSource>
+    public var xPropertyType: VisualPropertyType {
+        .quantitative
+    }
+
+    public var yPropertyType: VisualPropertyType {
+        .quantitative
+    }
+
     public let axis: [Axis.AxisLocation: Axis]
 
     public init(data: [DataSource],
