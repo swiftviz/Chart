@@ -23,14 +23,20 @@ public struct ChartSpec {
     /// - Parameter mark: A mark declaration.
     public init(mark: AnyMark) {
         marks = [mark]
-        axis = [:]
+        axis = mark.axis
     }
 
     /// Creates a new chart declaration with the marks you provide.
     /// - Parameter marks: A list of mark declarations.
     public init(marks: [AnyMark]) {
         self.marks = marks
-        axis = [:]
+        axis = marks.reduce([:]) { currentDict, mark in
+            var updatedDict: [Axis.AxisLocation: Axis] = currentDict
+            for (loc, axis) in mark.axis {
+                updatedDict[loc] = axis
+            }
+            return updatedDict
+        }
     }
 
     /// Returns a new chart declaration that is the combination of the original specification and the specification you provide.

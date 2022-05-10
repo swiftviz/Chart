@@ -10,10 +10,10 @@ import SwiftUI
 ///
 /// A mark describes the configuration of how data is mapped to visual properties relevant to the type of mark.
 public protocol Mark {
-    var fill: Color { get }
-    var stroke: Color { get } // ? (https://developer.apple.com/documentation/coregraphics/cgcolor)
-    var title: String { get }
-//    var axis: [Axis.AxisLocation: Axis] { get }
+//    var fill: Color { get }
+//    var stroke: Color { get } // ? (https://developer.apple.com/documentation/coregraphics/cgcolor)
+//    var title: String { get }
+    var axis: [Axis.AxisLocation: Axis] { get }
 
     // maybe use/infer from https://developer.apple.com/documentation/swiftui/strokestyle
     // - lineWidth: CGFloat
@@ -29,18 +29,18 @@ public protocol Mark {
     func symbolsForMark(in: CGRect) -> [MarkSymbol]
 }
 
-// MARK: - default values for common Mark properties
-
-public extension Mark {
-    var fill: Color {
-        Color.primary
-    }
-
-    var stroke: Color {
-        Color.primary
-    }
-
-    var title: String {
-        ""
-    }
-}
+//// MARK: - default values for common Mark properties
+//
+// public extension Mark {
+//    var fill: Color {
+//        Color.primary
+//    }
+//
+//    var stroke: Color {
+//        Color.primary
+//    }
+//
+//    var title: String {
+//        ""
+//    }
+// }
