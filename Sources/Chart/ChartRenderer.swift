@@ -38,6 +38,8 @@ class ChartRenderer {
             let fullDrawArea = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
             let drawArea: CGRect = fullDrawArea.inset(amount: 5) ?? fullDrawArea
 
+            let captionedTextSampleSize: CGSize = context.resolve(Text("250").font(.caption)).measure(in: CGSize(width: 50, height: 50))
+            print(captionedTextSampleSize.height)
             // - then calculate the marks for the provided drawing area
 
             for mark in specification.marks {

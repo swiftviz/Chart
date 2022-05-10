@@ -11,6 +11,8 @@ import SwiftUI
 /// A mark describes the configuration of how data is mapped to visual properties relevant to the type of mark.
 public protocol Mark {
     var axis: [Axis.AxisLocation: Axis] { get }
+    var xPropertyType: VisualPropertyType { get }
+    var yPropertyType: VisualPropertyType { get }
 
     /// Creates a list of symbols to render into a rectangular drawing area that you specify.
     /// - Parameter in: The rectangle into which to scale and draw the symbols.

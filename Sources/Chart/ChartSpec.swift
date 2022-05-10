@@ -6,12 +6,20 @@
 //
 
 import Foundation
+import SwiftVizScale
 
 /// A declarative chart specification.
 public struct ChartSpec {
     // The marks that make up the symbols of the chart
     let marks: [AnyMark]
     let axis: [Axis.AxisLocation: Axis]
+
+//    let xScale: BandScale<String, CGFloat>
+//    let yScale: AnyContinuousScale<Double, CGFloat>
+    let xTopPropertyType: VisualPropertyType? = nil
+    let xBottomPropertyType: VisualPropertyType? = nil
+    let yLeadingPropertyType: VisualPropertyType? = nil
+    let yTrailingPropertyType: VisualPropertyType? = nil
 
     /// Creates a new, default chart declaration.
     public init() {

@@ -19,15 +19,17 @@ public struct Axis {
 
     /// The edge of the chart to draw the axis.
     public enum AxisLocation: Hashable {
+        // implies ChartOrientation -  but maybe associated value to the type and specific scale?
         case top
         case bottom
         case leading
         case trailing
-        case foreground
-        case background
+        case foreground(VisualPropertyType)
+        case background //
     }
 
     let orientation: ChartOrientation
+    let domainPropertyType: VisualPropertyType
     let axisLocation: AxisLocation
     let rule: Bool
     let nice: Bool
@@ -55,6 +57,7 @@ public struct Axis {
     ///   - labelAlignment: The alignment of the label for the axis
     ///   - labelOffset: The offset for the label away from the axis.
     public init(_ orientation: ChartOrientation,
+                domainPropertyType: VisualPropertyType,
                 axisLocation: AxisLocation? = nil,
                 rule: Bool = true,
                 nice: Bool,
@@ -68,6 +71,7 @@ public struct Axis {
                 labelAlignment: Alignment = .center)
     {
         self.orientation = orientation
+        self.domainPropertyType = domainPropertyType
         if let axisLocation = axisLocation {
             switch orientation {
             case .vertical:

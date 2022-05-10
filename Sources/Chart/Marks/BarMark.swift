@@ -26,6 +26,27 @@ public struct BarMark<DataSource>: Mark {
     let category: BandVisualChannel<DataSource>
     let orientation: ChartOrientation
     public let axis: [Axis.AxisLocation: Axis]
+    public var xPropertyType: VisualPropertyType {
+        switch orientation {
+        case .vertical:
+            return .categorical
+        case .horizontal:
+            return .quantitative
+        case .depth:
+            fatalError("Not yet implemented")
+        }
+    }
+
+    public var yPropertyType: VisualPropertyType {
+        switch orientation {
+        case .vertical:
+            return .quantitative
+        case .horizontal:
+            return .categorical
+        case .depth:
+            fatalError("Not yet implemented")
+        }
+    }
 
     public init(orientation: ChartOrientation = .vertical, data: [DataSource], value: QuantitativeVisualChannel<DataSource>, category: BandVisualChannel<DataSource>) {
         self.data = data
