@@ -24,7 +24,7 @@ public struct Axis {
         case bottom
         case leading
         case trailing
-        case foreground(VisualPropertyType)
+        case foreground //(VisualPropertyType)
         case background //
     }
 
