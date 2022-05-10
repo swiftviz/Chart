@@ -3,7 +3,7 @@ import SwiftUI
 /// A type that represents an individual symbol to draw within a chart context.
 ///
 /// `MarkSymbol` provides a single type collection point to gather the individual symbols
-/// for use by ``Chart/ChartRenderer`` to draw those symbols at the appropriate location
+/// for use by `ChartRenderer` to draw those symbols at the appropriate location
 /// for chart visualization.
 public enum MarkSymbol {
     case point(IndividualPoint)
