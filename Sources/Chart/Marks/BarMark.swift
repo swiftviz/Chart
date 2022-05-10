@@ -25,7 +25,7 @@ public struct BarMark<DataSource>: Mark {
     let value: QuantitativeVisualChannel<DataSource>
     let category: BandVisualChannel<DataSource>
     let orientation: ChartOrientation
-    let axis: [Axis.AxisLocation: Axis]
+    public let axis: [Axis.AxisLocation: Axis]
 
     public init(orientation: ChartOrientation = .vertical, data: [DataSource], value: QuantitativeVisualChannel<DataSource>, category: BandVisualChannel<DataSource>) {
         self.data = data

@@ -16,7 +16,7 @@ public struct LineMark<DataSource>: Mark {
     let data: [DataSource]
     let x: QuantitativeVisualChannel<DataSource>
     let y: QuantitativeVisualChannel<DataSource>
-    let axis: [Axis.AxisLocation: Axis]
+    public let axis: [Axis.AxisLocation: Axis]
 
     public init(data: [DataSource],
                 x xChannel: QuantitativeVisualChannel<DataSource>,
