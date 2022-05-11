@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftVizScale
 
 /// The declaration for how to draw an axis for a chart.
 public struct Axis {
@@ -24,20 +25,29 @@ public struct Axis {
         case bottom
         case leading
         case trailing
-        case foreground //(VisualPropertyType)
+        case foreground // (VisualPropertyType)
         case background //
     }
 
+    // need a list of tick values (String) and their location (CGFloat) along the axis
+    // default should be the default set of ticks generated from the Scale associated with
+    // the visual channel for that axis on the mark.
+
+    // the extra generic bits inside Scale's Tick don't end up helping me - in fact, they make it
+    // worse, since I could have a variety of different generators...
+
+    // If the user provides a list of tick values, they'll be in the "incoming" domain value and need to be
+    // converted to the appropriate label and assigned a CGFloat location, again through that scale, and
+    // some of them might even be dropped if they range off the end of the scale.
     let orientation: ChartOrientation
-    let domainPropertyType: VisualPropertyType
+
     let axisLocation: AxisLocation
     let rule: Bool
-    let nice: Bool
-    let requestedTicks: Int
+    let ticks: [Tick<CGFloat>]
     let tickLength: CGFloat
     let tickOrientation: TickOrientation
     let tickPadding: CGFloat
-    let tickRules: Bool
+    let tickRules: Bool // aka 'grid', but only for one direction
     let label: String
     let labelAlignment: Alignment
     let labelOffset: CGFloat
@@ -47,8 +57,7 @@ public struct Axis {
     ///   - orientation: The directional orientation of the axis.
     ///   - axisLocation: The location of the axis compared to the chart.
     ///   - rule: A Boolean value that indicates the axis should be drawn on the edge of the chart.
-    ///   - nice: A Boolean value that indicates that the ticks should be placed at nice values.
-    ///   - ticks: The number of ticks to request to be displayed along the axis.
+    ///   - ticks: A list of tick values and locations to present on the axis.
     ///   - tickLength: The length of the ticks.
     ///   - tickOrientation: The direction the tick is drawn from the axis.
     ///   - tickPadding: The amount of padding between the end of a tick and its value.
@@ -57,11 +66,9 @@ public struct Axis {
     ///   - labelAlignment: The alignment of the label for the axis
     ///   - labelOffset: The offset for the label away from the axis.
     public init(_ orientation: ChartOrientation,
-                domainPropertyType: VisualPropertyType,
                 axisLocation: AxisLocation? = nil,
                 rule: Bool = true,
-                nice: Bool,
-                ticks: Int,
+                ticks: [Tick<CGFloat>], // cant' get to the final values for CGFloat until we know the size of the area...
                 tickLength: CGFloat = 3,
                 tickOrientation: TickOrientation = .outer,
                 tickPadding: CGFloat = 5,
@@ -71,7 +78,6 @@ public struct Axis {
                 labelAlignment: Alignment = .center)
     {
         self.orientation = orientation
-        self.domainPropertyType = domainPropertyType
         if let axisLocation = axisLocation {
             switch orientation {
             case .vertical:
@@ -95,8 +101,7 @@ public struct Axis {
                 self.axisLocation = .foreground
             }
         }
-        self.nice = nice
-        requestedTicks = ticks
+        self.ticks = ticks
         self.tickLength = tickLength
         self.tickPadding = tickPadding
         self.tickOrientation = tickOrientation
