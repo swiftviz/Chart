@@ -36,26 +36,26 @@ public enum VisualPropertyType {
 // visual property type of 'Categorical' accepts value types of 'String'
 // visual property type of 'Temporal' accepts value types of 'Date'
 
-extension Double: TypeOfVisualProperty {
-    public var visualPropertyType: VisualPropertyType {
-        .quantitative
-    }
-}
-
-extension Int: TypeOfVisualProperty {
-    public var visualPropertyType: VisualPropertyType {
-        .ordinal
-    }
-}
-
-extension String: TypeOfVisualProperty {
-    public var visualPropertyType: VisualPropertyType {
-        .categorical
-    }
-}
-
-extension Date: TypeOfVisualProperty {
-    public var visualPropertyType: VisualPropertyType {
-        .temporal
-    }
-}
+// extension Double: TypeOfVisualProperty {
+//    public var visualPropertyType: VisualPropertyType {
+//        .quantitative
+//    }
+// }
+//
+// extension Int: TypeOfVisualProperty {
+//    public var visualPropertyType: VisualPropertyType {
+//        .ordinal
+//    }
+// }
+//
+// extension String: TypeOfVisualProperty {
+//    public var visualPropertyType: VisualPropertyType {
+//        .categorical
+//    }
+// }
+//
+// extension Date: TypeOfVisualProperty {
+//    public var visualPropertyType: VisualPropertyType {
+//        .temporal
+//    }
+// }
