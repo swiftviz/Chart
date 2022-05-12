@@ -10,7 +10,6 @@ import SwiftUI
 ///
 /// A mark describes the configuration of how data is mapped to visual properties relevant to the type of mark.
 public protocol Mark {
-    var axis: [Axis.AxisLocation: Axis] { get }
     var xPropertyType: VisualPropertyType { get }
     var yPropertyType: VisualPropertyType { get }
 
@@ -18,4 +17,5 @@ public protocol Mark {
     /// - Parameter in: The rectangle into which to scale and draw the symbols.
     /// - Returns: A list of symbol data structures with the information needed to draw them onto a canvas or into CoreGraphics context.
     func symbolsForMark(in: CGRect) -> [MarkSymbol]
+    func axisFromMark(in: CGRect) -> [Axis.AxisLocation: Axis]
 }

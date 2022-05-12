@@ -102,4 +102,8 @@ public struct BarMark<DataSource>: Mark {
 
         return symbols
     }
+
+    public func axisFromMark(in _: CGRect) -> [Axis.AxisLocation: Axis] {
+        [:]
+    }
 }
