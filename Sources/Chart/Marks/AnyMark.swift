@@ -10,7 +10,6 @@ import Foundation
 
 /// A type-erased Mark.
 public struct AnyMark: Mark {
-
     public var xPropertyType: VisualPropertyType
     public var yPropertyType: VisualPropertyType
 

@@ -17,7 +17,7 @@ public protocol Mark {
     /// - Parameter in: The rectangle into which to scale and draw the symbols.
     /// - Returns: A list of symbol data structures with the information needed to draw them onto a canvas or into CoreGraphics context.
     func symbolsForMark(in: CGRect) -> [MarkSymbol]
-    
+
     /// Returns the set of axis configurations that have been enabled for the mark
     /// - Parameter in: The rectangle into which to scale and draw axis.
     /// - Returns: A dictionary of Axis keyed by the axis location.
