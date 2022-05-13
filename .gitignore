@@ -31,3 +31,5 @@ playground.xcworkspace
 .swiftpm
 .build/
 info.lcov
+**/.docc-build/
+#Sources/Chart/Documentation.docc/
