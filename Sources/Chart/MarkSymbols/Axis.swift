@@ -26,16 +26,29 @@ public struct Axis {
         case trailing
     }
 
-    // need a list of tick values (String) and their location (CGFloat) along the axis
+    // An axis is partially defined as a declaration, but the final configuration
+    // can't be determined until later when the rectangular area that you'll be drawing
+    // the axis into can be used with scales to determine the ticks and their points.
+    // When it *is* declared, the Mark is already fully described, including having the
+    // data applied to the Mark, so the mark's scales (which are used to determine ticks)
+    // have the relevant domain applied to them.
+    //
+    // Design wise, I'm a little unclear if I should have a copy of the either copied
+    // or referenced from this struct, of it that's something that should be applied later
+    // (as a closure? - either CGFloat range, CGRect, or scale + CGFloat range) that
+    // generates the list of the ticks to be displayed.
+    //
+    // This needs a list of tick values (String) and their location (CGFloat) along the axis
     // default should be the default set of ticks generated from the Scale associated with
     // the visual channel for that axis on the mark.
-
-    // the extra generic bits inside Scale's Tick don't end up helping me - in fact, they make it
-    // worse, since I could have a variety of different generators...
-
+    //
     // If the user provides a list of tick values, they'll be in the "incoming" domain value and need to be
     // converted to the appropriate label and assigned a CGFloat location, again through that scale, and
     // some of them might even be dropped if they range off the end of the scale.
+    //
+    // Current theory is a partial configuration, with the expectation that we'll invoke
+    // a closure from the Mark (so it has access to the Mark's scales) that provides the completely
+    // configured Axis (or two) for drawing: `func axisFromMark(in: CGRect) -> [Axis.AxisLocation: Axis]`
 
     let axisLocation: AxisLocation
     let rule: Bool
