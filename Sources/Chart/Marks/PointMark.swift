@@ -12,20 +12,20 @@ import SwiftVizScale
 /// A type that represents a series of bars.
 ///
 /// The type infers the number and visual properties of the bars from the data you provide to the visual channels when declaring a bar mark.
-public struct PointMark<DataSource>: Mark {
+public struct PointMark<DataSource>: Mark, MarkAxis {
     let data: [DataSource]
     let x: QuantitativeVisualChannel<DataSource>
     let y: QuantitativeVisualChannel<DataSource>
-    public var xPropertyType: VisualPropertyType {
-        .quantitative
+    public var xPropertyScale: VisualPropertyScale {
+        .continuous(x.scale)
     }
 
-    public var yPropertyType: VisualPropertyType {
-        .quantitative
+    public var yPropertyScale: VisualPropertyScale {
+        .continuous(y.scale)
     }
 
-    public let xAxis: Axis?
-    public let yAxis: Axis?
+    public var _xAxis: Axis?
+    public var _yAxis: Axis?
 
     public init(data: [DataSource],
                 x xChannel: QuantitativeVisualChannel<DataSource>,
@@ -34,8 +34,8 @@ public struct PointMark<DataSource>: Mark {
         self.data = data
         x = xChannel.applyDomain(data)
         y = yChannel.applyDomain(data)
-        xAxis = nil
-        yAxis = nil
+        _xAxis = nil
+        _yAxis = nil
     }
 
     /// Creates a list of symbols to render into a rectangular drawing area that you specify.
@@ -58,19 +58,5 @@ public struct PointMark<DataSource>: Mark {
             }
         }
         return symbols
-    }
-
-    /// Returns the set of axis configurations that have been enabled for the mark
-    /// - Parameter in: The rectangle into which to scale and draw axis.
-    /// - Returns: A dictionary of Axis keyed by the axis location.
-    public func axisForMark(in _: CGRect) -> [Axis.AxisLocation: Axis] {
-        var axisSet: [Axis.AxisLocation: Axis] = [:]
-        if let xAxis = xAxis {
-            axisSet[xAxis.axisLocation] = xAxis
-        }
-        if let yAxis = yAxis {
-            axisSet[yAxis.axisLocation] = yAxis
-        }
-        return axisSet
     }
 }

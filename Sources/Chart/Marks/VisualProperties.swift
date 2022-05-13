@@ -30,12 +30,29 @@ public enum VisualPropertyType {
     case categorical // (String)
 }
 
-// public enum VisualPropertyScale {
-//    case quantitative(AnyContinuousScale) // (Double)
+public enum VisualPropertyScale {
+    case continuous(AnyContinuousScale<Double, CGFloat>) // continuous
+    case band(BandScale<String, CGFloat>) // discrete
+    case point(PointScale<String, CGFloat>) // discrete
+
+    func tickValuesFromScale(lower: CGFloat, higher: CGFloat, values: [Double] = []) -> [Tick<CGFloat>] {
+        switch self {
+        case let .continuous(scale):
+            if values.isEmpty {
+                return scale.ticks(rangeLower: lower, rangeHigher: higher)
+            } else {
+                return scale.tickValues(values, from: lower, to: higher)
+            }
+        case let .band(scale):
+            return scale.ticks(rangeLower: lower, rangeHigher: higher)
+        case let .point(scale):
+            return scale.ticks(rangeLower: lower, rangeHigher: higher)
+        }
+    }
+}
+
 //    case ordinal // (Int) - n/a yet
 //    case temporal // (Date) - n/a yet
-//    case categorical // (String) - one of point or band scale - make an AnyDiscreteScale?
-// }
 
 // MARK: - protocol conformance on types that can represent Visual Properties
 

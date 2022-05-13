@@ -20,32 +20,31 @@ public enum ChartOrientation {
 /// A type that represents a series of bars.
 ///
 /// The type infers the number and visual properties of the bars from the data you provide to the visual channels when declaring a bar mark.
-public struct BarMark<DataSource>: Mark {
+public struct BarMark<DataSource>: Mark, MarkAxis {
     let data: [DataSource]
     let value: QuantitativeVisualChannel<DataSource>
     let category: BandVisualChannel<DataSource>
     let orientation: ChartOrientation
 
-    public let xAxis: Axis?
-    public let yAxis: Axis?
-
-    public var xPropertyType: VisualPropertyType {
+    public var _xAxis: Axis?
+    public var _yAxis: Axis?
+    public var xPropertyScale: VisualPropertyScale {
         switch orientation {
         case .vertical:
-            return .categorical
+            return .band(category.scale)
         case .horizontal:
-            return .quantitative
+            return .continuous(value.scale)
         case .depth:
             fatalError("Not yet implemented")
         }
     }
 
-    public var yPropertyType: VisualPropertyType {
+    public var yPropertyScale: VisualPropertyScale {
         switch orientation {
         case .vertical:
-            return .quantitative
+            return .continuous(value.scale)
         case .horizontal:
-            return .categorical
+            return .band(category.scale)
         case .depth:
             fatalError("Not yet implemented")
         }
@@ -56,8 +55,8 @@ public struct BarMark<DataSource>: Mark {
         self.value = value.applyDomain(data)
         self.category = category.applyDomain(data)
         self.orientation = orientation
-        xAxis = nil
-        yAxis = nil
+        _xAxis = nil
+        _yAxis = nil
     }
 
     /// Creates a list of symbols to render into a rectangular drawing area that you specify.
@@ -105,19 +104,5 @@ public struct BarMark<DataSource>: Mark {
         }
 
         return symbols
-    }
-
-    /// Returns the set of axis configurations that have been enabled for the mark
-    /// - Parameter in: The rectangle into which to scale and draw axis.
-    /// - Returns: A dictionary of Axis keyed by the axis location.
-    public func axisForMark(in _: CGRect) -> [Axis.AxisLocation: Axis] {
-        var axisSet: [Axis.AxisLocation: Axis] = [:]
-        if let xAxis = xAxis {
-            axisSet[xAxis.axisLocation] = xAxis
-        }
-        if let yAxis = yAxis {
-            axisSet[yAxis.axisLocation] = yAxis
-        }
-        return axisSet
     }
 }
