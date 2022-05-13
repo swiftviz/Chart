@@ -74,7 +74,17 @@ public struct LineMark<DataSource>: Mark {
         return symbols
     }
 
+    /// Returns the set of axis configurations that have been enabled for the mark
+    /// - Parameter in: The rectangle into which to scale and draw axis.
+    /// - Returns: A dictionary of Axis keyed by the axis location.
     public func axisForMark(in _: CGRect) -> [Axis.AxisLocation: Axis] {
-        [:]
+        var axisSet: [Axis.AxisLocation: Axis] = [:]
+        if let xAxis = xAxis {
+            axisSet[xAxis.axisLocation] = xAxis
+        }
+        if let yAxis = yAxis {
+            axisSet[yAxis.axisLocation] = yAxis
+        }
+        return axisSet
     }
 }
