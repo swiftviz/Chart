@@ -25,7 +25,10 @@ public struct BarMark<DataSource>: Mark {
     let value: QuantitativeVisualChannel<DataSource>
     let category: BandVisualChannel<DataSource>
     let orientation: ChartOrientation
-    public let axis: [Axis.AxisLocation: Axis]
+
+    public let xAxis: Axis?
+    public let yAxis: Axis?
+
     public var xPropertyType: VisualPropertyType {
         switch orientation {
         case .vertical:
@@ -53,7 +56,8 @@ public struct BarMark<DataSource>: Mark {
         self.value = value.applyDomain(data)
         self.category = category.applyDomain(data)
         self.orientation = orientation
-        axis = [:]
+        xAxis = nil
+        yAxis = nil
     }
 
     /// Creates a list of symbols to render into a rectangular drawing area that you specify.
@@ -103,7 +107,7 @@ public struct BarMark<DataSource>: Mark {
         return symbols
     }
 
-    public func axisFromMark(in _: CGRect) -> [Axis.AxisLocation: Axis] {
+    public func axisForMark(in _: CGRect) -> [Axis.AxisLocation: Axis] {
         [:]
     }
 }

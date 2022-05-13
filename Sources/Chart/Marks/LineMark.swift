@@ -24,7 +24,8 @@ public struct LineMark<DataSource>: Mark {
         .quantitative
     }
 
-    public let axis: [Axis.AxisLocation: Axis]
+    public let xAxis: Axis?
+    public let yAxis: Axis?
 
     public init(data: [DataSource],
                 x xChannel: QuantitativeVisualChannel<DataSource>,
@@ -33,7 +34,8 @@ public struct LineMark<DataSource>: Mark {
         self.data = data
         x = xChannel.applyDomain(data)
         y = yChannel.applyDomain(data)
-        axis = [:]
+        xAxis = nil
+        yAxis = nil
     }
 
     /// Creates a list of symbols to render into a rectangular drawing area that you specify.
@@ -72,7 +74,7 @@ public struct LineMark<DataSource>: Mark {
         return symbols
     }
 
-    public func axisFromMark(in _: CGRect) -> [Axis.AxisLocation: Axis] {
+    public func axisForMark(in _: CGRect) -> [Axis.AxisLocation: Axis] {
         [:]
     }
 }
