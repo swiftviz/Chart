@@ -10,6 +10,11 @@ $(xcrun --find swift) build --target Chart \
     -Xswiftc -emit-symbol-graph \
     -Xswiftc -emit-symbol-graph-dir -Xswiftc .build/symbol-graphs
 
+rm -f .build/symbol-graphs/Numerics*
+rm -f .build/symbol-graphs/RealModule*
+rm -f .build/symbol-graphs/ComplexModule*
+rm -f .build/symbol-graphs/SwiftVizScale*
+
 $(xcrun --find docc) convert Sources/Chart/Documentation.docc \
     --analyze \
     --fallback-display-name Chart \

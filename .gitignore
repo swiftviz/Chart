@@ -32,4 +32,5 @@ playground.xcworkspace
 .build/
 info.lcov
 **/.docc-build/
-#Sources/Chart/Documentation.docc/
+all_identifiers.txt
+all_symbols.txt
