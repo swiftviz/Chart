@@ -1,4 +1,4 @@
-# `Chart`
+# ``Chart``
 
 A declarative charting library that extends SwiftUI.
 
