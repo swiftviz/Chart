@@ -10,6 +10,9 @@ import Foundation
 
 /// A type-erased Mark.
 public struct AnyMark: Mark {
+    public var xAxis: Axis?
+    public var yAxis: Axis?
+
     public var xPropertyType: VisualPropertyType
     public var yPropertyType: VisualPropertyType
 
@@ -18,12 +21,14 @@ public struct AnyMark: Mark {
 
     public init<T: Mark>(_ specificMark: T) {
         wrappedSymbolsForMark = specificMark.symbolsForMark(in:)
-        wrappedAxisForMark = specificMark.axisFromMark(in:)
         xPropertyType = specificMark.xPropertyType
         yPropertyType = specificMark.yPropertyType
+        xAxis = specificMark.xAxis
+        yAxis = specificMark.yAxis
+        wrappedAxisForMark = specificMark.axisForMark(in:)
     }
 
-    public func axisFromMark(in rect: CGRect) -> [Axis.AxisLocation: Axis] {
+    public func axisForMark(in rect: CGRect) -> [Axis.AxisLocation: Axis] {
         wrappedAxisForMark(rect)
     }
 

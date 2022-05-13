@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftVizScale
 
 /// A type that can be encoded into the visual property of a mark.
 public protocol TypeOfVisualProperty {
@@ -28,6 +29,13 @@ public enum VisualPropertyType {
     case temporal // (Date)
     case categorical // (String)
 }
+
+// public enum VisualPropertyScale {
+//    case quantitative(AnyContinuousScale) // (Double)
+//    case ordinal // (Int) - n/a yet
+//    case temporal // (Date) - n/a yet
+//    case categorical // (String) - one of point or band scale - make an AnyDiscreteScale?
+// }
 
 // MARK: - protocol conformance on types that can represent Visual Properties
 

@@ -31,7 +31,7 @@ public struct IndividualLine {
 
     // var title: String { get } ?
     let strokeColor: SwiftUI.Color // ? (https://developer.apple.com/documentation/coregraphics/cgcolor)
-    let style: SwiftUI.StrokeStyle // linewidth, cap, join, miter, dash, and dash-phase
+    let style: SwiftUI.StrokeStyle // line-width, cap, join, miter, dash, and dash-phase
 
     init(x1: CGFloat, y1: CGFloat, x2: CGFloat, y2: CGFloat, size _: CGFloat, color: SwiftUI.Color = .primary, style: SwiftUI.StrokeStyle = StrokeStyle()) {
         self.x1 = x1
