@@ -51,8 +51,8 @@ public struct Axis {
     // configured Axis (or two) for drawing: `func axisFromMark(in: CGRect) -> [Axis.AxisLocation: Axis]`
 
     let axisLocation: AxisLocation
+    let requestedTickValues: [Double]
     let rule: Bool
-    let ticks: [Tick<CGFloat>]
     let tickLength: CGFloat
     let tickOrientation: TickOrientation
     let tickPadding: CGFloat
@@ -61,10 +61,14 @@ public struct Axis {
     let labelAlignment: Alignment
     let labelOffset: CGFloat
 
+    // only available on a fully configured Axis specification
+    // use `addingTicks()` to add on the configured values.
+    var ticks: [Tick<CGFloat>]
     /// A declaration of how to draw an axis for a chart.
     /// - Parameters:
     ///   - axisLocation: The location of the axis for the chart.
     ///   - rule: A Boolean value that indicates the axis should be drawn on the edge of the chart.
+    ///   - requestedTickValues: A list of tick values to present on the axis.
     ///   - ticks: A list of tick values and locations to present on the axis.
     ///   - tickLength: The length of the ticks.
     ///   - tickOrientation: The direction the tick is drawn from the axis.
@@ -75,7 +79,7 @@ public struct Axis {
     ///   - labelOffset: The offset for the label away from the axis.
     public init(_ axisLocation: AxisLocation,
                 rule: Bool = true,
-                ticks: [Tick<CGFloat>], // cant' get to the final values for CGFloat until we know the size of the area...
+                requestedTickValues: [Double] = [],
                 tickLength: CGFloat = 3,
                 tickOrientation: TickOrientation = .outer,
                 tickPadding: CGFloat = 5,
@@ -85,7 +89,6 @@ public struct Axis {
                 labelAlignment: Alignment = .center)
     {
         self.axisLocation = axisLocation
-        self.ticks = ticks
         self.tickLength = tickLength
         self.tickPadding = tickPadding
         self.tickOrientation = tickOrientation
@@ -94,5 +97,13 @@ public struct Axis {
         self.label = label
         self.labelOffset = labelOffset
         self.labelAlignment = labelAlignment
+        self.requestedTickValues = requestedTickValues
+        ticks = []
+    }
+
+    func addingTicks(_ ticks: [Tick<CGFloat>]) -> Self {
+        var copy = self
+        copy.ticks = ticks
+        return copy
     }
 }
