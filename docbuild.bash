@@ -13,6 +13,10 @@ $(xcrun --find swift) build --target Chart \
     -Xswiftc -emit-symbol-graph \
     -Xswiftc -emit-symbol-graph-dir -Xswiftc .build/symbol-graphs
 
+rm -f .build/symbol-graphs/Numerics*
+rm -f .build/symbol-graphs/RealModule*
+rm -f .build/symbol-graphs/ComplexModule*
+rm -f .build/symbol-graphs/SwiftVizScale*
 # Enables deterministic output
 # - useful when you're committing the results to host on github pages
 export DOCC_JSON_PRETTYPRINT=YES
