@@ -12,3 +12,41 @@ The core concept behind declarative charting is explored in quite a bit of detai
 - [A Grammar of Interactive Graphics](https://idl.cs.washington.edu/files/2017-VegaLite-InfoVis.pdf)
 
 ## Topics
+
+### Charts
+
+- ``Chart/Chart``
+
+### Marks
+
+- ``Chart/LineMark``
+- ``Chart/PointMark``
+- ``Chart/BarMark``
+- ``Chart/AnyMark``
+- ``Chart/Mark``
+
+### Symbols
+
+- ``Chart/MarkSymbol``
+- ``Chart/Axis``
+- ``Chart/IndividualLine``
+- ``Chart/IndividualPoint``
+- ``Chart/IndividualRect``
+- ``Chart/IndividualRule``
+- ``Chart/PlotShape``
+
+### Visual Channels
+
+- ``Chart/QuantitativeVisualChannel``
+- ``Chart/DiscreteVisualChannel``
+- ``Chart/BandVisualChannel``
+- ``Chart/TypeOfVisualProperty``
+- ``Chart/VisualPropertyType``
+
+### Building Charts
+
+- ``Chart/ChartBuilder``
+- ``Chart/ChartSpec``
+- ``Chart/ChartOrientation``
+- ``Chart/DrawingMode``
+
