@@ -12,10 +12,10 @@ import SwiftVizScale
     import CoreGraphics
 #endif
 /// A type that can be encoded into the visual property of a mark.
-public protocol TypeOfVisualProperty {
-    /// The kind of visual property this property maps into by default.
-    var visualPropertyType: VisualPropertyType { get }
-}
+// public protocol TypeOfVisualProperty {
+//    /// The kind of visual property this property maps into by default.
+//    var visualPropertyType: VisualPropertyType { get }
+// }
 
 /// A type that represents a kind of visual property.
 ///
@@ -26,17 +26,23 @@ public protocol TypeOfVisualProperty {
 /// And discrete types:
 /// - `ordinal`, typically represented by `Int`
 /// - `categorical`, typically represented by `String`
-public enum VisualPropertyType {
-    case quantitative // (Double)
-    case ordinal // (Int)
-    case temporal // (Date)
-    case categorical // (String)
-}
+// public enum VisualPropertyType {
+//    case quantitative // (Double)
+//    case ordinal // (Int)
+//    case temporal // (Date)
+//    case categorical // (String)
+// }
 
+/// A type that represents the scale associated with a visual property.
 public enum VisualPropertyScale {
     case continuous(AnyContinuousScale<Double, CGFloat>) // continuous
     case band(BandScale<String, CGFloat>) // discrete
     case point(PointScale<String, CGFloat>) // discrete
+
+    // seems like we want another method here to just get the values of the tick labels
+    func tickLabels(values _: [Double] = []) -> [String] {
+        []
+    }
 
     func tickValuesFromScale(lower: CGFloat, higher: CGFloat, values: [Double] = []) -> [Tick<CGFloat>] {
         switch self {

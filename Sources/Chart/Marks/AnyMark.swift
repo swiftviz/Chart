@@ -14,7 +14,7 @@ public struct AnyMark: Mark {
     public var yPropertyScale: VisualPropertyScale
 
     private let wrappedSymbolsForMark: (_: CGRect) -> [MarkSymbol]
-    private let wrappedAxisForMark: (_: CGRect) -> [Axis.AxisLocation: Axis]
+    private let wrappedAxisForMark: (_: CGRect) -> [Axis]
 
     public init<T: Mark>(_ specificMark: T) {
         wrappedSymbolsForMark = specificMark.symbolsForMark(in:)
@@ -23,7 +23,7 @@ public struct AnyMark: Mark {
         wrappedAxisForMark = specificMark.axisForMark(in:)
     }
 
-    public func axisForMark(in rect: CGRect) -> [Axis.AxisLocation: Axis] {
+    public func axisForMark(in rect: CGRect) -> [Axis] {
         wrappedAxisForMark(rect)
     }
 
