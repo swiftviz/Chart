@@ -5,6 +5,7 @@
 //  Created by Joseph Heck on 3/25/22.
 //
 import SwiftUI
+import SwiftVizScale
 
 /// A type that represents one or more visual symbols displays in a chart.
 ///
@@ -27,13 +28,19 @@ public protocol Mark {
 }
 
 extension Mark {
+    /// Returns the set of axis configurations that have been enabled for the mark
+    /// - Parameter in: The rectangle into which to scale and draw axis.
+    /// - Returns: A dictionary of Axis keyed by the axis location.
+    ///
+    /// The default implementation for a ``Chart/Mark`` returns an empty dictionary.
+    /// Conform a mark that should return a ``Chart/Axis`` definitions to ``Chart/MarkAxis``, or provide
+    /// your own implementation the returns a dictionary of configured Axis declarations.
     func axisForMark(in _: CGRect) -> [Axis.AxisLocation: Axis] {
-        // The default response provides *no* axis information for a Mark
-        // Conform/implement the mark to MarkAxis to get its default implementation
         [:]
     }
 }
 
+/// A type of mark that supports defining an Axis and providing configured Axis definitions to render on a chart.
 public protocol MarkAxis: Mark {
     // really kind of wishing that protocols could define 'internal' properties that were accessible
     // to the protocol default implementations...
@@ -63,11 +70,11 @@ public extension MarkAxis {
     func axisForMark(in rect: CGRect) -> [Axis.AxisLocation: Axis] {
         var axisSet: [Axis.AxisLocation: Axis] = [:]
         if let _xAxis = _xAxis {
-            let ticks = xPropertyScale.tickValuesFromScale(lower: rect.origin.x, higher: rect.origin.x + rect.width)
+            let ticks = xPropertyScale.tickValuesFromScale(lower: rect.origin.x, higher: rect.origin.x + rect.width, values: _xAxis.requestedTickValues)
             axisSet[_xAxis.axisLocation] = _xAxis.addingTicks(ticks)
         }
         if let _yAxis = _yAxis {
-            let ticks = yPropertyScale.tickValuesFromScale(lower: rect.origin.y, higher: rect.origin.y + rect.height)
+            let ticks = yPropertyScale.tickValuesFromScale(lower: rect.origin.y, higher: rect.origin.y + rect.height, values: _yAxis.requestedTickValues)
             axisSet[_yAxis.axisLocation] = _yAxis.addingTicks(ticks)
         }
         return axisSet
