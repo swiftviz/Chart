@@ -45,6 +45,7 @@ public struct Chart: View {
         chartRenderer.createView(specCollection)
     }
 
+    // @inlinable public func padding(_ edges: Edge.Set = .all, _ length: CGFloat? = nil) -> some View
     public init(margin: EdgeInsets = EdgeInsets(),
                 inset: EdgeInsets = EdgeInsets(),
                 @ChartBuilder _ chartDecl: @escaping () -> ChartSpec)
@@ -54,5 +55,32 @@ public struct Chart: View {
         specCollection = chartDecl()
         specCollection.margin = margin
         specCollection.inset = inset
+    }
+}
+
+extension EdgeInsets {
+    init(_ edges: Edge.Set = .all, _ length: CGFloat? = nil) {
+        var top: CGFloat = 0
+        var leading: CGFloat = 0
+        var bottom: CGFloat = 0
+        var trailing: CGFloat = 0
+        if edges.contains(.leading) {
+            leading = length ?? 0
+        }
+        if edges.contains(.trailing) {
+            trailing = length ?? 0
+        }
+        if edges.contains(.top) {
+            top = length ?? 0
+        }
+        if edges.contains(.bottom) {
+            bottom = length ?? 0
+        }
+        self.init(top: top, leading: leading, bottom: bottom, trailing: trailing)
+    }
+
+    init(_ length: CGFloat? = nil) {
+        let value: CGFloat = length ?? 0
+        self.init(top: value, leading: value, bottom: value, trailing: value)
     }
 }

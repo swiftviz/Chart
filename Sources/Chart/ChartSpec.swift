@@ -39,11 +39,11 @@ public struct ChartSpec {
         self.inset = inset
     }
 
-    /// Returns a new chart declaration that is the combination of the original specification and the specification you provide.
+    /// Returns a new chart declaration that adds the marks from the specification you provide to the current specification.
     /// - Parameter spec: A chart specification to merge.
     public func merging(_ spec: ChartSpec) -> ChartSpec {
         var combinedMarks: [AnyMark] = marks
         combinedMarks.append(contentsOf: spec.marks)
-        return ChartSpec(marks: combinedMarks, margin: margin, inset: inset)
+        return ChartSpec(marks: combinedMarks, margin: spec.margin, inset: spec.inset)
     }
 }

@@ -47,17 +47,22 @@ public protocol MarkAxis: Mark {
     var _xAxis: Axis? { get set }
     var _yAxis: Axis? { get set }
 
+    /// Draws an X axis on the chart.
     func xAxis() -> Self
+
+    /// Draws an X axis on the chart.
     func yAxis() -> Self
 }
 
 public extension MarkAxis {
+    /// Draws an X axis on the chart.
     func xAxis() -> Self {
         var newMark = self
         newMark._xAxis = Axis(.bottom)
         return newMark
     }
 
+    /// Draws an X axis on the chart.
     func yAxis() -> Self {
         var newMark = self
         newMark._yAxis = Axis(.leading)

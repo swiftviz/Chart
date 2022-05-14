@@ -21,9 +21,6 @@ extension CGRect {
 }
 
 class ChartRenderer {
-    // pre-process the collection of marks provided to determine what, if any, axis
-    // and margins need to be accounted for in rendering out the view.
-
     func createView(_ specification: ChartSpec) -> some View {
         // init(opaque: Bool = false,
         //      colorMode: ColorRenderingMode = .nonLinear,
@@ -32,6 +29,9 @@ class ChartRenderer {
         //      symbols: () -> Symbols
         // )
         Canvas { context, size in
+            // pre-process the collection of marks provided to determine what, if any, axis
+            // and margins need to be accounted for in rendering out the view.
+
             // walk the collection of marks (`AnyMark`)
             // - first determine any insets needed for axis defined within them (TBD)
 
