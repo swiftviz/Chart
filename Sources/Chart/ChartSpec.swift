@@ -6,33 +6,37 @@
 //
 
 import Foundation
+import SwiftUI
 import SwiftVizScale
 
 /// A declarative chart specification.
 public struct ChartSpec {
     // The marks that make up the symbols of the chart
     let marks: [AnyMark]
-
-    let xTopPropertyType: VisualPropertyType? = nil
-    let xBottomPropertyType: VisualPropertyType? = nil
-    let yLeadingPropertyType: VisualPropertyType? = nil
-    let yTrailingPropertyType: VisualPropertyType? = nil
+    var margin: EdgeInsets
+    var inset: EdgeInsets
 
     /// Creates a new, default chart declaration.
     public init() {
         marks = []
+        margin = EdgeInsets()
+        inset = EdgeInsets()
     }
 
     /// Creates a new chart declaration with a mark you provide.
     /// - Parameter mark: A mark declaration.
-    public init(mark: AnyMark) {
+    public init(mark: AnyMark, margin: EdgeInsets = EdgeInsets(), inset: EdgeInsets = EdgeInsets()) {
         marks = [mark]
+        self.margin = margin
+        self.inset = inset
     }
 
     /// Creates a new chart declaration with the marks you provide.
     /// - Parameter marks: A list of mark declarations.
-    public init(marks: [AnyMark]) {
+    public init(marks: [AnyMark], margin: EdgeInsets = EdgeInsets(), inset: EdgeInsets = EdgeInsets()) {
         self.marks = marks
+        self.margin = margin
+        self.inset = inset
     }
 
     /// Returns a new chart declaration that is the combination of the original specification and the specification you provide.
@@ -40,6 +44,6 @@ public struct ChartSpec {
     public func merging(_ spec: ChartSpec) -> ChartSpec {
         var combinedMarks: [AnyMark] = marks
         combinedMarks.append(contentsOf: spec.marks)
-        return ChartSpec(marks: combinedMarks)
+        return ChartSpec(marks: combinedMarks, margin: margin, inset: inset)
     }
 }

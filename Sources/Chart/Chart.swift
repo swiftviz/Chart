@@ -45,9 +45,14 @@ public struct Chart: View {
         chartRenderer.createView(specCollection)
     }
 
-    public init(@ChartBuilder _ chartDecl: @escaping () -> ChartSpec) {
+    public init(margin: EdgeInsets = EdgeInsets(),
+                inset: EdgeInsets = EdgeInsets(),
+                @ChartBuilder _ chartDecl: @escaping () -> ChartSpec)
+    {
         // invoke the closure to get the declared sets of marks as a list of AnyMark
         // that we can pass into the renderer to evaluate into individual symbols.
         specCollection = chartDecl()
+        specCollection.margin = margin
+        specCollection.inset = inset
     }
 }
