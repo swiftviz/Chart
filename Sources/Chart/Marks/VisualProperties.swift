@@ -7,7 +7,10 @@
 
 import Foundation
 import SwiftVizScale
-
+#if canImport(CoreGraphics)
+    // enables referencing CGFloat for iOS
+    import CoreGraphics
+#endif
 /// A type that can be encoded into the visual property of a mark.
 public protocol TypeOfVisualProperty {
     /// The kind of visual property this property maps into by default.
