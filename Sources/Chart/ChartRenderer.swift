@@ -32,6 +32,23 @@ class ChartRenderer {
             // pre-process the collection of marks provided to determine what, if any, axis
             // and margins need to be accounted for in rendering out the view.
 
+            // foreach Mark, get the (partial) axis configurations and generate the labels
+            // using `func axisForMark(in: CGRect) -> [Axis]`, passing in a guesstimate CGRect
+            // of the available space inset with the combination of 'margin' and 'inset' defined
+            // in the ChartSpec.
+            // In particular, we need to get the tick *values* so that we can calculate the maximum
+            // width for Y-axis ticks, and maximum height for X-axis ticks - and that along with the
+            // axis configuration (tick length, direction, label offset) can be used to compute
+            // a real working size for the interior drawing area of the chart itself.
+            // The value, in turn, can be used with `func axisForMark(in: CGRect) -> [Axis]`
+            // to get the full tick values along with their location.
+
+            // leaning into VisualPropertyScale method: `func tickLabels(values: [Double] = []) -> [String]`
+            // and if the visual property is continuous, then it values the values as within the domain
+            // of the underlying scale, then converts them into strings and returns the list of strings.
+            // If no values are provided, or it's a discrete scale, then it returns the strings of the
+            // tick values from the underlying scale.
+
             // walk the collection of marks (`AnyMark`)
             // - first determine any insets needed for axis defined within them (TBD)
 

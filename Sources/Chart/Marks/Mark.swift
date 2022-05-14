@@ -24,7 +24,7 @@ public protocol Mark {
     /// Returns the set of axis configurations that have been enabled for the mark
     /// - Parameter in: The rectangle into which to scale and draw axis.
     /// - Returns: A dictionary of Axis keyed by the axis location.
-    func axisForMark(in: CGRect) -> [Axis.AxisLocation: Axis]
+    func axisForMark(in: CGRect) -> [Axis]
 }
 
 extension Mark {
@@ -72,15 +72,15 @@ public extension MarkAxis {
     /// Returns the set of axis configurations that have been enabled for the mark
     /// - Parameter in: The rectangle into which to scale and draw axis.
     /// - Returns: A dictionary of Axis keyed by the axis location.
-    func axisForMark(in rect: CGRect) -> [Axis.AxisLocation: Axis] {
-        var axisSet: [Axis.AxisLocation: Axis] = [:]
+    func axisForMark(in rect: CGRect) -> [Axis] {
+        var axisSet: [Axis] = []
         if let _xAxis = _xAxis {
             let ticks = xPropertyScale.tickValuesFromScale(lower: rect.origin.x, higher: rect.origin.x + rect.width, values: _xAxis.requestedTickValues)
-            axisSet[_xAxis.axisLocation] = _xAxis.addingTicks(ticks)
+            axisSet.append(_xAxis.addingTicks(ticks))
         }
         if let _yAxis = _yAxis {
             let ticks = yPropertyScale.tickValuesFromScale(lower: rect.origin.y, higher: rect.origin.y + rect.height, values: _yAxis.requestedTickValues)
-            axisSet[_yAxis.axisLocation] = _yAxis.addingTicks(ticks)
+            axisSet.append(_yAxis.addingTicks(ticks))
         }
         return axisSet
     }
