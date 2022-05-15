@@ -32,37 +32,6 @@ class ChartRenderer {
             // pre-process the collection of marks provided to determine what, if any, axis
             // and margins need to be accounted for in rendering out the view.
 
-            var xAxisList: [Axis] = []
-            var yAxisList: [Axis] = []
-            for mark in specification.marks {
-                if let xAxis = mark.getXAxis() {
-                    xAxisList.append(xAxis)
-                }
-                if let yAxis = mark.getYAxis() {
-                    yAxisList.append(yAxis)
-                }
-            }
-
-            let maxXAxisHeight: CGFloat = xAxisList.reduce(0.0) { partialResult, currentAxis in
-                let tickLabels: [String] = currentAxis.scale.tickLabels(values: currentAxis.requestedTickValues)
-                let maxResolvedLabelHeight = tickLabels.reduce(0.0) { partialResult, label in
-                    let captionedTextSampleSize: CGSize = context.resolve(Text(label).font(.caption)).measure(in: size)
-                    return max(captionedTextSampleSize.height, partialResult)
-                }
-                return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelHeight)
-            }
-            print(maxXAxisHeight)
-
-            let maxYAxisWidth: CGFloat = yAxisList.reduce(0.0) { partialResult, currentAxis in
-                let tickLabels: [String] = currentAxis.scale.tickLabels(values: currentAxis.requestedTickValues)
-                let maxResolvedLabelWidth = tickLabels.reduce(0.0) { partialResult, label in
-                    let captionedTextSampleSize: CGSize = context.resolve(Text(label).font(.caption)).measure(in: size)
-                    return max(captionedTextSampleSize.width, partialResult)
-                }
-                return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelWidth)
-            }
-            print(maxYAxisWidth)
-
             // foreach Mark, get the (partial) axis configurations and generate the labels
             // using `func axisForMark(in: CGRect) -> [Axis]`, passing in a guesstimate CGRect
             // of the available space inset with the combination of 'margin' and 'inset' defined
@@ -74,25 +43,75 @@ class ChartRenderer {
             // The value, in turn, can be used with `func axisForMark(in: CGRect) -> [Axis]`
             // to get the full tick values along with their location.
 
-            // leaning into VisualPropertyScale method: `func tickLabels(values: [Double] = []) -> [String]`
-            // and if the visual property is continuous, then it values the values as within the domain
-            // of the underlying scale, then converts them into strings and returns the list of strings.
-            // If no values are provided, or it's a discrete scale, then it returns the strings of the
-            // tick values from the underlying scale.
+            // create a list of axis specs that have been defined on the marks
+            var xAxisList: [Axis] = []
+            var yAxisList: [Axis] = []
+            for mark in specification.marks {
+                if let xAxis = mark.getXAxis() {
+                    xAxisList.append(xAxis)
+                }
+                if let yAxis = mark.getYAxis() {
+                    yAxisList.append(yAxis)
+                }
+            }
 
-            // walk the collection of marks (`AnyMark`)
-            // - first determine any insets needed for axis defined within them (TBD)
+            // get the maximum height of the set of Axis. In a perfect world, there would only
+            // be one axis for which we need to calculate this, but the DSL result builder
+            // mechanism doesn't allow for errors - so there's no easy way to provide feedback
+            // that you've specified `.xAxis()` on two different marks - so we keep to the
+            // pathological case and compute it assuming that _every_ mark has an X, and Y, axis
+            // defined.
+            let maxXAxisHeight: CGFloat = xAxisList.reduce(0.0) { partialResult, currentAxis in
+                // for the current axis, get the labels for the ticks that are associated
+                // with the scale for that axis.
+                let tickLabels: [String] = currentAxis.scale.tickLabels(values: currentAxis.requestedTickValues)
+                // from the labels, resolve a Text() field in the current GraphicsContext
+                // so that we can get the label's size. Right now this is presuming that the
+                // font of the tick label is using `.caption`. Once we have the CGSize sets,
+                // reduce that into a single (max) height value.
+                let maxResolvedLabelHeight = tickLabels.reduce(0.0) { partialResult, label in
+                    let captionedTextSampleSize: CGSize = context.resolve(Text(label).font(.caption)).measure(in: size)
+                    return max(captionedTextSampleSize.height, partialResult)
+                }
+                // use the tick length, padding, and the max label height to determine a maximum
+                // axis height
+                return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelHeight)
+            }
+            print(maxXAxisHeight)
+
+            let maxYAxisWidth: CGFloat = yAxisList.reduce(0.0) { partialResult, currentAxis in
+                // for the current axis, get the labels for the ticks that are associated
+                // with the scale for that axis.
+                let tickLabels: [String] = currentAxis.scale.tickLabels(values: currentAxis.requestedTickValues)
+                // from the labels, resolve a Text() field in the current GraphicsContext
+                // so that we can get the label's size. Right now this is presuming that the
+                // font of the tick label is using `.caption`. Once we have the CGSize sets,
+                // reduce that into a single (max) width value.
+                let maxResolvedLabelWidth = tickLabels.reduce(0.0) { partialResult, label in
+                    let captionedTextSampleSize: CGSize = context.resolve(Text(label).font(.caption)).measure(in: size)
+                    return max(captionedTextSampleSize.width, partialResult)
+                }
+                // use the tick length, padding, and the max label width to determine a maximum
+                // axis width
+                return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelWidth)
+            }
+            print(maxYAxisWidth)
+
+            // With the X axis height, and Y axis width, we can calculate a proper internal
+            // CGRect that is the inset area into which we want to draw the marks, as well
+            // as the locations into which we want to draw the X and Y axis, if they've been
+            // specified.
+
+            // The width of any X axis is determined by that internal size, as is the height
+            // for any Y axis.
 
             let fullDrawArea = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
             let drawArea: CGRect = fullDrawArea.inset(amount: 5) ?? fullDrawArea
 
-            let captionedTextSampleSize: CGSize = context.resolve(Text("250").font(.caption)).measure(in: CGSize(width: 50, height: 50))
-            print(captionedTextSampleSize.height)
             // - then calculate the marks for the provided drawing area
 
             for mark in specification.marks {
-//                print("Mark: \(mark)")
-
+                // print("Mark: \(mark)")
                 // - and iterate through each of the individual symbols
                 // - render them into the canvas based on the mode of the shape
                 for marksymbol in mark.symbolsForMark(in: drawArea) {
