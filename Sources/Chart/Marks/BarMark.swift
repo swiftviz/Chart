@@ -28,13 +28,6 @@ public struct BarMark<DataSource>: Mark, MarkAxis {
 
     public var _xAxis: Axis?
     public var _yAxis: Axis?
-    public func getXAxis() -> Axis? {
-        _yAxis
-    }
-
-    public func getYAxis() -> Axis? {
-        _yAxis
-    }
 
     public var xPropertyScale: VisualPropertyScale {
         switch orientation {

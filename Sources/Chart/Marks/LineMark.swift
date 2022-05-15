@@ -26,13 +26,6 @@ public struct LineMark<DataSource>: Mark, MarkAxis {
 
     public var _xAxis: Axis?
     public var _yAxis: Axis?
-    public func getXAxis() -> Axis? {
-        _yAxis
-    }
-
-    public func getYAxis() -> Axis? {
-        _yAxis
-    }
 
     public init(data: [DataSource],
                 x xChannel: QuantitativeVisualChannel<DataSource>,

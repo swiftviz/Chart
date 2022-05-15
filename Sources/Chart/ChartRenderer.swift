@@ -47,10 +47,10 @@ class ChartRenderer {
             var xAxisList: [Axis] = []
             var yAxisList: [Axis] = []
             for mark in specification.marks {
-                if let xAxis = mark.getXAxis() {
+                if let xAxis = mark._xAxis {
                     xAxisList.append(xAxis)
                 }
-                if let yAxis = mark.getYAxis() {
+                if let yAxis = mark._yAxis {
                     yAxisList.append(yAxis)
                 }
             }
