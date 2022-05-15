@@ -1,3 +1,7 @@
+//
+//  BarChartRenderTests.swift
+//
+
 import Chart
 import SnapshotTesting
 import SwiftUI

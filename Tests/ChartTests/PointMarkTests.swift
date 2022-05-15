@@ -1,9 +1,6 @@
 //
 //  DotMarkTests.swift
 //
-//
-//  Created by Joseph Heck on 4/6/22.
-//
 
 import Chart
 import XCTest
