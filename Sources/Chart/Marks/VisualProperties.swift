@@ -40,8 +40,19 @@ public enum VisualPropertyScale {
     case point(PointScale<String, CGFloat>) // discrete
 
     // seems like we want another method here to just get the values of the tick labels
-    func tickLabels(values _: [Double] = []) -> [String] {
-        []
+    func tickLabels(values: [Double] = []) -> [String] {
+        switch self {
+        case let .continuous(anyContinuousScale):
+            if values.isEmpty {
+                return anyContinuousScale.defaultTickValues()
+            } else {
+                return anyContinuousScale.validTickValues(values)
+            }
+        case let .band(bandScale):
+            return bandScale.defaultTickValues()
+        case let .point(pointScale):
+            return pointScale.defaultTickValues()
+        }
     }
 
     func tickValuesFromScale(lower: CGFloat, higher: CGFloat, values: [Double] = []) -> [Tick<CGFloat>] {
@@ -50,7 +61,7 @@ public enum VisualPropertyScale {
             if values.isEmpty {
                 return scale.ticks(rangeLower: lower, rangeHigher: higher)
             } else {
-                return scale.tickValues(values, from: lower, to: higher)
+                return scale.ticksFromValues(values, from: lower, to: higher)
             }
         case let .band(scale):
             return scale.ticks(rangeLower: lower, rangeHigher: higher)
