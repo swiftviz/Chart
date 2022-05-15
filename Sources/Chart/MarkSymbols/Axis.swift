@@ -1,9 +1,6 @@
 //
 //  Axis.swift
 //
-//
-//  Created by Joseph Heck on 5/9/22.
-//
 
 import SwiftUI
 import SwiftVizScale

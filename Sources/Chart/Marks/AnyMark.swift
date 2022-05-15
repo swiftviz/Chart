@@ -1,9 +1,6 @@
 //
 //  Mark.swift
 //
-//
-//  Created by Joseph Heck on 4/20/22.
-//
 
 import CoreGraphics
 import Foundation
@@ -15,7 +12,7 @@ public struct AnyMark: Mark {
     public var _yAxis: Axis?
     public var _xAxis: Axis?
 
-    private let wrappedSymbolsForMark: (_: CGRect) -> [MarkSymbol]
+    private let wrappedSymbolsForMark: (_: CGRect) -> [Sigil]
     private let wrappedAxisForMark: (_: CGRect) -> [Axis]
 
     public init<T: Mark>(_ specificMark: T) {
@@ -29,7 +26,7 @@ public struct AnyMark: Mark {
         wrappedAxisForMark(rect)
     }
 
-    public func symbolsForMark(in rect: CGRect) -> [MarkSymbol] {
+    public func symbolsForMark(in rect: CGRect) -> [Sigil] {
         wrappedSymbolsForMark(rect)
     }
 }

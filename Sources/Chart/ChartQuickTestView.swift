@@ -1,9 +1,7 @@
 //
 //  ChartQuickTestView.swift
 //
-//
-//  Created by Joseph Heck on 5/2/22.
-//
+
 import SwiftUI
 
 struct ChartQuickTestView: View {

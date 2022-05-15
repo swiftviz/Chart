@@ -1,9 +1,6 @@
 //
 //  DotMark.swift
 //
-//
-//  Created by Joseph Heck on 3/25/22.
-//
 
 import CoreGraphics
 import SwiftUI
@@ -41,10 +38,10 @@ public struct PointMark<DataSource>: Mark, MarkAxis {
     /// Creates a list of symbols to render into a rectangular drawing area that you specify.
     /// - Parameter in: The rectangle into which to scale and draw the symbols.
     /// - Returns: A list of symbol data structures with the information needed to draw them onto a canvas or into CoreGraphics context.
-    public func symbolsForMark(in rect: CGRect) -> [MarkSymbol] {
+    public func symbolsForMark(in rect: CGRect) -> [Sigil] {
         let xScale = x.range(rangeLower: 0, rangeHigher: rect.size.width)
         let yScale = y.range(rangeLower: 0, rangeHigher: rect.size.height)
-        var symbols: [MarkSymbol] = []
+        var symbols: [Sigil] = []
         print("Creating symbols within rect: \(rect)")
         print("X scale: \(xScale)")
         print("Y scale: \(yScale)")

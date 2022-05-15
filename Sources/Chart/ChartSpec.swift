@@ -1,8 +1,5 @@
 //
-//  File.swift
-//
-//
-//  Created by Joseph Heck on 5/9/22.
+//  ChartSpec.swift
 //
 
 import Foundation
