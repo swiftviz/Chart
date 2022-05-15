@@ -1,11 +1,15 @@
+//
+//  Sigil.swift
+//
+
 import SwiftUI
 
 /// A type that represents an individual symbol to draw within a chart context.
 ///
-/// `MarkSymbol` provides a single type collection point to gather the individual symbols
+/// `Sigil` provides a single type collection point to gather the individual symbols
 /// for use by `ChartRenderer` to draw those symbols at the appropriate location
 /// for chart visualization.
-public enum MarkSymbol {
+public enum Sigil {
     case point(IndividualPoint)
     case line(IndividualLine)
     case rect(IndividualRect)
@@ -14,6 +18,7 @@ public enum MarkSymbol {
     case image(Image)
 }
 
+/// A type that represents the values needed to draw a line in a chart.
 public struct IndividualLine {
     let x1: CGFloat
     let y1: CGFloat
@@ -52,7 +57,7 @@ public struct IndividualLine {
     }
 }
 
-// ?? make generic versions of this that can draw their "shape" into the space provided?
+/// A type that represents the values needed to draw a point in a chart.
 public struct IndividualPoint {
     let x: CGFloat
     let y: CGFloat
@@ -76,6 +81,7 @@ public struct IndividualPoint {
     }
 }
 
+/// A type that represents the values needed to draw a rectangle in a chart.
 public struct IndividualRect {
     let category: String
 
@@ -107,6 +113,7 @@ public struct IndividualRect {
     // var title: String { get } ?
 }
 
+/// A type that represents the values needed to draw a rule in a chart.
 public struct IndividualRule {
     let start: CGFloat
     let end: CGFloat

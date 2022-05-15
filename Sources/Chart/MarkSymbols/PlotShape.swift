@@ -1,9 +1,6 @@
 //
 //  PlotSymbol.swift
 //
-//
-//  Created by Joseph Heck on 4/28/22.
-//
 
 import SwiftUI
 

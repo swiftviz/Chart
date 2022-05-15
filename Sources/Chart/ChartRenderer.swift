@@ -1,9 +1,7 @@
 //
 //  ChartRenderer.swift
 //
-//
-//  Created by Joseph Heck on 4/20/22.
-//
+
 import SwiftUI
 
 extension CGRect {
@@ -44,6 +42,9 @@ class ChartRenderer {
             // to get the full tick values along with their location.
 
             // create a list of axis specs that have been defined on the marks
+
+            // TODO(heckj): need to break this up even further - there could be an X axis on top and bottom
+            // and a Y axis on leading and trailing. Should be 4 lists, not 2.
             var xAxisList: [Axis] = []
             var yAxisList: [Axis] = []
             for mark in specification.marks {

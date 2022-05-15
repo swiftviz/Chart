@@ -1,9 +1,6 @@
 //
 //  VisualProperties.swift
 //
-//
-//  Created by Joseph Heck on 3/25/22.
-//
 
 import Foundation
 import SwiftVizScale

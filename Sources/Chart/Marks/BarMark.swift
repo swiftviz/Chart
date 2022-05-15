@@ -1,9 +1,7 @@
 //
 //  BarMark.swift
 //
-//
-//  Created by Joseph Heck on 3/25/22.
-//
+
 import SwiftUI
 import SwiftVizScale
 
@@ -63,10 +61,10 @@ public struct BarMark<DataSource>: Mark, MarkAxis {
     /// Creates a list of symbols to render into a rectangular drawing area that you specify.
     /// - Parameter in: The rectangle into which to scale and draw the symbols.
     /// - Returns: A list of symbol data structures with the information needed to draw them onto a canvas or into CoreGraphics context.
-    public func symbolsForMark(in rect: CGRect) -> [MarkSymbol] {
+    public func symbolsForMark(in rect: CGRect) -> [Sigil] {
         // - apply the range onto the various VisualChannel scales, or pass it along when creating
         //   the symbols with final values. (from VisualChannel.provideScaledValue()
-        var symbols: [MarkSymbol] = []
+        var symbols: [Sigil] = []
         print("Creating symbols within rect: \(rect)")
         switch orientation {
         case .vertical:
