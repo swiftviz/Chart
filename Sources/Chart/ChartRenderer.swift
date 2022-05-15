@@ -32,6 +32,37 @@ class ChartRenderer {
             // pre-process the collection of marks provided to determine what, if any, axis
             // and margins need to be accounted for in rendering out the view.
 
+            var xAxisList: [Axis] = []
+            var yAxisList: [Axis] = []
+            for mark in specification.marks {
+                if let xAxis = mark.getXAxis() {
+                    xAxisList.append(xAxis)
+                }
+                if let yAxis = mark.getYAxis() {
+                    yAxisList.append(yAxis)
+                }
+            }
+
+            let maxXAxisHeight: CGFloat = xAxisList.reduce(0.0) { partialResult, currentAxis in
+                let tickLabels: [String] = currentAxis.scale.tickLabels(values: currentAxis.requestedTickValues)
+                let maxResolvedLabelHeight = tickLabels.reduce(0.0) { partialResult, label in
+                    let captionedTextSampleSize: CGSize = context.resolve(Text(label).font(.caption)).measure(in: size)
+                    return max(captionedTextSampleSize.height, partialResult)
+                }
+                return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelHeight)
+            }
+            print(maxXAxisHeight)
+
+            let maxYAxisWidth: CGFloat = yAxisList.reduce(0.0) { partialResult, currentAxis in
+                let tickLabels: [String] = currentAxis.scale.tickLabels(values: currentAxis.requestedTickValues)
+                let maxResolvedLabelWidth = tickLabels.reduce(0.0) { partialResult, label in
+                    let captionedTextSampleSize: CGSize = context.resolve(Text(label).font(.caption)).measure(in: size)
+                    return max(captionedTextSampleSize.width, partialResult)
+                }
+                return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelWidth)
+            }
+            print(maxYAxisWidth)
+
             // foreach Mark, get the (partial) axis configurations and generate the labels
             // using `func axisForMark(in: CGRect) -> [Axis]`, passing in a guesstimate CGRect
             // of the available space inset with the combination of 'margin' and 'inset' defined
@@ -61,6 +92,7 @@ class ChartRenderer {
 
             for mark in specification.marks {
 //                print("Mark: \(mark)")
+
                 // - and iterate through each of the individual symbols
                 // - render them into the canvas based on the mode of the shape
                 for marksymbol in mark.symbolsForMark(in: drawArea) {

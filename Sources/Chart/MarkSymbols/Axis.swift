@@ -51,6 +51,7 @@ public struct Axis {
     // configured Axis (or two) for drawing: `func axisFromMark(in: CGRect) -> [Axis.AxisLocation: Axis]`
 
     let axisLocation: AxisLocation
+    let scale: VisualPropertyScale
     let requestedTickValues: [Double]
     let rule: Bool
     let tickLength: CGFloat
@@ -78,6 +79,7 @@ public struct Axis {
     ///   - labelAlignment: The alignment of the label for the axis
     ///   - labelOffset: The offset for the label away from the axis.
     public init(_ axisLocation: AxisLocation,
+                scale: VisualPropertyScale,
                 rule: Bool = true,
                 requestedTickValues: [Double] = [],
                 tickLength: CGFloat = 3,
@@ -88,6 +90,7 @@ public struct Axis {
                 labelOffset: CGFloat = 0,
                 labelAlignment: Alignment = .center)
     {
+        self.scale = scale
         self.axisLocation = axisLocation
         self.tickLength = tickLength
         self.tickPadding = tickPadding

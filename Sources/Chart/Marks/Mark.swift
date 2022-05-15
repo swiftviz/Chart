@@ -25,6 +25,9 @@ public protocol Mark {
     /// - Parameter in: The rectangle into which to scale and draw axis.
     /// - Returns: A dictionary of Axis keyed by the axis location.
     func axisForMark(in: CGRect) -> [Axis]
+
+    func getXAxis() -> Axis?
+    func getYAxis() -> Axis?
 }
 
 extension Mark {
@@ -58,14 +61,14 @@ public extension MarkAxis {
     /// Draws an X axis on the chart.
     func xAxis() -> Self {
         var newMark = self
-        newMark._xAxis = Axis(.bottom)
+        newMark._xAxis = Axis(.bottom, scale: xPropertyScale)
         return newMark
     }
 
     /// Draws an X axis on the chart.
     func yAxis() -> Self {
         var newMark = self
-        newMark._yAxis = Axis(.leading)
+        newMark._yAxis = Axis(.leading, scale: yPropertyScale)
         return newMark
     }
 
