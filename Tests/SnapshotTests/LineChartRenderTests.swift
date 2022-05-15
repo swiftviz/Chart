@@ -1,3 +1,7 @@
+//
+//  LineChartRenderTests.swift
+//
+
 import Chart
 import SnapshotTesting
 import SwiftUI

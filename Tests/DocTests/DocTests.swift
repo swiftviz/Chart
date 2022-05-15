@@ -1,3 +1,7 @@
+//
+//  DocTests.swift
+//
+
 import Chart
 import XCTest
 

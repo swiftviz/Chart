@@ -16,7 +16,7 @@ public struct QuantitativeVisualChannel<SomeDataType> {
     /// The type that is presented after scaling or transforming the value referenced by the channel.
     public typealias OutputPropertyType = CGFloat
 
-    private let valueProvider: (SomeDataType) -> Double
+    internal let valueProvider: (SomeDataType) -> Double
     // The `valueProvider` captures the specifics of the type being provided within its closure
     // so the overall VisualChannel doesn't need to expose that detail as an additional generic
     // type. This lets us initialize the visual channel with a keypath, constant, or a closure

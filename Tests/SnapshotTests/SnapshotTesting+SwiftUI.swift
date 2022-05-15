@@ -1,6 +1,6 @@
 //
 //  SnapshotTesting+SwiftUI.swift
-//  SnapshotTestingSwiftUITests
+//
 
 import SnapshotTesting
 import SwiftUI
