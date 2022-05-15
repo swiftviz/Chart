@@ -15,6 +15,8 @@ public protocol Mark {
     // the scale to fully configure an Axis object
     var xPropertyScale: VisualPropertyScale { get }
     var yPropertyScale: VisualPropertyScale { get }
+    var _xAxis: Axis? { get }
+    var _yAxis: Axis? { get }
 
     /// Creates a list of symbols to render into a rectangular drawing area that you specify.
     /// - Parameter in: The rectangle into which to scale and draw the symbols.
@@ -25,9 +27,6 @@ public protocol Mark {
     /// - Parameter in: The rectangle into which to scale and draw axis.
     /// - Returns: A dictionary of Axis keyed by the axis location.
     func axisForMark(in: CGRect) -> [Axis]
-
-    func getXAxis() -> Axis?
-    func getYAxis() -> Axis?
 }
 
 extension Mark {
