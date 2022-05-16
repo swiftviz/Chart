@@ -16,6 +16,13 @@ extension CGRect {
                       width: size.width - (2 * amount),
                       height: size.height - (2 * amount))
     }
+
+    func inset(leading: CGFloat = 0, top: CGFloat = 0, trailing: CGFloat = 0, bottom: CGFloat = 0) -> CGRect {
+        CGRect(x: origin.x + leading,
+               y: origin.y + top,
+               width: size.width - (leading + trailing),
+               height: size.height - (top + bottom))
+    }
 }
 
 class ChartRenderer {
@@ -90,7 +97,6 @@ class ChartRenderer {
                 // axis height
                 return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelHeight)
             }
-            print(maxXAxisBottomHeight)
 
             let maxXAxisTopHeight: CGFloat = xAxisTopList.reduce(0.0) { partialResult, currentAxis in
                 // for the current axis, get the labels for the ticks that are associated
@@ -108,7 +114,6 @@ class ChartRenderer {
                 // axis height
                 return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelHeight)
             }
-            print(maxXAxisTopHeight)
 
             let maxYAxisLeadingWidth: CGFloat = yAxisLeadingList.reduce(0.0) { partialResult, currentAxis in
                 // for the current axis, get the labels for the ticks that are associated
@@ -126,7 +131,6 @@ class ChartRenderer {
                 // axis width
                 return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelWidth)
             }
-            print(maxYAxisLeadingWidth)
 
             let maxYAxisTrailingWidth: CGFloat = yAxisTrailingList.reduce(0.0) { partialResult, currentAxis in
                 // for the current axis, get the labels for the ticks that are associated
@@ -144,7 +148,12 @@ class ChartRenderer {
                 // axis width
                 return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelWidth)
             }
-            print(maxYAxisTrailingWidth)
+
+            let insetLeading = specification.margin.leading + maxYAxisLeadingWidth + specification.inset.leading
+            let insetTrailing = specification.margin.trailing + maxYAxisTrailingWidth + specification.inset.trailing
+
+            let insetTop = specification.margin.top + maxXAxisTopHeight + specification.inset.top
+            let insetBottom = specification.margin.bottom + maxXAxisBottomHeight + specification.inset.bottom
 
             // With the X axis height, and Y axis width, we can calculate a proper internal
             // CGRect that is the inset area into which we want to draw the marks, as well
@@ -154,7 +163,8 @@ class ChartRenderer {
             // The width of any X axis is determined by that internal size, as is the height
             // for any Y axis.
 
-            let fullDrawArea = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
+            let fullDrawArea = CGRect(origin: CGPoint.zero, size: size)
+                .inset(leading: insetLeading, top: insetTop, trailing: insetTrailing, bottom: insetBottom)
             let drawArea: CGRect = fullDrawArea.inset(amount: 5) ?? fullDrawArea
 
             // - then calculate the marks for the provided drawing area
