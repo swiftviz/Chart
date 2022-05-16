@@ -28,7 +28,7 @@ The core concept behind declarative charting is explored in quite a bit of detai
 
 ### Symbols
 
-- ``Chart/MarkSymbol``
+- ``Chart/Sigil``
 - ``Chart/Axis``
 - ``Chart/IndividualLine``
 - ``Chart/IndividualPoint``
@@ -38,10 +38,10 @@ The core concept behind declarative charting is explored in quite a bit of detai
 
 ### Visual Channels
 
+- ``Chart/VisualPropertyScale``
 - ``Chart/QuantitativeVisualChannel``
 - ``Chart/DiscreteVisualChannel``
 - ``Chart/BandVisualChannel``
-- ``Chart/VisualPropertyScale``
 
 ### Building Charts
 
@@ -49,4 +49,3 @@ The core concept behind declarative charting is explored in quite a bit of detai
 - ``Chart/ChartSpec``
 - ``Chart/ChartOrientation``
 - ``Chart/DrawingMode``
-
