@@ -200,7 +200,31 @@ class ChartRenderer {
         }
     }
 
-    private func drawAxis(axis _: Axis, within _: CGRect, context _: inout GraphicsContext) {}
+    private func drawAxis(axis: Axis, within rect: CGRect, context: inout GraphicsContext) {
+        let ruleStart: CGPoint
+        let ruleEnd: CGPoint
+        switch axis.axisLocation {
+        case .leading:
+            ruleStart = CGPoint(x: rect.origin.x + rect.size.width, y: rect.origin.y)
+            ruleEnd = CGPoint(x: rect.origin.x + rect.size.width, y: rect.origin.y + rect.size.height)
+        case .top:
+            ruleStart = CGPoint(x: rect.origin.x, y: rect.origin.y + rect.size.height)
+            ruleEnd = CGPoint(x: rect.origin.x + rect.size.width, y: rect.origin.y + rect.size.height)
+        case .bottom:
+            ruleStart = CGPoint(x: rect.origin.x, y: rect.origin.y)
+            ruleEnd = CGPoint(x: rect.origin.x + rect.size.width, y: rect.origin.y)
+        case .trailing:
+            ruleStart = CGPoint(x: rect.origin.x, y: rect.origin.y)
+            ruleEnd = CGPoint(x: rect.origin.x, y: rect.origin.y + rect.size.height)
+        }
+        if axis.rule {
+            let linePath = Path { p in
+                p.move(to: ruleStart)
+                p.addLine(to: ruleEnd)
+            }
+            context.stroke(linePath, with: .color(.primary))
+        }
+    }
 
     private func drawPoint(point: IndividualPoint, context: inout GraphicsContext) {
         // explicitly offset so the center of the shape is at the point.x, point.y location
