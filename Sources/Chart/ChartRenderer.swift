@@ -81,73 +81,10 @@ class ChartRenderer {
             // that you've specified `.xAxis()` on two different marks - so we keep to the
             // pathological case and compute it assuming that _every_ mark has an X, and Y, axis
             // defined.
-            let maxXAxisBottomHeight: CGFloat = xAxisBottomList.reduce(0.0) { partialResult, currentAxis in
-                // for the current axis, get the labels for the ticks that are associated
-                // with the scale for that axis.
-                let tickLabels: [String] = currentAxis.scale.tickLabels(values: currentAxis.requestedTickValues)
-                // from the labels, resolve a Text() field in the current GraphicsContext
-                // so that we can get the label's size. Right now this is presuming that the
-                // font of the tick label is using `.caption`. Once we have the CGSize sets,
-                // reduce that into a single (max) height value.
-                let maxResolvedLabelHeight = tickLabels.reduce(0.0) { partialResult, label in
-                    let captionedTextSampleSize: CGSize = context.resolve(Text(label).font(.caption)).measure(in: size)
-                    return max(captionedTextSampleSize.height, partialResult)
-                }
-                // use the tick length, padding, and the max label height to determine a maximum
-                // axis height
-                return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelHeight)
-            }
-
-            let maxXAxisTopHeight: CGFloat = xAxisTopList.reduce(0.0) { partialResult, currentAxis in
-                // for the current axis, get the labels for the ticks that are associated
-                // with the scale for that axis.
-                let tickLabels: [String] = currentAxis.scale.tickLabels(values: currentAxis.requestedTickValues)
-                // from the labels, resolve a Text() field in the current GraphicsContext
-                // so that we can get the label's size. Right now this is presuming that the
-                // font of the tick label is using `.caption`. Once we have the CGSize sets,
-                // reduce that into a single (max) height value.
-                let maxResolvedLabelHeight = tickLabels.reduce(0.0) { partialResult, label in
-                    let captionedTextSampleSize: CGSize = context.resolve(Text(label).font(.caption)).measure(in: size)
-                    return max(captionedTextSampleSize.height, partialResult)
-                }
-                // use the tick length, padding, and the max label height to determine a maximum
-                // axis height
-                return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelHeight)
-            }
-
-            let maxYAxisLeadingWidth: CGFloat = yAxisLeadingList.reduce(0.0) { partialResult, currentAxis in
-                // for the current axis, get the labels for the ticks that are associated
-                // with the scale for that axis.
-                let tickLabels: [String] = currentAxis.scale.tickLabels(values: currentAxis.requestedTickValues)
-                // from the labels, resolve a Text() field in the current GraphicsContext
-                // so that we can get the label's size. Right now this is presuming that the
-                // font of the tick label is using `.caption`. Once we have the CGSize sets,
-                // reduce that into a single (max) width value.
-                let maxResolvedLabelWidth = tickLabels.reduce(0.0) { partialResult, label in
-                    let captionedTextSampleSize: CGSize = context.resolve(Text(label).font(.caption)).measure(in: size)
-                    return max(captionedTextSampleSize.width, partialResult)
-                }
-                // use the tick length, padding, and the max label width to determine a maximum
-                // axis width
-                return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelWidth)
-            }
-
-            let maxYAxisTrailingWidth: CGFloat = yAxisTrailingList.reduce(0.0) { partialResult, currentAxis in
-                // for the current axis, get the labels for the ticks that are associated
-                // with the scale for that axis.
-                let tickLabels: [String] = currentAxis.scale.tickLabels(values: currentAxis.requestedTickValues)
-                // from the labels, resolve a Text() field in the current GraphicsContext
-                // so that we can get the label's size. Right now this is presuming that the
-                // font of the tick label is using `.caption`. Once we have the CGSize sets,
-                // reduce that into a single (max) width value.
-                let maxResolvedLabelWidth = tickLabels.reduce(0.0) { partialResult, label in
-                    let captionedTextSampleSize: CGSize = context.resolve(Text(label).font(.caption)).measure(in: size)
-                    return max(captionedTextSampleSize.width, partialResult)
-                }
-                // use the tick length, padding, and the max label width to determine a maximum
-                // axis width
-                return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelWidth)
-            }
+            let maxXAxisBottomHeight = self.heightFromListOfAxis(xAxisBottomList, with: context, size: size)
+            let maxXAxisTopHeight = self.heightFromListOfAxis(xAxisTopList, with: context, size: size)
+            let maxYAxisLeadingWidth = self.widthFromListOfAxis(yAxisLeadingList, with: context, size: size)
+            let maxYAxisTrailingWidth = self.widthFromListOfAxis(yAxisTrailingList, with: context, size: size)
 
             let insetLeading = specification.margin.leading + maxYAxisLeadingWidth + specification.inset.leading
             let insetTrailing = specification.margin.trailing + maxYAxisTrailingWidth + specification.inset.trailing
@@ -155,26 +92,16 @@ class ChartRenderer {
             let insetTop = specification.margin.top + maxXAxisTopHeight + specification.inset.top
             let insetBottom = specification.margin.bottom + maxXAxisBottomHeight + specification.inset.bottom
 
+            // With the X axis height, and Y axis width, we can calculate a proper internal
+            // CGRect that is the inset area into which we want to draw the marks.
             let chartDataDrawArea = CGRect(origin: CGPoint.zero, size: size)
                 .inset(leading: insetLeading, top: insetTop, trailing: insetTrailing, bottom: insetBottom)
-
-            // With the X axis height, and Y axis width, we can calculate a proper internal
-            // CGRect that is the inset area into which we want to draw the marks, as well
-            // as the locations into which we want to draw the X and Y axis, if they've been
-            // specified.
-
+            // The size calculation also plays into describing the rectangles for drawing the axis.
             // The width of any X axis is determined by that internal size, as is the height
             // for any Y axis.
 
-            // ?? How to draw the axis themselves - I have a rectangular area (or can calculate it
-            // pretty quick - for each potential axis area.
-            // leading - drawing from right side, trailing - drawing from left side,
-            // bottom - drawing from top, top - drawing from bottom. So do I set up a method where
-            // I hand in a rect into which to draw, and then pass that (origin + size) along with
-            // the axis definition to a drawing method?
-
             if !xAxisTopList.isEmpty {
-                // calculate top area rect and draw it
+                // calculate area rect for top axis and draw it
                 let axisOrigin = CGPoint(x: specification.margin.leading + maxYAxisLeadingWidth + specification.inset.leading, y: specification.margin.top)
                 let axisSize = CGSize(width: chartDataDrawArea.size.width, height: maxXAxisTopHeight)
                 for topAxis in xAxisTopList {
@@ -183,7 +110,7 @@ class ChartRenderer {
             }
 
             if !xAxisBottomList.isEmpty {
-                // calculate bottom area rect and draw it
+                // calculate area rect for bottom axis and draw it
                 let axisOrigin = CGPoint(x: specification.margin.leading + maxYAxisLeadingWidth + specification.inset.leading, y: size.height - (specification.margin.bottom + maxXAxisBottomHeight))
                 let axisSize = CGSize(width: chartDataDrawArea.size.width, height: maxXAxisBottomHeight)
                 for bottomAxis in xAxisBottomList {
@@ -232,6 +159,44 @@ class ChartRenderer {
                     }
                 }
             }
+        }
+    }
+
+    internal func heightFromListOfAxis(_ axisList: [Axis], with context: GraphicsContext, size: CGSize) -> CGFloat {
+        axisList.reduce(0.0) { partialResult, currentAxis in
+            // for the current axis, get the labels for the ticks that are associated
+            // with the scale for that axis.
+            let tickLabels: [String] = currentAxis.scale.tickLabels(values: currentAxis.requestedTickValues)
+            // from the labels, resolve a Text() field in the current GraphicsContext
+            // so that we can get the label's size. Right now this is presuming that the
+            // font of the tick label is using `.caption`. Once we have the CGSize sets,
+            // reduce that into a single (max) height value.
+            let maxResolvedLabelHeight = tickLabels.reduce(0.0) { partialResult, label in
+                let captionedTextSampleSize: CGSize = context.resolve(Text(label).font(.caption)).measure(in: size)
+                return max(captionedTextSampleSize.height, partialResult)
+            }
+            // use the tick length, padding, and the max label height to determine a maximum
+            // axis height
+            return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelHeight)
+        }
+    }
+
+    internal func widthFromListOfAxis(_ axisList: [Axis], with context: GraphicsContext, size: CGSize) -> CGFloat {
+        axisList.reduce(0.0) { partialResult, currentAxis in
+            // for the current axis, get the labels for the ticks that are associated
+            // with the scale for that axis.
+            let tickLabels: [String] = currentAxis.scale.tickLabels(values: currentAxis.requestedTickValues)
+            // from the labels, resolve a Text() field in the current GraphicsContext
+            // so that we can get the label's size. Right now this is presuming that the
+            // font of the tick label is using `.caption`. Once we have the CGSize sets,
+            // reduce that into a single (max) width value.
+            let maxResolvedLabelWidth = tickLabels.reduce(0.0) { partialResult, label in
+                let captionedTextSampleSize: CGSize = context.resolve(Text(label).font(.caption)).measure(in: size)
+                return max(captionedTextSampleSize.width, partialResult)
+            }
+            // use the tick length, padding, and the max label width to determine a maximum
+            // axis width
+            return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelWidth)
         }
     }
 
