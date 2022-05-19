@@ -155,6 +155,9 @@ class ChartRenderer {
             let insetTop = specification.margin.top + maxXAxisTopHeight + specification.inset.top
             let insetBottom = specification.margin.bottom + maxXAxisBottomHeight + specification.inset.bottom
 
+            let chartDataDrawArea = CGRect(origin: CGPoint.zero, size: size)
+                .inset(leading: insetLeading, top: insetTop, trailing: insetTrailing, bottom: insetBottom)
+
             // With the X axis height, and Y axis width, we can calculate a proper internal
             // CGRect that is the inset area into which we want to draw the marks, as well
             // as the locations into which we want to draw the X and Y axis, if they've been
@@ -162,10 +165,48 @@ class ChartRenderer {
 
             // The width of any X axis is determined by that internal size, as is the height
             // for any Y axis.
+            
+            // ?? How to draw the axis themselves - I have a rectangular area (or can calculate it
+            // pretty quick - for each potential axis area.
+            // leading - drawing from right side, trailing - drawing from left side,
+            // bottom - drawing from top, top - drawing from bottom. So do I set up a method where
+            // I hand in a rect into which to draw, and then pass that (origin + size) along with
+            // the axis definition to a drawing method?
 
-            let fullDrawArea = CGRect(origin: CGPoint.zero, size: size)
-                .inset(leading: insetLeading, top: insetTop, trailing: insetTrailing, bottom: insetBottom)
-            let drawArea: CGRect = fullDrawArea.inset(amount: 5) ?? fullDrawArea
+            if !xAxisTopList.isEmpty {
+                // calculate top area rect and draw it
+                let axisOrigin = CGPoint(x: specification.margin.leading, y: specification.margin.top)
+                let axisSize = CGSize(width: chartDataDrawArea.size.width, height: maxXAxisTopHeight)
+                for topAxis in xAxisTopList {
+                    self.drawAxis(axis: topAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
+                }
+            }
+            if !xAxisBottomList.isEmpty {
+                // calculate bottom area rect and draw it
+                let axisOrigin = CGPoint(x: specification.margin.leading, y: size.height - (specification.margin.bottom + maxXAxisBottomHeight))
+                let axisSize = CGSize(width: chartDataDrawArea.size.width, height: maxXAxisBottomHeight)
+                for bottomAxis in xAxisBottomList {
+                    self.drawAxis(axis: bottomAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
+                }
+            }
+            if !yAxisLeadingList.isEmpty {
+                // calculate leading area rect and draw it
+                let axisOrigin = CGPoint(x: specification.margin.leading, y: specification.margin.top + maxXAxisTopHeight + specification.inset.top)
+                let axisSize = CGSize(width: maxYAxisLeadingWidth, height: chartDataDrawArea.size.height)
+                for leadingAxis in yAxisLeadingList {
+                    self.drawAxis(axis: leadingAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
+                }
+
+            }
+            if !yAxisTrailingList.isEmpty {
+                // calculate trailing area rect and draw it
+                let axisOrigin = CGPoint(x: size.width - (specification.margin.trailing + maxYAxisTrailingWidth), y: specification.margin.top + maxXAxisTopHeight + specification.inset.top)
+                let axisSize = CGSize(width: maxYAxisLeadingWidth, height: chartDataDrawArea.size.height)
+                for trailingAxis in yAxisTrailingList {
+                    self.drawAxis(axis: trailingAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
+                }
+            }
+
 
             // - then calculate the marks for the provided drawing area
 
@@ -173,7 +214,7 @@ class ChartRenderer {
                 // print("Mark: \(mark)")
                 // - and iterate through each of the individual symbols
                 // - render them into the canvas based on the mode of the shape
-                for marksymbol in mark.symbolsForMark(in: drawArea) {
+                for marksymbol in mark.symbolsForMark(in: chartDataDrawArea) {
                     switch marksymbol {
                     case let .point(individualPoint):
                         self.drawPoint(point: individualPoint, context: &context)
@@ -193,6 +234,10 @@ class ChartRenderer {
         }
     }
 
+    private func drawAxis(axis: Axis, within rect: CGRect, context: inout GraphicsContext) {
+        
+    }
+    
     private func drawPoint(point: IndividualPoint, context: inout GraphicsContext) {
         // explicitly offset so the center of the shape is at the point.x, point.y location
         let origin = CGPoint(x: point.x - point.size.width / 2, y: point.y - point.size.height / 2)
