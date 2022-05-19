@@ -165,7 +165,7 @@ class ChartRenderer {
 
             // The width of any X axis is determined by that internal size, as is the height
             // for any Y axis.
-            
+
             // ?? How to draw the axis themselves - I have a rectangular area (or can calculate it
             // pretty quick - for each potential axis area.
             // leading - drawing from right side, trailing - drawing from left side,
@@ -196,7 +196,6 @@ class ChartRenderer {
                 for leadingAxis in yAxisLeadingList {
                     self.drawAxis(axis: leadingAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
-
             }
             if !yAxisTrailingList.isEmpty {
                 // calculate trailing area rect and draw it
@@ -206,7 +205,6 @@ class ChartRenderer {
                     self.drawAxis(axis: trailingAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
             }
-
 
             // - then calculate the marks for the provided drawing area
 
@@ -234,10 +232,8 @@ class ChartRenderer {
         }
     }
 
-    private func drawAxis(axis: Axis, within rect: CGRect, context: inout GraphicsContext) {
-        
-    }
-    
+    private func drawAxis(axis _: Axis, within _: CGRect, context _: inout GraphicsContext) {}
+
     private func drawPoint(point: IndividualPoint, context: inout GraphicsContext) {
         // explicitly offset so the center of the shape is at the point.x, point.y location
         let origin = CGPoint(x: point.x - point.size.width / 2, y: point.y - point.size.height / 2)
