@@ -175,20 +175,22 @@ class ChartRenderer {
 
             if !xAxisTopList.isEmpty {
                 // calculate top area rect and draw it
-                let axisOrigin = CGPoint(x: specification.margin.leading, y: specification.margin.top)
+                let axisOrigin = CGPoint(x: specification.margin.leading + maxYAxisLeadingWidth + specification.inset.leading, y: specification.margin.top)
                 let axisSize = CGSize(width: chartDataDrawArea.size.width, height: maxXAxisTopHeight)
                 for topAxis in xAxisTopList {
                     self.drawAxis(axis: topAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
             }
+
             if !xAxisBottomList.isEmpty {
                 // calculate bottom area rect and draw it
-                let axisOrigin = CGPoint(x: specification.margin.leading, y: size.height - (specification.margin.bottom + maxXAxisBottomHeight))
+                let axisOrigin = CGPoint(x: specification.margin.leading + maxYAxisLeadingWidth + specification.inset.leading, y: size.height - (specification.margin.bottom + maxXAxisBottomHeight))
                 let axisSize = CGSize(width: chartDataDrawArea.size.width, height: maxXAxisBottomHeight)
                 for bottomAxis in xAxisBottomList {
                     self.drawAxis(axis: bottomAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
             }
+
             if !yAxisLeadingList.isEmpty {
                 // calculate leading area rect and draw it
                 let axisOrigin = CGPoint(x: specification.margin.leading, y: specification.margin.top + maxXAxisTopHeight + specification.inset.top)
@@ -197,10 +199,11 @@ class ChartRenderer {
                     self.drawAxis(axis: leadingAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
             }
+
             if !yAxisTrailingList.isEmpty {
                 // calculate trailing area rect and draw it
                 let axisOrigin = CGPoint(x: size.width - (specification.margin.trailing + maxYAxisTrailingWidth), y: specification.margin.top + maxXAxisTopHeight + specification.inset.top)
-                let axisSize = CGSize(width: maxYAxisLeadingWidth, height: chartDataDrawArea.size.height)
+                let axisSize = CGSize(width: maxYAxisTrailingWidth, height: chartDataDrawArea.size.height)
                 for trailingAxis in yAxisTrailingList {
                     self.drawAxis(axis: trailingAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
