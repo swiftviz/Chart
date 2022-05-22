@@ -8,7 +8,6 @@ import SwiftUI
 import TabularData
 // https://holyswift.app/crunching-data-with-the-new-apples-tabulardata-framework
 
-
 // swift build --target chartrender-benchmark -c release
 // .build/release/chartrender-benchmark --iterations 1000 --time-unit ms
 
@@ -25,13 +24,13 @@ struct SampleData {
     let value: Double
 }
 
-//guard let fileUrl = Bundle.main.url(forResource: "athletes", withExtension: "csv") else { fatalError() }
-//let tabdata = try DataFrame(contentsOfCSVFile: fileUrl)
+// guard let fileUrl = Bundle.main.url(forResource: "athletes", withExtension: "csv") else { fatalError() }
+// let tabdata = try DataFrame(contentsOfCSVFile: fileUrl)
 //
-//print("tabdata is \(tabdata)")
-//for something in tabdata.rows {
+// print("tabdata is \(tabdata)")
+// for something in tabdata.rows {
 //    print(something)
-//}
+// }
 
 let data: [SampleData] = [
     SampleData(name: "A", value: 3),
