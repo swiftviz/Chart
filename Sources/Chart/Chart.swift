@@ -65,18 +65,20 @@ public struct Chart: View {
         specCollection.inset = EdgeInsets(.all, inset)
     }
 
+    internal init(margin: EdgeInsets, inset: EdgeInsets, chart: ChartSpec) {
+        specCollection = chart
+        specCollection.margin = margin
+        specCollection.inset = inset
+    }
+
     // MARK: - Modifiers for chart
 
     public func margin(_ edges: Edge.Set = .all, _ length: CGFloat? = nil) -> some View {
-        Chart(margin: EdgeInsets(edges, length), inset: specCollection.inset) {
-            specCollection
-        }
+        Chart(margin: EdgeInsets(edges, length), inset: specCollection.inset, chart: specCollection)
     }
 
     public func inset(_ edges: Edge.Set = .all, _ length: CGFloat? = nil) -> some View {
-        Chart(margin: specCollection.margin, inset: EdgeInsets(edges, length)) {
-            specCollection
-        }
+        Chart(margin: specCollection.margin, inset: EdgeInsets(edges, length), chart: specCollection)
     }
 }
 
