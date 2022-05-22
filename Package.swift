@@ -79,7 +79,8 @@ let package = Package(
                 .product(name: "SwiftVizScale", package: "Scale"),
 //                .product(name: "CollectionsBenchmark", package: "swift-collections-benchmark"),
                 .product(name: "Benchmark", package: "swift-benchmark"),
-            ]
+            ],
+            resources: [.process("fixtures")]
         ),
     ]
 )
