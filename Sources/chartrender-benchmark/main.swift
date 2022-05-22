@@ -1,7 +1,7 @@
 //
 //  main.swift - chartrender-benchmark
 //
-
+#if os(macOS)
 import Benchmark
 import Chart
 import SwiftUI
@@ -83,3 +83,4 @@ extension View {
         return image
     }
 }
+#endif
