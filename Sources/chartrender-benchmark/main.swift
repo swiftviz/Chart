@@ -7,8 +7,8 @@ import Chart
 import SwiftUI
 
 // swift build --target chartrender-benchmark -c release
-// .build/release/chartrender-benchmark --time-unit ms --quiet
-//
+// .build/release/chartrender-benchmark --iterations 1000 --time-unit ms
+
 let referenceSize = CGSize(width: 300, height: 200)
 
 extension SwiftUI.View {
@@ -30,7 +30,7 @@ let data: [SampleData] = [
 ]
 
 benchmark("create chart") {
-    let chart = Chart {
+    _ = Chart {
         BarMark(data: data,
                 value: QuantitativeVisualChannel(\.value),
                 category: BandVisualChannel(\.name))
@@ -44,7 +44,7 @@ let chart = Chart {
 }
 
 benchmark("snapshot chart") {
-    let image = chart.snapshot()
+    _ = chart.snapshot()
 }
 
 Benchmark.main()
