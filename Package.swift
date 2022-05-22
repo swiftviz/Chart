@@ -1,6 +1,7 @@
 // swift-tools-version: 5.5
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
+import Foundation
 import PackageDescription
 
 let package = Package(
@@ -17,7 +18,6 @@ let package = Package(
             name: "Chart",
             targets: ["Chart"]
         ),
-        .executable(name: "chartrender-benchmark", targets: ["chartrender-benchmark"]),
     ],
     dependencies: [
         .package(url: "https://github.com/swiftviz/scale.git", branch: "main"),
@@ -59,7 +59,10 @@ let package = Package(
     ]
 )
 
-#if os(macOS)
+if ProcessInfo.processInfo.environment["BENCHMARK"] != nil {
+    package.products.append(
+        .executable(name: "chartrender-benchmark", targets: ["chartrender-benchmark"])
+    )
     package.targets.append(
         .executableTarget(
             name: "chartrender-benchmark",
@@ -71,7 +74,7 @@ let package = Package(
             resources: [.process("fixtures")]
         )
     )
-#endif
+}
 
 // Add the documentation compiler plugin if possible
 #if swift(>=5.6)
