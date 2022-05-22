@@ -17,6 +17,7 @@ let package = Package(
             name: "Chart",
             targets: ["Chart"]
         ),
+        .executable(name: "chartrender-benchmark", targets: ["chartrender-benchmark"]),
     ],
     dependencies: [
         .package(url: "https://github.com/swiftviz/scale.git", branch: "main"),
@@ -32,17 +33,35 @@ let package = Package(
         ),
         .testTarget(
             name: "ChartTests",
-            dependencies: ["Chart", .product(name: "SwiftVizScale", package: "Scale")]
+            dependencies: [
+                "Chart",
+                .product(name: "SwiftVizScale", package: "Scale")
+            ]
         ),
         .testTarget(
             name: "SnapshotTests",
-            dependencies: ["Chart", .product(name: "SwiftVizScale", package: "Scale"), .product(name: "SnapshotTesting", package: "swift-snapshot-testing")],
+            dependencies: [
+                "Chart",
+                .product(name: "SwiftVizScale", package: "Scale"),
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+            ],
             resources: [.process("__SnapShots__")]
         ),
         .testTarget(
             name: "DocTests",
-            dependencies: ["Chart", .product(name: "SwiftVizScale", package: "Scale")]
+            dependencies: [
+                "Chart",
+                .product(name: "SwiftVizScale", package: "Scale")
+            ]
         ),
+        .executableTarget(
+            name: "chartrender-benchmark",
+            dependencies: [
+                "Chart",
+                .product(name: "SwiftVizScale", package: "Scale"),
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+            ]
+        )
     ]
 )
 // Add the documentation compiler plugin if possible
