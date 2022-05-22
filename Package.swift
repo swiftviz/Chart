@@ -3,22 +3,6 @@
 
 import PackageDescription
 
-// let package = Package(
-//    name: ... ,
-//    products: [
-//        .executable(name: "Benchmarks", targets: ["Benchmarks"])
-//    ],
-//    dependencies: [
-//      .package(url: "https://github.com/google/swift-benchmark", from: "0.1.0")
-//    ],
-//    targets: [
-//        .target(
-//            name: "Benchmarks",
-//            dependencies: [.product(name: "Benchmark", package: "swift-benchmark")]
-//        )
-//    ]
-// )
-
 let package = Package(
     name: "Chart",
     platforms: [
@@ -72,18 +56,23 @@ let package = Package(
                 .product(name: "SwiftVizScale", package: "Scale"),
             ]
         ),
+    ]
+)
+
+#if os(macOS)
+    package.targets.append(
         .executableTarget(
             name: "chartrender-benchmark",
             dependencies: [
                 "Chart",
                 .product(name: "SwiftVizScale", package: "Scale"),
-//                .product(name: "CollectionsBenchmark", package: "swift-collections-benchmark"),
                 .product(name: "Benchmark", package: "swift-benchmark"),
             ],
             resources: [.process("fixtures")]
-        ),
-    ]
-)
+        )
+    )
+#endif
+
 // Add the documentation compiler plugin if possible
 #if swift(>=5.6)
     package.dependencies.append(
