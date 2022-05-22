@@ -35,7 +35,7 @@ let package = Package(
             name: "ChartTests",
             dependencies: [
                 "Chart",
-                .product(name: "SwiftVizScale", package: "Scale")
+                .product(name: "SwiftVizScale", package: "Scale"),
             ]
         ),
         .testTarget(
@@ -43,7 +43,7 @@ let package = Package(
             dependencies: [
                 "Chart",
                 .product(name: "SwiftVizScale", package: "Scale"),
-                .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
             ],
             resources: [.process("__SnapShots__")]
         ),
@@ -51,7 +51,7 @@ let package = Package(
             name: "DocTests",
             dependencies: [
                 "Chart",
-                .product(name: "SwiftVizScale", package: "Scale")
+                .product(name: "SwiftVizScale", package: "Scale"),
             ]
         ),
         .executableTarget(
@@ -59,9 +59,9 @@ let package = Package(
             dependencies: [
                 "Chart",
                 .product(name: "SwiftVizScale", package: "Scale"),
-                .product(name: "SnapshotTesting", package: "swift-snapshot-testing")
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
             ]
-        )
+        ),
     ]
 )
 // Add the documentation compiler plugin if possible
