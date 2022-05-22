@@ -64,21 +64,20 @@ public struct Chart: View {
         specCollection.margin = EdgeInsets(.all, margin)
         specCollection.inset = EdgeInsets(.all, inset)
     }
-    
+
     // MARK: - Modifiers for chart
-    
+
     public func margin(_ edges: Edge.Set = .all, _ length: CGFloat? = nil) -> some View {
-        return Chart(margin: EdgeInsets(edges, length), inset: specCollection.inset) {
-            return specCollection
+        Chart(margin: EdgeInsets(edges, length), inset: specCollection.inset) {
+            specCollection
         }
     }
 
     public func inset(_ edges: Edge.Set = .all, _ length: CGFloat? = nil) -> some View {
-        return Chart(margin: specCollection.margin, inset: EdgeInsets(edges, length)) {
-            return specCollection
+        Chart(margin: specCollection.margin, inset: EdgeInsets(edges, length)) {
+            specCollection
         }
     }
-
 }
 
 extension EdgeInsets {
