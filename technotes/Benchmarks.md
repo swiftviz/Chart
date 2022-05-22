@@ -1,7 +1,7 @@
 # Benchmarks
 
 ```swift
-swift build --target chartrender-benchmark -c release
+BENCHMARK=1 swift build -c release
 .build/release/chartrender-benchmark --iterations 1000 --time-unit ms
 ```
 
