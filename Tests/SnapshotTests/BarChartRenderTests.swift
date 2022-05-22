@@ -25,7 +25,7 @@ final class BarChartRenderTests: XCTestCase {
                 BarMark(data: self.data,
                         value: QuantitativeVisualChannel(\.value),
                         category: BandVisualChannel(\.name))
-            }.border(.blue)
+            }
             assertSnapshot(
                 matching: chart.referenceFrame(),
                 as: .image(size: referenceSize)
@@ -38,7 +38,7 @@ final class BarChartRenderTests: XCTestCase {
                         data: self.data,
                         value: QuantitativeVisualChannel(\.value),
                         category: BandVisualChannel(\.name))
-            }.border(.blue)
+            }
             assertSnapshot(
                 matching: chart.referenceFrame(),
                 as: .image(size: referenceSize)

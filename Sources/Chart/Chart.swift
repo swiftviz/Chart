@@ -42,7 +42,7 @@ public struct Chart: View {
         chartRenderer.createView(specCollection)
     }
 
-    // @inlinable public func padding(_ edges: Edge.Set = .all, _ length: CGFloat? = nil) -> some View
+    @_disfavoredOverload
     public init(margin: EdgeInsets = EdgeInsets(),
                 inset: EdgeInsets = EdgeInsets(),
                 @ChartBuilder _ chartDecl: @escaping () -> ChartSpec)
@@ -53,6 +53,32 @@ public struct Chart: View {
         specCollection.margin = margin
         specCollection.inset = inset
     }
+
+    public init(margin: CGFloat = 0,
+                inset: CGFloat = 0,
+                @ChartBuilder _ chartDecl: @escaping () -> ChartSpec)
+    {
+        // invoke the closure to get the declared sets of marks as a list of AnyMark
+        // that we can pass into the renderer to evaluate into individual symbols.
+        specCollection = chartDecl()
+        specCollection.margin = EdgeInsets(.all, margin)
+        specCollection.inset = EdgeInsets(.all, inset)
+    }
+    
+    // MARK: - Modifiers for chart
+    
+    public func margin(_ edges: Edge.Set = .all, _ length: CGFloat? = nil) -> some View {
+        return Chart(margin: EdgeInsets(edges, length), inset: specCollection.inset) {
+            return specCollection
+        }
+    }
+
+    public func inset(_ edges: Edge.Set = .all, _ length: CGFloat? = nil) -> some View {
+        return Chart(margin: specCollection.margin, inset: EdgeInsets(edges, length)) {
+            return specCollection
+        }
+    }
+
 }
 
 extension EdgeInsets {
