@@ -1,23 +1,23 @@
 //
 //  main.swift - chartrender-benchmark
-//  
+//
 
-import Foundation
 import Chart
+import Foundation
 import SnapshotTesting
-//import CollectionsBenchmark
-//import Kalimba
+// import CollectionsBenchmark
+// import Kalimba
 //
 //// Create a new benchmark instance.
-//var benchmark = Benchmark(title: "Kalimba")
+// var benchmark = Benchmark(title: "Kalimba")
 //
 //// Define a very simple benchmark called `kalimbaOrdered`.
-//benchmark.addSimple(
+// benchmark.addSimple(
 //  title: "kalimbaOrdered",
 //  input: [Int].self
-//) { input in
+// ) { input in
 //  blackHole(input.kalimbaOrdered())
-//}
+// }
 //
 //// Execute the benchmark tool with the above definitions.
-//benchmark.main()
+// benchmark.main()
