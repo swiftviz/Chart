@@ -42,16 +42,16 @@ public struct PointMark<DataSource>: Mark, MarkAxis {
         let xScale = x.range(rangeLower: 0, rangeHigher: rect.size.width)
         let yScale = y.range(rangeLower: 0, rangeHigher: rect.size.height)
         var symbols: [Sigil] = []
-        print("Creating symbols within rect: \(rect)")
-        print("X scale: \(xScale)")
-        print("Y scale: \(yScale)")
+//        print("Creating symbols within rect: \(rect)")
+//        print("X scale: \(xScale)")
+//        print("Y scale: \(yScale)")
         for pointData in data {
             if let xValue = xScale.scaledValue(data: pointData),
                let yValue = yScale.scaledValue(data: pointData)
             {
                 let newPoint = IndividualPoint(x: xValue + rect.origin.x, y: rect.height - yValue + rect.origin.y, shape: PlotShape(Circle()), size: 5)
                 symbols.append(.point(newPoint))
-                print(" .. \(newPoint)")
+//                print(" .. \(newPoint)")
             }
         }
         return symbols

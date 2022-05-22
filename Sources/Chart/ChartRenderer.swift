@@ -78,7 +78,7 @@ class ChartRenderer {
                 // axis height
                 return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelHeight)
             }
-            print(maxXAxisHeight)
+//            print(maxXAxisHeight)
 
             let maxYAxisWidth: CGFloat = yAxisList.reduce(0.0) { partialResult, currentAxis in
                 // for the current axis, get the labels for the ticks that are associated
@@ -96,7 +96,7 @@ class ChartRenderer {
                 // axis width
                 return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelWidth)
             }
-            print(maxYAxisWidth)
+//            print(maxYAxisWidth)
 
             // With the X axis height, and Y axis width, we can calculate a proper internal
             // CGRect that is the inset area into which we want to draw the marks, as well
