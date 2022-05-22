@@ -30,24 +30,21 @@ let data: [SampleData] = [
 ]
 
 benchmark("create chart") {
-//    for _ in 1...100 {
     let chart = Chart {
         BarMark(data: data,
                 value: QuantitativeVisualChannel(\.value),
                 category: BandVisualChannel(\.name))
     }
-//    }
+}
+
+let chart = Chart {
+    BarMark(data: data,
+            value: QuantitativeVisualChannel(\.value),
+            category: BandVisualChannel(\.name))
 }
 
 benchmark("snapshot chart") {
-    let chart = Chart {
-        BarMark(data: data,
-                value: QuantitativeVisualChannel(\.value),
-                category: BandVisualChannel(\.name))
-    }
-//    for _ in 1...100 {
     let image = chart.snapshot()
-//    }
 }
 
 Benchmark.main()
