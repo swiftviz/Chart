@@ -8,11 +8,12 @@ BENCHMARK=1 swift build -c release
 ## initial rendering, simple bar chart
 
 ```
-running create chart... done! (11.37 ms)
-running snapshot chart... done! (3825.61 ms)
-
-name           time     std        iterations
----------------------------------------------
-create chart   0.012 ms ±   7.23 %       1000
-snapshot chart 3.755 ms ±  65.30 %       1000
+name                        time      std        iterations
+-----------------------------------------------------------
+create small bar chart       0.012 ms ±  13.31 %       1000
+create medium point chart    0.768 ms ±  13.00 %       1000
+create large line chart      0.766 ms ±   1.38 %       1000
+snapshot small bar chart     4.009 ms ±  50.79 %       1000
+snapshot medium point chart 18.298 ms ±  11.74 %       1000
+snapshot large line chart   37.245 ms ±   7.85 %       1000
 ```

@@ -21,6 +21,13 @@ extension SwiftUI.View {
 struct SampleData {
     let name: String
     let value: Double
+    let value2: Double
+
+    init(name: String, value: Double, _ value2: Double = 0.0) {
+        self.name = name
+        self.value = value
+        self.value2 = value2
+    }
 }
 
 // guard let fileUrl = Bundle.main.url(forResource: "athletes", withExtension: "csv") else { fatalError() }
@@ -31,29 +38,75 @@ struct SampleData {
 //    print(something)
 // }
 
-let data: [SampleData] = [
+let smallData: [SampleData] = [
     SampleData(name: "A", value: 3),
     SampleData(name: "B", value: 5),
     SampleData(name: "C", value: 2),
     SampleData(name: "D", value: 7),
 ]
 
-benchmark("create chart") {
+let range: ClosedRange<Int> = 0 ... 1000
+let middleData = range.map { num in
+    SampleData(name: "", value: cos(Double(num)), sin(Double(num)))
+}
+
+let bigRange: ClosedRange<Int> = 0 ... 1_000_000
+let largeData = range.map { num in
+    SampleData(name: "", value: sin(Double(num)), cos(Double(num)))
+}
+
+benchmark("create small bar chart") {
     _ = Chart {
-        BarMark(data: data,
+        BarMark(data: smallData,
                 value: QuantitativeVisualChannel(\.value),
                 category: BandVisualChannel(\.name))
     }
 }
 
-let chart = Chart {
-    BarMark(data: data,
+benchmark("create medium point chart") {
+    _ = Chart {
+        PointMark(data: middleData,
+                  x: QuantitativeVisualChannel(\.value),
+                  y: QuantitativeVisualChannel(\.value2))
+    }
+}
+
+benchmark("create large line chart") {
+    _ = Chart {
+        LineMark(data: largeData,
+                 x: QuantitativeVisualChannel(\.value),
+                 y: QuantitativeVisualChannel(\.value2))
+    }
+}
+
+let barChart = Chart {
+    BarMark(data: smallData,
             value: QuantitativeVisualChannel(\.value),
             category: BandVisualChannel(\.name))
 }
 
-benchmark("snapshot chart") {
-    _ = chart.snapshot()
+let pointChart = Chart {
+    PointMark(data: middleData,
+              x: QuantitativeVisualChannel(\.value),
+              y: QuantitativeVisualChannel(\.value2))
+}
+
+let lineChart = Chart {
+    LineMark(data: largeData,
+             x: QuantitativeVisualChannel(\.value),
+             y: QuantitativeVisualChannel(\.value2))
+}
+
+benchmark("snapshot small bar chart") {
+    _ = barChart.snapshot()
+}
+
+benchmark("snapshot medium point chart") {
+    _ = pointChart.snapshot()
+}
+
+benchmark("snapshot large line chart") {
+    _ = lineChart.snapshot()
 }
 
 Benchmark.main()
