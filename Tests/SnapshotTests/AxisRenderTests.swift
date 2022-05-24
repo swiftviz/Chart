@@ -54,7 +54,7 @@ final class AxisRenderTests: XCTestCase {
                          y: QuantitativeVisualChannel(\.yValue))
                     .yAxis()
             }
-                .margin(.all, 5)
+            .margin(.all, 5)
             assertSnapshot(
                 matching: chart.referenceFrame(),
                 as: .image(size: referenceSize)
@@ -69,7 +69,7 @@ final class AxisRenderTests: XCTestCase {
                     .xAxis()
                     .yAxis()
             }
-                .margin(.all, 5)
+            .margin(.all, 5)
 
             assertSnapshot(
                 matching: chart.referenceFrame(),
@@ -84,7 +84,7 @@ final class AxisRenderTests: XCTestCase {
                          y: QuantitativeVisualChannel(\.yValue))
                     .xAxis()
                     .yAxis(.trailing)
-            }            .margin(.all, 5)
+            }.margin(.all, 5)
 
             assertSnapshot(
                 matching: chart.referenceFrame(),
@@ -99,7 +99,7 @@ final class AxisRenderTests: XCTestCase {
                          y: QuantitativeVisualChannel(\.yValue))
                     .xAxis(.top)
                     .yAxis(.trailing)
-            }            .margin(.all, 5)
+            }.margin(.all, 5)
 
             assertSnapshot(
                 matching: chart.referenceFrame(),
@@ -107,14 +107,14 @@ final class AxisRenderTests: XCTestCase {
             )
         }
 
-    func testXAxisTopYAxisLeading() throws {
+        func testXAxisTopYAxisLeading() throws {
             let chart = Chart {
                 LineMark(data: self.data,
                          x: QuantitativeVisualChannel(\.xValue),
                          y: QuantitativeVisualChannel(\.yValue))
                     .xAxis(.top)
                     .yAxis()
-            }            .margin(.all, 5)
+            }.margin(.all, 5)
 
             assertSnapshot(
                 matching: chart.referenceFrame(),
