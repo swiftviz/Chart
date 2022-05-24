@@ -19,7 +19,7 @@ final class LineChartRenderTests: XCTestCase {
         SampleData(xValue: 4, yValue: 2),
         SampleData(xValue: 5, yValue: 7),
     ]
-    
+
     let range: ClosedRange<Int> = 0 ... 100
 
     #if os(macOS)
@@ -34,54 +34,54 @@ final class LineChartRenderTests: XCTestCase {
                 as: .image(size: referenceSize)
             )
         }
-    
-    func testLineChartXAxisSimpleRendering() throws {
-        let middleData = range.map { num in
-            SampleData(xValue: Double(num)/5, yValue: sin(Double(num)/5))
-        }
-        let chart = Chart {
-            LineMark(data: middleData,
-                     x: QuantitativeVisualChannel(\.xValue),
-                     y: QuantitativeVisualChannel(\.yValue)
-            ).xAxis()
-        }
-        assertSnapshot(
-            matching: chart.referenceFrame(),
-            as: .image(size: referenceSize)
-        )
-    }
 
-    func testLineChartYAxisSimpleRendering() throws {
-        let middleData = range.map { num in
-            SampleData(xValue: Double(num)/5, yValue: sin(Double(num)/5))
+        func testLineChartXAxisSimpleRendering() throws {
+            let middleData = range.map { num in
+                SampleData(xValue: Double(num) / 5, yValue: sin(Double(num) / 5))
+            }
+            let chart = Chart {
+                LineMark(data: middleData,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue)).xAxis()
+            }
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
         }
-        let chart = Chart {
-            LineMark(data: middleData,
-                     x: QuantitativeVisualChannel(\.xValue),
-                     y: QuantitativeVisualChannel(\.yValue))
-            .yAxis()
-        }
-        assertSnapshot(
-            matching: chart.referenceFrame(),
-            as: .image(size: referenceSize)
-        )
-    }
-    func testLineChartDualAxisSimpleRendering() throws {
-        let middleData = range.map { num in
-            SampleData(xValue: Double(num)/5, yValue: sin(Double(num)/5))
-        }
-        let chart = Chart {
-            LineMark(data: middleData,
-                     x: QuantitativeVisualChannel(\.xValue),
-                     y: QuantitativeVisualChannel(\.yValue))
-            .xAxis()
-            .yAxis()
-        }
-        assertSnapshot(
-            matching: chart.referenceFrame(),
-            as: .image(size: referenceSize)
-        )
-    }
 
-#endif
+        func testLineChartYAxisSimpleRendering() throws {
+            let middleData = range.map { num in
+                SampleData(xValue: Double(num) / 5, yValue: sin(Double(num) / 5))
+            }
+            let chart = Chart {
+                LineMark(data: middleData,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .yAxis()
+            }
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+        func testLineChartDualAxisSimpleRendering() throws {
+            let middleData = range.map { num in
+                SampleData(xValue: Double(num) / 5, yValue: sin(Double(num) / 5))
+            }
+            let chart = Chart {
+                LineMark(data: middleData,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .xAxis()
+                    .yAxis()
+            }
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+    #endif
 }

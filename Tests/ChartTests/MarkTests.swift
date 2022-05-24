@@ -1,21 +1,20 @@
 //
 //  MarkTests.swift
-//  
+//
 
-import XCTest
 @testable import Chart
+import XCTest
 
 class MarkTests: XCTestCase {
-
     lazy var sampleData: [TestSampleData] = {
         let range: ClosedRange<Int> = 0 ... 100
         return range.map { num in
-            TestSampleData(x: Double(num)/5, y: sin(Double(num)/5))
+            TestSampleData(x: Double(num) / 5, y: sin(Double(num) / 5))
         }
     }()
 
     func testPointMark() throws {
-        let mark = PointMark(data: self.sampleData,
+        let mark = PointMark(data: sampleData,
                              x: QuantitativeVisualChannel(\.xValue),
                              y: QuantitativeVisualChannel(\.yValue))
         XCTAssertNil(mark._xAxis)
@@ -30,9 +29,9 @@ class MarkTests: XCTestCase {
     }
 
     func testAnyMarkWrapper() throws {
-        let mark = AnyMark(PointMark(data: self.sampleData,
-                           x: QuantitativeVisualChannel(\.xValue),
-                           y: QuantitativeVisualChannel(\.yValue)))
+        let mark = AnyMark(PointMark(data: sampleData,
+                                     x: QuantitativeVisualChannel(\.xValue),
+                                     y: QuantitativeVisualChannel(\.yValue)))
         XCTAssertNil(mark._xAxis)
         XCTAssertNil(mark._yAxis)
         let reference = CGRect(x: 0, y: 0, width: 100, height: 50)
@@ -43,7 +42,7 @@ class MarkTests: XCTestCase {
     }
 
     func testPointMarkWithXAxis() throws {
-        let mark = PointMark(data: self.sampleData,
+        let mark = PointMark(data: sampleData,
                              x: QuantitativeVisualChannel(\.xValue),
                              y: QuantitativeVisualChannel(\.yValue)).xAxis()
         XCTAssertNotNil(mark._xAxis)
@@ -58,9 +57,9 @@ class MarkTests: XCTestCase {
     }
 
     func testAnyMarkWrapperWithXAxis() throws {
-        let mark = AnyMark(PointMark(data: self.sampleData,
-                           x: QuantitativeVisualChannel(\.xValue),
-                           y: QuantitativeVisualChannel(\.yValue)).xAxis())
+        let mark = AnyMark(PointMark(data: sampleData,
+                                     x: QuantitativeVisualChannel(\.xValue),
+                                     y: QuantitativeVisualChannel(\.yValue)).xAxis())
         XCTAssertNotNil(mark._xAxis)
         XCTAssertNil(mark._yAxis)
         let reference = CGRect(x: 0, y: 0, width: 100, height: 50)
@@ -69,5 +68,4 @@ class MarkTests: XCTestCase {
         let axisList = mark.axisForMark(in: reference)
         XCTAssertEqual(axisList.count, 1)
     }
-
 }

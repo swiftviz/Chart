@@ -7,7 +7,6 @@ import SwiftUI
 import XCTest
 
 final class PublicChartTests: XCTestCase {
-
     func testTypeStubs() throws {
         let chart = Chart {
             BarMark(data: [TestSampleData(name: "X", intValue: 1)],

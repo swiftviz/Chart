@@ -6,7 +6,6 @@ import Chart
 import XCTest
 
 class LineMarkTests: XCTestCase {
-
     let data = [
         TestSampleData(name: "X", intValue: 3, x: Double.pi, y: 5.0),
         TestSampleData(name: "Y", intValue: 4, x: Double.pi, y: 7.0),

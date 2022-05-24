@@ -1,6 +1,6 @@
 //
 //  TestSampleData.swift
-//  
+//
 
 struct TestSampleData: Equatable, Hashable {
     let name: String
