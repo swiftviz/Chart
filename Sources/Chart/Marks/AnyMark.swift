@@ -20,6 +20,8 @@ public struct AnyMark: Mark {
         xPropertyScale = specificMark.xPropertyScale
         yPropertyScale = specificMark.yPropertyScale
         wrappedAxisForMark = specificMark.axisForMark(in:)
+        _xAxis = specificMark._xAxis
+        _yAxis = specificMark._yAxis
     }
 
     public func axisForMark(in rect: CGRect) -> [Axis] {
