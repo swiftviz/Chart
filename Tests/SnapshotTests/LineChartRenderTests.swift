@@ -83,5 +83,39 @@ final class LineChartRenderTests: XCTestCase {
             )
         }
 
+    func testLineChartBottomTrailingAxisSimpleRendering() throws {
+        let middleData = range.map { num in
+            SampleData(xValue: Double(num) / 5, yValue: sin(Double(num) / 5))
+        }
+        let chart = Chart {
+            LineMark(data: middleData,
+                     x: QuantitativeVisualChannel(\.xValue),
+                     y: QuantitativeVisualChannel(\.yValue))
+                .xAxis()
+                .yAxis(.trailing)
+        }
+        assertSnapshot(
+            matching: chart.referenceFrame(),
+            as: .image(size: referenceSize)
+        )
+    }
+
+    func testLineChartTopTrailingAxisSimpleRendering() throws {
+        let middleData = range.map { num in
+            SampleData(xValue: Double(num) / 5, yValue: sin(Double(num) / 5))
+        }
+        let chart = Chart {
+            LineMark(data: middleData,
+                     x: QuantitativeVisualChannel(\.xValue),
+                     y: QuantitativeVisualChannel(\.yValue))
+                .xAxis(.top)
+                .yAxis(.trailing)
+        }
+        assertSnapshot(
+            matching: chart.referenceFrame(),
+            as: .image(size: referenceSize)
+        )
+    }
+
     #endif
 }

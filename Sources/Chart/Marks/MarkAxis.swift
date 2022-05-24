@@ -13,24 +13,26 @@ public protocol MarkAxis: Mark {
     var _yAxis: Axis? { get set }
 
     /// Draws an X axis on the chart.
-    func xAxis() -> Self
+    func xAxis(_ location: Axis.AxisLocation) -> Self
 
     /// Draws an X axis on the chart.
-    func yAxis() -> Self
+    func yAxis(_ location: Axis.AxisLocation) -> Self
 }
 
 public extension MarkAxis {
     /// Draws an X axis on the chart.
-    func xAxis() -> Self {
+    func xAxis(_ location: Axis.AxisLocation = .bottom) -> Self {
+        precondition([.bottom, .top].contains(location), "An X axis can't be placed on leading or trailing edges")
         var newMark = self
-        newMark._xAxis = Axis(.bottom, scale: xPropertyScale)
+        newMark._xAxis = Axis(location, scale: xPropertyScale)
         return newMark
     }
 
     /// Draws an X axis on the chart.
-    func yAxis() -> Self {
+    func yAxis(_ location: Axis.AxisLocation = .leading) -> Self {
+        precondition([.leading, .trailing].contains(location), "A Y axis can't be placed on top or bottom edges")
         var newMark = self
-        newMark._yAxis = Axis(.leading, scale: yPropertyScale)
+        newMark._yAxis = Axis(location, scale: yPropertyScale)
         return newMark
     }
 
