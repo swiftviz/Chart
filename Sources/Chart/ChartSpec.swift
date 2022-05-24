@@ -6,6 +6,13 @@ import Foundation
 import SwiftUI
 import SwiftVizScale
 
+struct AxisLists {
+    var xAxisTopList: [Axis] = []
+    var xAxisBottomList: [Axis] = []
+    var yAxisLeadingList: [Axis] = []
+    var yAxisTrailingList: [Axis] = []
+}
+
 /// A declarative chart specification.
 public struct ChartSpec {
     // The marks that make up the symbols of the chart
@@ -42,5 +49,30 @@ public struct ChartSpec {
         var combinedMarks: [AnyMark] = marks
         combinedMarks.append(contentsOf: spec.marks)
         return ChartSpec(marks: combinedMarks, margin: spec.margin, inset: spec.inset)
+    }
+
+    func compileAxis() -> AxisLists {
+        var axisCollection = AxisLists()
+        for mark in marks {
+            if let xAxis = mark._xAxis {
+                switch xAxis.axisLocation {
+                case .top:
+                    axisCollection.xAxisTopList.append(xAxis)
+
+                default:
+                    axisCollection.xAxisBottomList.append(xAxis)
+                }
+            }
+            if let yAxis = mark._yAxis {
+                switch yAxis.axisLocation {
+                case .trailing:
+                    axisCollection.yAxisTrailingList.append(yAxis)
+
+                default:
+                    axisCollection.yAxisLeadingList.append(yAxis)
+                }
+            }
+        }
+        return axisCollection
     }
 }

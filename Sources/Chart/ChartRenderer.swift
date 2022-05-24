@@ -4,27 +4,6 @@
 
 import SwiftUI
 
-extension CGRect {
-    /// Returns a new CGRect with the values inset evenly by the value you provide.
-    /// - Parameter amount: The amount to inset the edges of the rect.
-    func inset(amount: CGFloat) -> CGRect? {
-        if size.width <= amount * 2 || size.height <= amount * 2 {
-            return nil
-        }
-        return CGRect(x: origin.x + amount,
-                      y: origin.y + amount,
-                      width: size.width - (2 * amount),
-                      height: size.height - (2 * amount))
-    }
-
-    func inset(leading: CGFloat = 0, top: CGFloat = 0, trailing: CGFloat = 0, bottom: CGFloat = 0) -> CGRect {
-        CGRect(x: origin.x + leading,
-               y: origin.y + top,
-               width: size.width - (leading + trailing),
-               height: size.height - (top + bottom))
-    }
-}
-
 class ChartRenderer {
     func createView(_ specification: ChartSpec) -> some View {
         // init(opaque: Bool = false,
@@ -50,30 +29,7 @@ class ChartRenderer {
 
             // create a list of axis specs that have been defined on the marks
 
-            var xAxisTopList: [Axis] = []
-            var xAxisBottomList: [Axis] = []
-            var yAxisLeadingList: [Axis] = []
-            var yAxisTrailingList: [Axis] = []
-            for mark in specification.marks {
-                if let xAxis = mark._xAxis {
-                    switch xAxis.axisLocation {
-                    case .top:
-                        xAxisTopList.append(xAxis)
-
-                    default:
-                        xAxisBottomList.append(xAxis)
-                    }
-                }
-                if let yAxis = mark._yAxis {
-                    switch yAxis.axisLocation {
-                    case .trailing:
-                        yAxisTrailingList.append(yAxis)
-
-                    default:
-                        yAxisLeadingList.append(yAxis)
-                    }
-                }
-            }
+            let axisCollection = specification.compileAxis()
 
             // get the maximum height of the set of Axis. In a perfect world, there would only
             // be one axis for which we need to calculate this, but the DSL result builder
@@ -81,10 +37,10 @@ class ChartRenderer {
             // that you've specified `.xAxis()` on two different marks - so we keep to the
             // pathological case and compute it assuming that _every_ mark has an X, and Y, axis
             // defined.
-            let maxXAxisBottomHeight = self.heightFromListOfAxis(xAxisBottomList, with: context, size: size)
-            let maxXAxisTopHeight = self.heightFromListOfAxis(xAxisTopList, with: context, size: size)
-            let maxYAxisLeadingWidth = self.widthFromListOfAxis(yAxisLeadingList, with: context, size: size)
-            let maxYAxisTrailingWidth = self.widthFromListOfAxis(yAxisTrailingList, with: context, size: size)
+            let maxXAxisBottomHeight = self.heightFromListOfAxis(axisCollection.xAxisBottomList, with: context, size: size)
+            let maxXAxisTopHeight = self.heightFromListOfAxis(axisCollection.xAxisTopList, with: context, size: size)
+            let maxYAxisLeadingWidth = self.widthFromListOfAxis(axisCollection.yAxisLeadingList, with: context, size: size)
+            let maxYAxisTrailingWidth = self.widthFromListOfAxis(axisCollection.yAxisTrailingList, with: context, size: size)
 
             let insetLeading = specification.margin.leading + maxYAxisLeadingWidth + specification.inset.leading
             let insetTrailing = specification.margin.trailing + maxYAxisTrailingWidth + specification.inset.trailing
@@ -100,38 +56,38 @@ class ChartRenderer {
             // The width of any X axis is determined by that internal size, as is the height
             // for any Y axis.
 
-            if !xAxisTopList.isEmpty {
+            if !axisCollection.xAxisTopList.isEmpty {
                 // calculate area rect for top axis and draw it
                 let axisOrigin = CGPoint(x: specification.margin.leading + maxYAxisLeadingWidth + specification.inset.leading, y: specification.margin.top)
                 let axisSize = CGSize(width: chartDataDrawArea.size.width, height: maxXAxisTopHeight)
-                for topAxis in xAxisTopList {
+                for topAxis in axisCollection.xAxisTopList {
                     self.drawAxis(axis: topAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
             }
 
-            if !xAxisBottomList.isEmpty {
+            if !axisCollection.xAxisBottomList.isEmpty {
                 // calculate area rect for bottom axis and draw it
                 let axisOrigin = CGPoint(x: specification.margin.leading + maxYAxisLeadingWidth + specification.inset.leading, y: size.height - (specification.margin.bottom + maxXAxisBottomHeight))
                 let axisSize = CGSize(width: chartDataDrawArea.size.width, height: maxXAxisBottomHeight)
-                for bottomAxis in xAxisBottomList {
+                for bottomAxis in axisCollection.xAxisBottomList {
                     self.drawAxis(axis: bottomAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
             }
 
-            if !yAxisLeadingList.isEmpty {
+            if !axisCollection.yAxisLeadingList.isEmpty {
                 // calculate leading area rect and draw it
                 let axisOrigin = CGPoint(x: specification.margin.leading, y: specification.margin.top + maxXAxisTopHeight + specification.inset.top)
                 let axisSize = CGSize(width: maxYAxisLeadingWidth, height: chartDataDrawArea.size.height)
-                for leadingAxis in yAxisLeadingList {
+                for leadingAxis in axisCollection.yAxisLeadingList {
                     self.drawAxis(axis: leadingAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
             }
 
-            if !yAxisTrailingList.isEmpty {
+            if !axisCollection.yAxisTrailingList.isEmpty {
                 // calculate trailing area rect and draw it
                 let axisOrigin = CGPoint(x: size.width - (specification.margin.trailing + maxYAxisTrailingWidth), y: specification.margin.top + maxXAxisTopHeight + specification.inset.top)
                 let axisSize = CGSize(width: maxYAxisTrailingWidth, height: chartDataDrawArea.size.height)
-                for trailingAxis in yAxisTrailingList {
+                for trailingAxis in axisCollection.yAxisTrailingList {
                     self.drawAxis(axis: trailingAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
             }
