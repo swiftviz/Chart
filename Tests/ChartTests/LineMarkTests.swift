@@ -6,23 +6,10 @@ import Chart
 import XCTest
 
 class LineMarkTests: XCTestCase {
-    struct SampleData {
-        let name: String
-        let value: Int
-        let xValue: Double
-        let yValue: Double
-
-        init(_ name: String, _ intValue: Int, _ x: Double, _ y: Double) {
-            self.name = name
-            value = intValue
-            xValue = x
-            yValue = y
-        }
-    }
 
     let data = [
-        SampleData("X", 3, Double.pi, 5.0),
-        SampleData("Y", 4, Double.pi, 7.0),
+        TestSampleData(name: "X", intValue: 3, x: Double.pi, y: 5.0),
+        TestSampleData(name: "Y", intValue: 4, x: Double.pi, y: 7.0),
     ]
 
     func testLineMarkInitializer() throws {
