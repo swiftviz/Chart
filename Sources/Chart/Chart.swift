@@ -73,12 +73,14 @@ public struct Chart: View {
 
     // MARK: - Modifiers for chart
 
-    public func margin(_ edges: Edge.Set = .all, _ length: CGFloat? = nil) -> some View {
-        Chart(margin: EdgeInsets(edges, length), inset: specCollection.inset, chart: specCollection)
+    public func margin(_ edges: Edge.Set = .all, _ length: CGFloat? = nil) -> Chart {
+        let expandedMargin = specCollection.margin + EdgeInsets(edges, length)
+        return Chart(margin: expandedMargin, inset: specCollection.inset, chart: specCollection)
     }
 
-    public func inset(_ edges: Edge.Set = .all, _ length: CGFloat? = nil) -> some View {
-        Chart(margin: specCollection.margin, inset: EdgeInsets(edges, length), chart: specCollection)
+    public func inset(_ edges: Edge.Set = .all, _ length: CGFloat? = nil) -> Chart {
+        let expandedInset = specCollection.inset + EdgeInsets(edges, length)
+        return Chart(margin: specCollection.margin, inset: expandedInset, chart: specCollection)
     }
 }
 
@@ -106,5 +108,14 @@ extension EdgeInsets {
     init(_ length: CGFloat? = nil) {
         let value: CGFloat = length ?? 0
         self.init(top: value, leading: value, bottom: value, trailing: value)
+    }
+
+    static func + (lhs: EdgeInsets, rhs: EdgeInsets) -> EdgeInsets {
+        EdgeInsets(
+            top: lhs.top + rhs.top,
+            leading: lhs.leading + rhs.leading,
+            bottom: lhs.bottom + rhs.bottom,
+            trailing: lhs.trailing + rhs.trailing
+        )
     }
 }
