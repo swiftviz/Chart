@@ -222,7 +222,8 @@ class ChartRenderer {
                 p.move(to: ruleStart)
                 p.addLine(to: ruleEnd)
             }
-            context.stroke(linePath, with: .color(.primary))
+            let ruleStyle = StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1)
+            context.stroke(linePath, with: .color(.primary), style: ruleStyle)
         }
     }
 
