@@ -13,26 +13,82 @@ public protocol MarkAxis: Mark {
     var _yAxis: Axis? { get set }
 
     /// Draws an X axis on the chart.
-    func xAxis(_ location: Axis.AxisLocation) -> Self
+    func xAxis(_ location: Axis.AxisLocation,
+               rule: Bool,
+               values: [Double],
+               tickLength: CGFloat,
+               tickOrientation: Axis.TickOrientation,
+               tickPadding: CGFloat,
+               tickRules: Bool,
+               label: String,
+               labelOffset: CGFloat,
+               labelAlignment: Alignment) -> Self
 
     /// Draws an X axis on the chart.
-    func yAxis(_ location: Axis.AxisLocation) -> Self
+    func yAxis(_ location: Axis.AxisLocation,
+               rule: Bool,
+               values: [Double],
+               tickLength: CGFloat,
+               tickOrientation: Axis.TickOrientation,
+               tickPadding: CGFloat,
+               tickRules: Bool,
+               label: String,
+               labelOffset: CGFloat,
+               labelAlignment: Alignment) -> Self
 }
 
 public extension MarkAxis {
     /// Draws an X axis on the chart.
-    func xAxis(_ location: Axis.AxisLocation = .bottom) -> Self {
+    func xAxis(_ location: Axis.AxisLocation = .bottom,
+               rule: Bool = true,
+               values: [Double] = [],
+               tickLength: CGFloat = 3,
+               tickOrientation: Axis.TickOrientation = .outer,
+               tickPadding: CGFloat = 5,
+               tickRules: Bool = false,
+               label: String = "",
+               labelOffset: CGFloat = 0,
+               labelAlignment: Alignment = .center) -> Self {
         precondition([.bottom, .top].contains(location), "An X axis can't be placed on leading or trailing edges")
         var newMark = self
-        newMark._xAxis = Axis(location, scale: xPropertyScale)
+        newMark._xAxis = Axis(location,
+                              scale: xPropertyScale,
+                              rule: rule,
+                              requestedTickValues: values,
+                              tickLength: tickLength,
+                              tickOrientation: tickOrientation,
+                              tickPadding: tickPadding,
+                              tickRules: tickRules,
+                              label: label,
+                              labelOffset: labelOffset,
+                              labelAlignment: labelAlignment)
         return newMark
     }
 
     /// Draws an X axis on the chart.
-    func yAxis(_ location: Axis.AxisLocation = .leading) -> Self {
+    func yAxis(_ location: Axis.AxisLocation = .leading,
+               rule: Bool = true,
+               values: [Double] = [],
+               tickLength: CGFloat = 3,
+               tickOrientation: Axis.TickOrientation = .outer,
+               tickPadding: CGFloat = 5,
+               tickRules: Bool = false,
+               label: String = "",
+               labelOffset: CGFloat = 0,
+               labelAlignment: Alignment = .center) -> Self {
         precondition([.leading, .trailing].contains(location), "A Y axis can't be placed on top or bottom edges")
         var newMark = self
-        newMark._yAxis = Axis(location, scale: yPropertyScale)
+        newMark._yAxis = Axis(location,
+                              scale: yPropertyScale,
+                              rule: rule,
+                              requestedTickValues: values,
+                              tickLength: tickLength,
+                              tickOrientation: tickOrientation,
+                              tickPadding: tickPadding,
+                              tickRules: tickRules,
+                              label: label,
+                              labelOffset: labelOffset,
+                              labelAlignment: labelAlignment)
         return newMark
     }
 }
