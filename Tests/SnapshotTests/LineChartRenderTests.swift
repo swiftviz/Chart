@@ -24,7 +24,7 @@ final class LineChartRenderTests: XCTestCase {
 
     #if os(macOS)
         func testLineChartImageRendering() throws {
-            let chart = Chart {
+            let chart = Chart(_options: [.all]) {
                 LineMark(data: self.data,
                          x: QuantitativeVisualChannel(\.xValue),
                          y: QuantitativeVisualChannel(\.yValue))
@@ -39,7 +39,7 @@ final class LineChartRenderTests: XCTestCase {
             let middleData = range.map { num in
                 SampleData(xValue: Double(num) / 5, yValue: sin(Double(num) / 5))
             }
-            let chart = Chart {
+            let chart = Chart(_options: [.all]) {
                 LineMark(data: middleData,
                          x: QuantitativeVisualChannel(\.xValue),
                          y: QuantitativeVisualChannel(\.yValue)).xAxis()
@@ -54,7 +54,7 @@ final class LineChartRenderTests: XCTestCase {
             let middleData = range.map { num in
                 SampleData(xValue: Double(num) / 5, yValue: sin(Double(num) / 5))
             }
-            let chart = Chart {
+            let chart = Chart(_options: [.all]) {
                 LineMark(data: middleData,
                          x: QuantitativeVisualChannel(\.xValue),
                          y: QuantitativeVisualChannel(\.yValue))
@@ -70,7 +70,7 @@ final class LineChartRenderTests: XCTestCase {
             let middleData = range.map { num in
                 SampleData(xValue: Double(num) / 5, yValue: sin(Double(num) / 5))
             }
-            let chart = Chart {
+            let chart = Chart(_options: [.all]) {
                 LineMark(data: middleData,
                          x: QuantitativeVisualChannel(\.xValue),
                          y: QuantitativeVisualChannel(\.yValue))
@@ -87,7 +87,7 @@ final class LineChartRenderTests: XCTestCase {
             let middleData = range.map { num in
                 SampleData(xValue: Double(num) / 5, yValue: sin(Double(num) / 5))
             }
-            let chart = Chart {
+            let chart = Chart(_options: [.all]) {
                 LineMark(data: middleData,
                          x: QuantitativeVisualChannel(\.xValue),
                          y: QuantitativeVisualChannel(\.yValue))
@@ -104,7 +104,7 @@ final class LineChartRenderTests: XCTestCase {
             let middleData = range.map { num in
                 SampleData(xValue: Double(num) / 5, yValue: sin(Double(num) / 5))
             }
-            let chart = Chart {
+            let chart = Chart(_options: [.all]) {
                 LineMark(data: middleData,
                          x: QuantitativeVisualChannel(\.xValue),
                          y: QuantitativeVisualChannel(\.yValue))
