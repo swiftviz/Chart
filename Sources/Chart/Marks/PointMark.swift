@@ -52,7 +52,8 @@ public struct PointMark<DataSource>: Mark, MarkAxis {
                 let newPoint = IndividualPoint(
                     x: xValue + rect.origin.x,
                     y: rect.height + rect.origin.y - yValue,
-                    shape: PlotShape(Circle()), size: 5)
+                    shape: PlotShape(Circle()), size: 5
+                )
                 symbols.append(.point(newPoint))
 //                print(" .. \(newPoint)")
             }
