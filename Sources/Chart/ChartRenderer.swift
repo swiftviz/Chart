@@ -4,8 +4,23 @@
 
 import SwiftUI
 
+public struct DebugRendering: OptionSet {
+    public let rawValue: Int
+
+    public static let frame = DebugRendering(rawValue: 1 << 0)
+    public static let axis = DebugRendering(rawValue: 1 << 1)
+    public static let chartarea = DebugRendering(rawValue: 1 << 2)
+    // static let standard    = DebugRendering(rawValue: 1 << 3)
+
+    public static let all: DebugRendering = [.frame, .axis, .chartarea]
+
+    public init(rawValue: Int) {
+        self.rawValue = rawValue
+    }
+}
+
 class ChartRenderer {
-    func createView(_ specification: ChartSpec) -> some View {
+    func createView(_ specification: ChartSpec, opts: DebugRendering = []) -> some View {
         // init(opaque: Bool = false,
         //      colorMode: ColorRenderingMode = .nonLinear,
         //      rendersAsynchronously: Bool = false,
@@ -48,10 +63,17 @@ class ChartRenderer {
             let insetTop = specification.margin.top + maxXAxisTopHeight + specification.inset.top
             let insetBottom = specification.margin.bottom + maxXAxisBottomHeight + specification.inset.bottom
 
+            if opts.contains(.frame) {
+                self.frameArea(CGRect(origin: CGPoint.zero, size: size), context: &context)
+            }
             // With the X axis height, and Y axis width, we can calculate a proper internal
             // CGRect that is the inset area into which we want to draw the marks.
             let chartDataDrawArea = CGRect(origin: CGPoint.zero, size: size)
                 .inset(leading: insetLeading, top: insetTop, trailing: insetTrailing, bottom: insetBottom)
+
+            if opts.contains(.chartarea) {
+                self.chartArea(chartDataDrawArea, context: &context)
+            }
             // The size calculation also plays into describing the rectangles for drawing the axis.
             // The width of any X axis is determined by that internal size, as is the height
             // for any Y axis.
@@ -61,6 +83,9 @@ class ChartRenderer {
                 let axisOrigin = CGPoint(x: specification.margin.leading + maxYAxisLeadingWidth + specification.inset.leading, y: specification.margin.top)
                 let axisSize = CGSize(width: chartDataDrawArea.size.width, height: maxXAxisTopHeight)
                 for topAxis in axisCollection.xAxisTopList {
+                    if opts.contains(.axis) {
+                        self.fillArea(CGRect(origin: axisOrigin, size: axisSize), context: &context)
+                    }
                     self.drawAxis(axis: topAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
             }
@@ -70,6 +95,10 @@ class ChartRenderer {
                 let axisOrigin = CGPoint(x: specification.margin.leading + maxYAxisLeadingWidth + specification.inset.leading, y: size.height - (specification.margin.bottom + maxXAxisBottomHeight))
                 let axisSize = CGSize(width: chartDataDrawArea.size.width, height: maxXAxisBottomHeight)
                 for bottomAxis in axisCollection.xAxisBottomList {
+                    if opts.contains(.axis) {
+                        self.fillArea(CGRect(origin: axisOrigin, size: axisSize), context: &context)
+                    }
+
                     self.drawAxis(axis: bottomAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
             }
@@ -79,6 +108,10 @@ class ChartRenderer {
                 let axisOrigin = CGPoint(x: specification.margin.leading, y: specification.margin.top + maxXAxisTopHeight + specification.inset.top)
                 let axisSize = CGSize(width: maxYAxisLeadingWidth, height: chartDataDrawArea.size.height)
                 for leadingAxis in axisCollection.yAxisLeadingList {
+                    if opts.contains(.axis) {
+                        self.fillArea(CGRect(origin: axisOrigin, size: axisSize), context: &context)
+                    }
+
                     self.drawAxis(axis: leadingAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
             }
@@ -88,6 +121,10 @@ class ChartRenderer {
                 let axisOrigin = CGPoint(x: size.width - (specification.margin.trailing + maxYAxisTrailingWidth), y: specification.margin.top + maxXAxisTopHeight + specification.inset.top)
                 let axisSize = CGSize(width: maxYAxisTrailingWidth, height: chartDataDrawArea.size.height)
                 for trailingAxis in axisCollection.yAxisTrailingList {
+                    if opts.contains(.axis) {
+                        self.fillArea(CGRect(origin: axisOrigin, size: axisSize), context: &context)
+                    }
+
                     self.drawAxis(axis: trailingAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
             }
@@ -154,6 +191,21 @@ class ChartRenderer {
             // axis width
             return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelWidth)
         }
+    }
+
+    private func frameArea(_ rect: CGRect, context: inout GraphicsContext) {
+        let lightgrey = GraphicsContext.Shading.color(.sRGB, red: 0.2, green: 0.2, blue: 0.2, opacity: 0.1)
+        context.fill(Path(rect), with: lightgrey)
+    }
+
+    private func chartArea(_ rect: CGRect, context: inout GraphicsContext) {
+        let yeller = GraphicsContext.Shading.color(.sRGB, red: 0.9, green: 0.9, blue: 0.4, opacity: 0.2)
+        context.fill(Path(rect), with: yeller)
+    }
+
+    private func fillArea(_ rect: CGRect, context: inout GraphicsContext) {
+        let paleblue = GraphicsContext.Shading.color(.sRGB, red: 0.05, green: 0.1, blue: 0.8, opacity: 0.3)
+        context.fill(Path(rect), with: paleblue)
     }
 
     private func drawAxis(axis: Axis, within rect: CGRect, context: inout GraphicsContext) {

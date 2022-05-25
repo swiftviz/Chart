@@ -5,7 +5,8 @@
 import SwiftUI
 
 public struct Chart: View {
-    var chartRenderer = ChartRenderer()
+    @State var debugRenderOptions: DebugRendering
+    let chartRenderer = ChartRenderer()
     var specCollection: ChartSpec
 
     /* execution flow notes:
@@ -39,12 +40,13 @@ public struct Chart: View {
      */
 
     public var body: some View {
-        chartRenderer.createView(specCollection)
+        chartRenderer.createView(specCollection, opts: self.debugRenderOptions)
     }
 
     @_disfavoredOverload
     public init(margin: EdgeInsets = EdgeInsets(),
                 inset: EdgeInsets = EdgeInsets(),
+                _options: DebugRendering = [],
                 @ChartBuilder _ chartDecl: @escaping () -> ChartSpec)
     {
         // invoke the closure to get the declared sets of marks as a list of AnyMark
@@ -52,10 +54,12 @@ public struct Chart: View {
         specCollection = chartDecl()
         specCollection.margin = margin
         specCollection.inset = inset
+        debugRenderOptions = _options
     }
 
     public init(margin: CGFloat = 0,
                 inset: CGFloat = 0,
+                _options: DebugRendering = [],
                 @ChartBuilder _ chartDecl: @escaping () -> ChartSpec)
     {
         // invoke the closure to get the declared sets of marks as a list of AnyMark
@@ -63,23 +67,25 @@ public struct Chart: View {
         specCollection = chartDecl()
         specCollection.margin = EdgeInsets(.all, margin)
         specCollection.inset = EdgeInsets(.all, inset)
+        debugRenderOptions = _options
     }
 
-    internal init(margin: EdgeInsets, inset: EdgeInsets, chart: ChartSpec) {
+    internal init(margin: EdgeInsets, inset: EdgeInsets, chart: ChartSpec, _options: DebugRendering = []) {
         specCollection = chart
         specCollection.margin = margin
         specCollection.inset = inset
+        debugRenderOptions = _options
     }
 
     // MARK: - Modifiers for chart
 
     public func margin(_ edges: Edge.Set = .all, _ length: CGFloat? = nil) -> Chart {
         let expandedMargin = specCollection.margin + EdgeInsets(edges, length)
-        return Chart(margin: expandedMargin, inset: specCollection.inset, chart: specCollection)
+        return Chart(margin: expandedMargin, inset: specCollection.inset, chart: specCollection, _options: debugRenderOptions)
     }
 
     public func inset(_ edges: Edge.Set = .all, _ length: CGFloat? = nil) -> Chart {
         let expandedInset = specCollection.inset + EdgeInsets(edges, length)
-        return Chart(margin: specCollection.margin, inset: expandedInset, chart: specCollection)
+        return Chart(margin: specCollection.margin, inset: expandedInset, chart: specCollection, _options: debugRenderOptions)
     }
 }
