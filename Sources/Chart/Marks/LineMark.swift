@@ -55,7 +55,8 @@ public struct LineMark<DataSource>: Mark, MarkAxis {
                 let newPoint = IndividualPoint(
                     x: rect.origin.x + xValue,
                     y: rect.height + rect.origin.y - yValue,
-                    shape: PlotShape(Circle()), size: 5)
+                    shape: PlotShape(Circle()), size: 5
+                )
                 symbols.append(.point(newPoint))
 //                print(" .. \(newPoint)")
                 // There won't be a line for the first point, but all following points
@@ -69,7 +70,8 @@ public struct LineMark<DataSource>: Mark, MarkAxis {
                         y1: rect.height + rect.origin.y - yValue,
                         x2: rect.origin.x + x2Value,
                         y2: rect.height + rect.origin.y - y2Value,
-                        size: 1)
+                        size: 1
+                    )
                     symbols.append(.line(lineBack))
 //                    print(" .. \(lineBack)")
                 }
