@@ -48,7 +48,8 @@ public extension MarkAxis {
                tickRules: Bool = false,
                label: String = "",
                labelOffset: CGFloat = 0,
-               labelAlignment: Alignment = .center) -> Self {
+               labelAlignment: Alignment = .center) -> Self
+    {
         precondition([.bottom, .top].contains(location), "An X axis can't be placed on leading or trailing edges")
         var newMark = self
         newMark._xAxis = Axis(location,
@@ -75,7 +76,8 @@ public extension MarkAxis {
                tickRules: Bool = false,
                label: String = "",
                labelOffset: CGFloat = 0,
-               labelAlignment: Alignment = .center) -> Self {
+               labelAlignment: Alignment = .center) -> Self
+    {
         precondition([.leading, .trailing].contains(location), "A Y axis can't be placed on top or bottom edges")
         var newMark = self
         newMark._yAxis = Axis(location,
