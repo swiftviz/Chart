@@ -67,9 +67,7 @@ class MarkAxisTests: XCTestCase {
         let axis = mark._xAxis!
         XCTAssertEqual(axis.ticks.count, 0)
 
-        let calculatedAxis = mark.axisForMark(in: reference)
-        XCTAssertEqual(calculatedAxis.count, 1)
-        let completeAxis = calculatedAxis.first!
+        let completeAxis = axis.withTicksIn(reference)
         // calculated axis through the mark will have ticks associated with it
         // and based on the domain provided by the data.
         XCTAssertEqual(completeAxis.ticks.count, 5)
@@ -97,9 +95,7 @@ class MarkAxisTests: XCTestCase {
         // as yet unconfigured since no range has been applied
         XCTAssertEqual(axis.ticks.count, 0)
 
-        let calculatedAxis = mark.axisForMark(in: reference)
-        XCTAssertEqual(calculatedAxis.count, 1)
-        let completeAxis = calculatedAxis.first!
+        let completeAxis = axis.withTicksIn(reference)
         // calculated axis through the mark will have ticks associated with it
         // and based on the domain provided by the data.
         XCTAssertEqual(completeAxis.ticks.count, 5)

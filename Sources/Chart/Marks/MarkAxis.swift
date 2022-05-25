@@ -35,20 +35,4 @@ public extension MarkAxis {
         newMark._yAxis = Axis(location, scale: yPropertyScale)
         return newMark
     }
-
-    /// Returns the set of axis configurations that have been enabled for the mark
-    /// - Parameter in: The rectangle into which to scale and draw axis.
-    /// - Returns: A dictionary of Axis keyed by the axis location.
-    func axisForMark(in rect: CGRect) -> [Axis] {
-        var axisSet: [Axis] = []
-        if let _xAxis = _xAxis {
-            let ticks = xPropertyScale.tickValuesFromScale(lower: rect.origin.x, higher: rect.origin.x + rect.width, values: _xAxis.requestedTickValues)
-            axisSet.append(_xAxis.addingTicks(ticks))
-        }
-        if let _yAxis = _yAxis {
-            let ticks = yPropertyScale.tickValuesFromScale(lower: rect.origin.y, higher: rect.origin.y + rect.height, values: _yAxis.requestedTickValues)
-            axisSet.append(_yAxis.addingTicks(ticks))
-        }
-        return axisSet
-    }
 }

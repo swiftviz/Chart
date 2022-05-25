@@ -37,8 +37,8 @@ class MarkTests: XCTestCase {
         let reference = CGRect(x: 0, y: 0, width: 100, height: 50)
         let symbols = mark.symbolsForMark(in: reference)
         XCTAssertEqual(symbols.count, sampleData.count)
-        let axisList = mark.axisForMark(in: reference)
-        XCTAssertEqual(axisList.count, 0)
+//        let axisList = mark.axisForMark(in: reference)
+//        XCTAssertEqual(axisList.count, 0)
     }
 
     func testPointMarkWithXAxis() throws {
@@ -65,7 +65,7 @@ class MarkTests: XCTestCase {
         let reference = CGRect(x: 0, y: 0, width: 100, height: 50)
         let symbols = mark.symbolsForMark(in: reference)
         XCTAssertEqual(symbols.count, sampleData.count)
-        let axisList = mark.axisForMark(in: reference)
-        XCTAssertEqual(axisList.count, 1)
+//        let axisList = mark.axisForMark(in: reference)
+//        XCTAssertEqual(axisList.count, 1)
     }
 }
