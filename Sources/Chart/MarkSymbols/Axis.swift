@@ -54,6 +54,7 @@ public struct Axis {
     let tickLength: CGFloat
     let tickOrientation: TickOrientation
     let tickPadding: CGFloat
+    let tickAlignment: UnitPoint
     let tickRules: Bool // aka 'grid', but only for one direction
     let label: String
     let labelAlignment: Alignment
@@ -65,12 +66,14 @@ public struct Axis {
     /// A declaration of how to draw an axis for a chart.
     /// - Parameters:
     ///   - axisLocation: The location of the axis for the chart.
+    ///   - scale: The visual property scale to use with the axis.
     ///   - rule: A Boolean value that indicates the axis should be drawn on the edge of the chart.
     ///   - requestedTickValues: A list of tick values to present on the axis.
     ///   - ticks: A list of tick values and locations to present on the axis.
     ///   - tickLength: The length of the ticks.
     ///   - tickOrientation: The direction the tick is drawn from the axis.
     ///   - tickPadding: The amount of padding between the end of a tick and its value.
+    ///   - tickAlignment: The edge of the tick label to align with the tick.
     ///   - tickRules: A Boolean value that indicates that the tick values should be used to draw rules across the background of the chart.
     ///   - label: The label for the axis.
     ///   - labelAlignment: The alignment of the label for the axis
@@ -82,6 +85,7 @@ public struct Axis {
                 tickLength: CGFloat = 3,
                 tickOrientation: TickOrientation = .outer,
                 tickPadding: CGFloat = 5,
+                tickAlignment: UnitPoint? = nil,
                 tickRules: Bool = false,
                 label: String = "",
                 labelOffset: CGFloat = 0,
@@ -91,6 +95,7 @@ public struct Axis {
         self.axisLocation = axisLocation
         self.tickLength = tickLength
         self.tickPadding = tickPadding
+
         self.tickOrientation = tickOrientation
         self.rule = rule
         self.tickRules = tickRules
@@ -98,6 +103,20 @@ public struct Axis {
         self.labelOffset = labelOffset
         self.labelAlignment = labelAlignment
         self.requestedTickValues = requestedTickValues
+        if let tickAlignment = tickAlignment {
+            self.tickAlignment = tickAlignment
+        } else {
+            switch (axisLocation, tickOrientation) {
+            case (.top, .inner), (.bottom, .outer):
+                self.tickAlignment = .top
+            case (.top, .outer), (.bottom, .inner):
+                self.tickAlignment = .bottom
+            case (.leading, .inner), (.trailing, .outer):
+                self.tickAlignment = .leading
+            case (.leading, .outer), (.trailing, .inner):
+                self.tickAlignment = .trailing
+            }
+        }
         ticks = []
     }
 

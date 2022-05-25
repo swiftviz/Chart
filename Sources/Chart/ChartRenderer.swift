@@ -243,31 +243,51 @@ class ChartRenderer {
         for aTick in axis.withTicksIn(rect).ticks {
             let tickStart: CGPoint
             let tickEnd: CGPoint
+            let labelPoint: CGPoint
             switch (axis.axisLocation, axis.tickOrientation) {
+            // Y Axis - vertical layout
             case (.leading, .inner):
                 tickStart = CGPoint(x: ruleStart.x, y: aTick.rangeLocation)
                 tickEnd = CGPoint(x: ruleStart.x + axis.tickLength, y: aTick.rangeLocation)
+                labelPoint = CGPoint(x: ruleStart.x + axis.tickLength + axis.tickPadding,
+                                     y: aTick.rangeLocation)
             case (.leading, .outer):
                 tickStart = CGPoint(x: ruleStart.x, y: aTick.rangeLocation)
                 tickEnd = CGPoint(x: ruleStart.x - axis.tickLength, y: aTick.rangeLocation)
-            case (.top, .inner):
-                tickStart = CGPoint(x: aTick.rangeLocation, y: ruleStart.y)
-                tickEnd = CGPoint(x: aTick.rangeLocation, y: ruleStart.y + axis.tickLength)
-            case (.top, .outer):
-                tickStart = CGPoint(x: aTick.rangeLocation, y: ruleStart.y)
-                tickEnd = CGPoint(x: aTick.rangeLocation, y: ruleStart.y - axis.tickLength)
-            case (.bottom, .inner):
-                tickStart = CGPoint(x: aTick.rangeLocation, y: ruleStart.y)
-                tickEnd = CGPoint(x: aTick.rangeLocation, y: ruleStart.y - axis.tickLength)
-            case (.bottom, .outer):
-                tickStart = CGPoint(x: aTick.rangeLocation, y: ruleStart.y)
-                tickEnd = CGPoint(x: aTick.rangeLocation, y: ruleStart.y + axis.tickLength)
+                labelPoint = CGPoint(x: ruleStart.x - axis.tickLength - axis.tickPadding,
+                                     y: aTick.rangeLocation)
             case (.trailing, .inner):
                 tickStart = CGPoint(x: ruleStart.x, y: aTick.rangeLocation)
                 tickEnd = CGPoint(x: ruleStart.x - axis.tickLength, y: aTick.rangeLocation)
+                labelPoint = CGPoint(x: ruleStart.x - axis.tickLength - axis.tickPadding,
+                                     y: aTick.rangeLocation)
+
             case (.trailing, .outer):
                 tickStart = CGPoint(x: ruleStart.x, y: aTick.rangeLocation)
                 tickEnd = CGPoint(x: ruleStart.x + axis.tickLength, y: aTick.rangeLocation)
+                labelPoint = CGPoint(x: ruleStart.x + axis.tickLength + axis.tickPadding,
+                                     y: aTick.rangeLocation)
+            // X Axis - horizontal layout
+            case (.top, .inner):
+                tickStart = CGPoint(x: aTick.rangeLocation, y: ruleStart.y)
+                tickEnd = CGPoint(x: aTick.rangeLocation, y: ruleStart.y + axis.tickLength)
+                labelPoint = CGPoint(x: aTick.rangeLocation,
+                                     y: ruleStart.y + axis.tickLength + axis.tickPadding)
+            case (.top, .outer):
+                tickStart = CGPoint(x: aTick.rangeLocation, y: ruleStart.y)
+                tickEnd = CGPoint(x: aTick.rangeLocation, y: ruleStart.y - axis.tickLength)
+                labelPoint = CGPoint(x: aTick.rangeLocation,
+                                     y: ruleStart.y - axis.tickLength - axis.tickPadding)
+            case (.bottom, .inner):
+                tickStart = CGPoint(x: aTick.rangeLocation, y: ruleStart.y)
+                tickEnd = CGPoint(x: aTick.rangeLocation, y: ruleStart.y - axis.tickLength)
+                labelPoint = CGPoint(x: aTick.rangeLocation,
+                                     y: ruleStart.y - axis.tickLength - axis.tickPadding)
+            case (.bottom, .outer):
+                tickStart = CGPoint(x: aTick.rangeLocation, y: ruleStart.y)
+                tickEnd = CGPoint(x: aTick.rangeLocation, y: ruleStart.y + axis.tickLength)
+                labelPoint = CGPoint(x: aTick.rangeLocation,
+                                     y: ruleStart.y + axis.tickLength + axis.tickPadding)
             }
 
             let tickStyle = StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1)
@@ -276,6 +296,10 @@ class ChartRenderer {
                 p.addLine(to: tickEnd)
             }
             context.stroke(tickPath, with: .color(.primary), style: tickStyle)
+
+            context.draw(Text(aTick.label).font(.caption),
+                         at: labelPoint,
+                         anchor: .center)
         }
     }
 
