@@ -52,7 +52,10 @@ public struct LineMark<DataSource>: Mark, MarkAxis {
             if let xValue = xScale.scaledValue(data: pointData),
                let yValue = yScale.scaledValue(data: pointData)
             {
-                let newPoint = IndividualPoint(x: rect.origin.x + xValue, y: rect.height - rect.origin.y - yValue, shape: PlotShape(Circle()), size: 5)
+                let newPoint = IndividualPoint(
+                    x: rect.origin.x + xValue,
+                    y: rect.height + rect.origin.y - yValue,
+                    shape: PlotShape(Circle()), size: 5)
                 symbols.append(.point(newPoint))
 //                print(" .. \(newPoint)")
                 // There won't be a line for the first point, but all following points
@@ -61,7 +64,12 @@ public struct LineMark<DataSource>: Mark, MarkAxis {
                    let x2Value = xScale.scaledValue(data: previousData),
                    let y2Value = yScale.scaledValue(data: previousData)
                 {
-                    let lineBack = IndividualLine(x1: rect.origin.x + xValue, y1: rect.height - rect.origin.y - yValue, x2: rect.origin.x + x2Value, y2: rect.height - rect.origin.y - y2Value, size: 1)
+                    let lineBack = IndividualLine(
+                        x1: rect.origin.x + xValue,
+                        y1: rect.height + rect.origin.y - yValue,
+                        x2: rect.origin.x + x2Value,
+                        y2: rect.height + rect.origin.y - y2Value,
+                        size: 1)
                     symbols.append(.line(lineBack))
 //                    print(" .. \(lineBack)")
                 }
