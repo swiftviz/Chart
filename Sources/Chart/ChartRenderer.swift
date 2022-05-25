@@ -296,7 +296,6 @@ class ChartRenderer {
                 p.addLine(to: tickEnd)
             }
             context.stroke(tickPath, with: .color(.primary), style: tickStyle)
-
             context.draw(Text(aTick.label).font(.caption),
                          at: labelPoint,
                          anchor: .center)

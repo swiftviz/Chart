@@ -284,5 +284,20 @@ final class AxisRenderTests: XCTestCase {
             )
         }
 
+        func testAxisOptionsTickLengthAndPadding() throws {
+            let chart = Chart(margin: 10, inset: 10, _options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .xAxis(tickLength: 10, tickPadding: 10)
+                    .yAxis(tickLength: 10, tickPadding: 15)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
     #endif
 }
