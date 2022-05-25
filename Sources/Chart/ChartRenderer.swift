@@ -240,7 +240,7 @@ class ChartRenderer {
             context.stroke(linePath, with: .color(.primary), style: ruleStyle)
         }
 
-        for aTick in axis.ticks {
+        for aTick in axis.withTicksIn(rect).ticks {
             let tickStart: CGPoint
             let tickEnd: CGPoint
             switch (axis.axisLocation, axis.tickOrientation) {
