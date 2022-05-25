@@ -155,6 +155,8 @@ class ChartRenderer {
         }
     }
 
+    // MARK: - internal calculations using GraphicsContext
+
     internal func heightFromListOfAxis(_ axisList: [Axis], with context: GraphicsContext, size: CGSize) -> CGFloat {
         axisList.reduce(0.0) { partialResult, currentAxis in
             // for the current axis, get the labels for the ticks that are associated
@@ -193,6 +195,8 @@ class ChartRenderer {
         }
     }
 
+    // MARK: - debug rendering methods
+
     private func frameArea(_ rect: CGRect, context: inout GraphicsContext) {
         let lightgrey = GraphicsContext.Shading.color(.sRGB, red: 0.2, green: 0.2, blue: 0.2, opacity: 0.1)
         context.fill(Path(rect), with: lightgrey)
@@ -207,6 +211,8 @@ class ChartRenderer {
         let paleblue = GraphicsContext.Shading.color(.sRGB, red: 0.05, green: 0.1, blue: 0.8, opacity: 0.3)
         context.fill(Path(rect), with: paleblue)
     }
+
+    // MARK: - drawing methods
 
     private func drawAxis(axis: Axis, within rect: CGRect, context: inout GraphicsContext) {
         let ruleStart: CGPoint
@@ -232,6 +238,44 @@ class ChartRenderer {
             }
             let ruleStyle = StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1)
             context.stroke(linePath, with: .color(.primary), style: ruleStyle)
+        }
+
+        for aTick in axis.ticks {
+            let tickStart: CGPoint
+            let tickEnd: CGPoint
+            switch (axis.axisLocation, axis.tickOrientation) {
+            case (.leading, .inner):
+                tickStart = CGPoint(x: ruleStart.x, y: aTick.rangeLocation)
+                tickEnd = CGPoint(x: ruleStart.x + axis.tickLength, y: aTick.rangeLocation)
+            case (.leading, .outer):
+                tickStart = CGPoint(x: ruleStart.x, y: aTick.rangeLocation)
+                tickEnd = CGPoint(x: ruleStart.x - axis.tickLength, y: aTick.rangeLocation)
+            case (.top, .inner):
+                tickStart = CGPoint(x: aTick.rangeLocation, y: ruleStart.y)
+                tickEnd = CGPoint(x: aTick.rangeLocation, y: ruleStart.y + axis.tickLength)
+            case (.top, .outer):
+                tickStart = CGPoint(x: aTick.rangeLocation, y: ruleStart.y)
+                tickEnd = CGPoint(x: aTick.rangeLocation, y: ruleStart.y - axis.tickLength)
+            case (.bottom, .inner):
+                tickStart = CGPoint(x: aTick.rangeLocation, y: ruleStart.y)
+                tickEnd = CGPoint(x: aTick.rangeLocation, y: ruleStart.y - axis.tickLength)
+            case (.bottom, .outer):
+                tickStart = CGPoint(x: aTick.rangeLocation, y: ruleStart.y)
+                tickEnd = CGPoint(x: aTick.rangeLocation, y: ruleStart.y + axis.tickLength)
+            case (.trailing, .inner):
+                tickStart = CGPoint(x: ruleStart.x, y: aTick.rangeLocation)
+                tickEnd = CGPoint(x: ruleStart.x - axis.tickLength, y: aTick.rangeLocation)
+            case (.trailing, .outer):
+                tickStart = CGPoint(x: ruleStart.x, y: aTick.rangeLocation)
+                tickEnd = CGPoint(x: ruleStart.x + axis.tickLength, y: aTick.rangeLocation)
+            }
+
+            let tickStyle = StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1)
+            let tickPath = Path { p in
+                p.move(to: tickStart)
+                p.addLine(to: tickEnd)
+            }
+            context.stroke(tickPath, with: .color(.primary), style: tickStyle)
         }
     }
 
