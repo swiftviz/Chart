@@ -68,8 +68,8 @@ class VisualPropertyScaleTests: XCTestCase {
 
         let ticks = band.tickValuesFromScale(lower: 0, higher: 50)
         XCTAssertEqual(ticks.count, 2)
-        XCTAssertEqual(ticks[0].rangeLocation, 0)
-        XCTAssertEqual(ticks[1].rangeLocation, 25)
+        XCTAssertEqual(ticks[0].rangeLocation, 12.5)
+        XCTAssertEqual(ticks[1].rangeLocation, 37.5)
     }
 
     func testPointScaleTicksProvided() throws {
@@ -80,7 +80,7 @@ class VisualPropertyScaleTests: XCTestCase {
 
         let ticks = band.tickValuesFromScale(lower: 0, higher: 50, values: [0, 1, 2, 3])
         XCTAssertEqual(ticks.count, 2)
-        XCTAssertEqual(ticks[0].rangeLocation, 0)
-        XCTAssertEqual(ticks[1].rangeLocation, 25)
+        XCTAssertEqual(ticks[0].rangeLocation, 12.5)
+        XCTAssertEqual(ticks[1].rangeLocation, 37.5)
     }
 }
