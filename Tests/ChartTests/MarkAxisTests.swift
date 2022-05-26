@@ -41,7 +41,7 @@ class MarkAxisTests: XCTestCase {
         XCTAssertEqual(axis.labelAlignment, .center)
         XCTAssertEqual(axis.labelOffset, 0)
         XCTAssertEqual(axis.tickLength, 3.0)
-        XCTAssertEqual(axis.tickRules, false)
+        XCTAssertEqual(axis.chartRules, false)
         XCTAssertEqual(axis.tickPadding, 5)
         XCTAssertEqual(axis.tickOrientation, .outer)
         XCTAssertEqual(axis.requestedTickValues, [])

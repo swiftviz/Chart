@@ -20,7 +20,7 @@ public protocol MarkAxis: Mark {
                tickOrientation: Axis.TickOrientation,
                tickPadding: CGFloat,
                tickAlignment: UnitPoint?,
-               tickRules: Bool,
+               chartRules: Bool,
                label: String,
                labelOffset: CGFloat,
                labelAlignment: Alignment) -> Self
@@ -33,7 +33,7 @@ public protocol MarkAxis: Mark {
                tickOrientation: Axis.TickOrientation,
                tickPadding: CGFloat,
                tickAlignment: UnitPoint?,
-               tickRules: Bool,
+               chartRules: Bool,
                label: String,
                labelOffset: CGFloat,
                labelAlignment: Alignment) -> Self
@@ -48,7 +48,7 @@ public extension MarkAxis {
                tickOrientation: Axis.TickOrientation = .outer,
                tickPadding: CGFloat = 5,
                tickAlignment: UnitPoint? = nil,
-               tickRules: Bool = false,
+               chartRules: Bool = false,
                label: String = "",
                labelOffset: CGFloat = 0,
                labelAlignment: Alignment = .center) -> Self
@@ -63,7 +63,7 @@ public extension MarkAxis {
                               tickOrientation: tickOrientation,
                               tickPadding: tickPadding,
                               tickAlignment: tickAlignment,
-                              tickRules: tickRules,
+                              chartRules: chartRules,
                               label: label,
                               labelOffset: labelOffset,
                               labelAlignment: labelAlignment)
@@ -78,7 +78,7 @@ public extension MarkAxis {
                tickOrientation: Axis.TickOrientation = .outer,
                tickPadding: CGFloat = 5,
                tickAlignment: UnitPoint? = nil,
-               tickRules: Bool = false,
+               chartRules: Bool = false,
                label: String = "",
                labelOffset: CGFloat = 0,
                labelAlignment: Alignment = .center) -> Self
@@ -93,7 +93,7 @@ public extension MarkAxis {
                               tickOrientation: tickOrientation,
                               tickPadding: tickPadding,
                               tickAlignment: tickAlignment,
-                              tickRules: tickRules,
+                              chartRules: chartRules,
                               label: label,
                               labelOffset: labelOffset,
                               labelAlignment: labelAlignment)

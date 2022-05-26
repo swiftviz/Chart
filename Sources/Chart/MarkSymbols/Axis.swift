@@ -51,11 +51,19 @@ public struct Axis {
     let scale: VisualPropertyScale
     let requestedTickValues: [Double]
     let rule: Bool
+    let ruleStyle: StrokeStyle
+    let ruleShading: GraphicsContext.Shading
     let tickLength: CGFloat
     let tickOrientation: TickOrientation
     let tickPadding: CGFloat
     let tickAlignment: UnitPoint
-    let tickRules: Bool // aka 'grid', but only for one direction
+    let chartRules: Bool // aka 'grid', but only for one direction
+    let chartRuleStyle: StrokeStyle
+    let chartRuleShading: GraphicsContext.Shading
+
+    let tickStyle: StrokeStyle
+    let tickShading: GraphicsContext.Shading
+    
     let label: String
     let labelAlignment: Alignment
     let labelOffset: CGFloat
@@ -86,7 +94,7 @@ public struct Axis {
                 tickOrientation: TickOrientation = .outer,
                 tickPadding: CGFloat = 5,
                 tickAlignment: UnitPoint? = nil,
-                tickRules: Bool = false,
+                chartRules: Bool = false,
                 label: String = "",
                 labelOffset: CGFloat = 0,
                 labelAlignment: Alignment = .center)
@@ -98,7 +106,7 @@ public struct Axis {
 
         self.tickOrientation = tickOrientation
         self.rule = rule
-        self.tickRules = tickRules
+        self.chartRules = chartRules
         self.label = label
         self.labelOffset = labelOffset
         self.labelAlignment = labelAlignment
@@ -117,6 +125,17 @@ public struct Axis {
                 self.tickAlignment = .trailing
             }
         }
+        // style for the rule along the axis
+        tickStyle = StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1)
+        // style for the ticks off that rule
+        ruleStyle = tickStyle
+        // color/shading for the ticks
+        tickShading = .color(.primary)
+        // color/shading for the rule
+        ruleShading = tickShading
+        
+        chartRuleStyle = tickStyle
+        chartRuleShading = ruleShading
         ticks = []
     }
 

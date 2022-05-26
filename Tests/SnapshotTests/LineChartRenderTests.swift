@@ -23,12 +23,15 @@ final class LineChartRenderTests: XCTestCase {
     let range: ClosedRange<Int> = 0 ... 100
 
     #if os(macOS)
-        func testLineChartImageRendering() throws {
-            let chart = Chart(_options: [.all]) {
+        func testSimpleLineChart() throws {
+            let chart = Chart(margin: 10) {
                 LineMark(data: self.data,
                          x: QuantitativeVisualChannel(\.xValue),
                          y: QuantitativeVisualChannel(\.yValue))
+                .xAxis()
+                .yAxis()
             }
+
             assertSnapshot(
                 matching: chart.referenceFrame(),
                 as: .image(size: referenceSize)

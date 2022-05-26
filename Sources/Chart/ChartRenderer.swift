@@ -236,8 +236,7 @@ class ChartRenderer {
                 p.move(to: ruleStart)
                 p.addLine(to: ruleEnd)
             }
-            let ruleStyle = StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1)
-            context.stroke(linePath, with: .color(.primary), style: ruleStyle)
+            context.stroke(linePath, with: axis.ruleShading, style: axis.ruleStyle)
         }
 
         for aTick in axis.withTicksIn(rect).ticks {
@@ -290,15 +289,14 @@ class ChartRenderer {
                                      y: ruleStart.y + axis.tickLength + axis.tickPadding)
             }
 
-            let tickStyle = StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1)
             let tickPath = Path { p in
                 p.move(to: tickStart)
                 p.addLine(to: tickEnd)
             }
-            context.stroke(tickPath, with: .color(.primary), style: tickStyle)
+            context.stroke(tickPath, with: axis.tickShading, style: axis.tickStyle)
             context.draw(Text(aTick.label).font(.caption),
                          at: labelPoint,
-                         anchor: .center)
+                         anchor: axis.tickAlignment)
         }
     }
 
