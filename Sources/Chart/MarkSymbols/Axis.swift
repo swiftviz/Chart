@@ -139,26 +139,10 @@ public struct Axis {
         ticks = []
     }
 
-    func addingTicks(_ ticks: [Tick<CGFloat>]) -> Self {
-        var copy = self
-        copy.ticks = ticks
-        return copy
-    }
-
-//    /// Returns a copy of the axis with ticks and locations calculated for the rectangular area you provide.
-//    /// - Parameter rect: The rectangle into which to scale and draw axis.
-//    ///
-//    /// The default implementation for a ``Chart/Axis`` starts with no ticks available until you calculate
-//    /// their positions by providing a region into which the axis will be drawn using this method.
-//    func withTicksIn(_ rect: CGRect) -> Self {
-//        switch axisLocation {
-//        case .top, .bottom:
-//            let ticks = scale.tickValuesFromScale(lower: rect.origin.x, higher: rect.origin.x + rect.width, values: requestedTickValues)
-//            return addingTicks(ticks)
-//        case .leading, .trailing:
-//            let ticks = scale.tickValuesFromScale(reversed: true, lower: rect.origin.y, higher: rect.origin.y + rect.height, values: requestedTickValues)
-//            return addingTicks(ticks)
-//        }
+//    func addingTicks(_ ticks: [Tick<CGFloat>]) -> Self {
+//        var copy = self
+//        copy.ticks = ticks
+//        return copy
 //    }
 
     /// Resolves the ticks with labels and positions for the rectangular area that you provide.
