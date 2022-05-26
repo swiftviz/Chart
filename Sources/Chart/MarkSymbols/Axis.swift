@@ -82,7 +82,7 @@ public struct Axis {
     ///   - tickOrientation: The direction the tick is drawn from the axis.
     ///   - tickPadding: The amount of padding between the end of a tick and its value.
     ///   - tickAlignment: The edge of the tick label to align with the tick.
-    ///   - tickRules: A Boolean value that indicates that the tick values should be used to draw rules across the background of the chart.
+    ///   - chartRules: A Boolean value that indicates that the tick values should be used to draw rules across the background of the chart.
     ///   - label: The label for the axis.
     ///   - labelAlignment: The alignment of the label for the axis
     ///   - labelOffset: The offset for the label away from the axis.
