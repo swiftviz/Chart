@@ -7,8 +7,7 @@ import SwiftUI
 import TabularData
 // https://holyswift.app/crunching-data-with-the-new-apples-tabulardata-framework
 
-// BENCHMARK=1 swift build -c release
-// .build/release/chartrender-benchmark --iterations 1000 --time-unit ms
+// BENCHMARK=1 swift build -c release && .build/release/chartrender-benchmark --iterations 1000 --time-unit ms
 
 let referenceSize = CGSize(width: 300, height: 200)
 
