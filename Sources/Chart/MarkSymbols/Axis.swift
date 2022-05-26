@@ -137,7 +137,7 @@ public struct Axis {
             let ticks = scale.tickValuesFromScale(lower: rect.origin.x, higher: rect.origin.x + rect.width, values: requestedTickValues)
             return addingTicks(ticks)
         case .leading, .trailing:
-            let ticks = scale.tickValuesFromScale(lower: rect.origin.y, higher: rect.origin.y + rect.height, values: requestedTickValues)
+            let ticks = scale.tickValuesFromScale(reversed: true, lower: rect.origin.y, higher: rect.origin.y + rect.height, values: requestedTickValues)
             return addingTicks(ticks)
         }
     }

@@ -101,9 +101,9 @@ class MarkAxisTests: XCTestCase {
         XCTAssertEqual(completeAxis.ticks.count, 5)
 
         XCTAssertEqual(completeAxis.ticks.first?.label, "-1.0")
-        XCTAssertEqual(completeAxis.ticks.first?.rangeLocation, 0)
+        XCTAssertEqual(completeAxis.ticks.first?.rangeLocation, 50)
         XCTAssertEqual(completeAxis.ticks.last?.label, "1.0")
-        XCTAssertEqual(completeAxis.ticks.last?.rangeLocation, 50)
+        XCTAssertEqual(completeAxis.ticks.last?.rangeLocation, 0)
         print(completeAxis.ticks)
     }
 }
