@@ -63,7 +63,7 @@ public struct Axis {
 
     let tickStyle: StrokeStyle
     let tickShading: GraphicsContext.Shading
-    
+
     let label: String
     let labelAlignment: Alignment
     let labelOffset: CGFloat
@@ -133,7 +133,7 @@ public struct Axis {
         tickShading = .color(.primary)
         // color/shading for the rule
         ruleShading = tickShading
-        
+
         chartRuleStyle = tickStyle
         chartRuleShading = ruleShading
         ticks = []

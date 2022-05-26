@@ -28,8 +28,8 @@ final class LineChartRenderTests: XCTestCase {
                 LineMark(data: self.data,
                          x: QuantitativeVisualChannel(\.xValue),
                          y: QuantitativeVisualChannel(\.yValue))
-                .xAxis()
-                .yAxis()
+                    .xAxis()
+                    .yAxis()
             }
 
             assertSnapshot(
