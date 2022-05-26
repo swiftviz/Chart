@@ -36,18 +36,18 @@ public enum VisualPropertyScale {
         }
     }
 
-    func tickValuesFromScale(lower: CGFloat, higher: CGFloat, values: [Double] = []) -> [Tick<CGFloat>] {
+    func tickValuesFromScale(reversed: Bool = false, lower: CGFloat, higher: CGFloat, values: [Double] = []) -> [Tick<CGFloat>] {
         switch self {
         case let .continuous(scale):
             if values.isEmpty {
-                return scale.ticks(rangeLower: lower, rangeHigher: higher)
+                return scale.ticks(reversed: reversed, rangeLower: lower, rangeHigher: higher)
             } else {
-                return scale.ticksFromValues(values, from: lower, to: higher)
+                return scale.ticksFromValues(values, reversed: reversed, from: lower, to: higher)
             }
         case let .band(scale):
-            return scale.ticks(rangeLower: lower, rangeHigher: higher)
+            return scale.ticks(reversed: reversed, rangeLower: lower, rangeHigher: higher)
         case let .point(scale):
-            return scale.ticks(rangeLower: lower, rangeHigher: higher)
+            return scale.ticks(reversed: reversed, rangeLower: lower, rangeHigher: higher)
         }
     }
 }
