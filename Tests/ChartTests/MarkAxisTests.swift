@@ -67,15 +67,15 @@ class MarkAxisTests: XCTestCase {
         let axis = mark._xAxis!
         XCTAssertEqual(axis.ticks.count, 0)
 
-        let completeAxis = axis.withTicksIn(reference)
+        let ticksFromAxis = axis.resolveTicks(reference)
         // calculated axis through the mark will have ticks associated with it
         // and based on the domain provided by the data.
-        XCTAssertEqual(completeAxis.ticks.count, 5)
+        XCTAssertEqual(ticksFromAxis.count, 5)
 
-        XCTAssertEqual(completeAxis.ticks.first?.label, "0.0")
-        XCTAssertEqual(completeAxis.ticks.first?.rangeLocation, 0)
-        XCTAssertEqual(completeAxis.ticks.last?.label, "20.0")
-        XCTAssertEqual(completeAxis.ticks.last?.rangeLocation, 100)
+        XCTAssertEqual(ticksFromAxis.first?.label, "0.0")
+        XCTAssertEqual(ticksFromAxis.first?.rangeLocation, 0)
+        XCTAssertEqual(ticksFromAxis.last?.label, "20.0")
+        XCTAssertEqual(ticksFromAxis.last?.rangeLocation, 100)
     }
 
     func testYAxisSpec() throws {
@@ -95,15 +95,14 @@ class MarkAxisTests: XCTestCase {
         // as yet unconfigured since no range has been applied
         XCTAssertEqual(axis.ticks.count, 0)
 
-        let completeAxis = axis.withTicksIn(reference)
+        let ticksFromAxis = axis.resolveTicks(reference, invertX: false, invertY: true)
         // calculated axis through the mark will have ticks associated with it
         // and based on the domain provided by the data.
-        XCTAssertEqual(completeAxis.ticks.count, 5)
+        XCTAssertEqual(ticksFromAxis.count, 5)
 
-        XCTAssertEqual(completeAxis.ticks.first?.label, "-1.0")
-        XCTAssertEqual(completeAxis.ticks.first?.rangeLocation, 50)
-        XCTAssertEqual(completeAxis.ticks.last?.label, "1.0")
-        XCTAssertEqual(completeAxis.ticks.last?.rangeLocation, 0)
-        print(completeAxis.ticks)
+        XCTAssertEqual(ticksFromAxis.first?.label, "-1.0")
+        XCTAssertEqual(ticksFromAxis.first?.rangeLocation, 50)
+        XCTAssertEqual(ticksFromAxis.last?.label, "1.0")
+        XCTAssertEqual(ticksFromAxis.last?.rangeLocation, 0)
     }
 }

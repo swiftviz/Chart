@@ -239,7 +239,7 @@ class ChartRenderer {
             context.stroke(linePath, with: axis.ruleShading, style: axis.ruleStyle)
         }
 
-        for aTick in axis.withTicksIn(rect).ticks {
+        for aTick in axis.resolveTicks(rect, invertX: false, invertY: true) {
             let tickStart: CGPoint
             let tickEnd: CGPoint
             let labelPoint: CGPoint
