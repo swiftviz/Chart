@@ -114,7 +114,7 @@ public struct Axis {
         if let tickAlignment = tickAlignment {
             self.tickAlignment = tickAlignment
         } else {
-            switch (axisLocation) {
+            switch axisLocation {
             case .bottom:
                 self.tickAlignment = .top
             case .top:
