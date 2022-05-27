@@ -11,6 +11,20 @@ struct AxisLists {
     var xAxisBottomList: [Axis] = []
     var yAxisLeadingList: [Axis] = []
     var yAxisTrailingList: [Axis] = []
+
+    var yAxisList: [Axis] {
+        var list: [Axis] = []
+        list.append(contentsOf: yAxisLeadingList)
+        list.append(contentsOf: yAxisTrailingList)
+        return list
+    }
+
+    var xAxisList: [Axis] {
+        var list: [Axis] = []
+        list.append(contentsOf: xAxisTopList)
+        list.append(contentsOf: xAxisBottomList)
+        return list
+    }
 }
 
 /// A declarative chart specification.
