@@ -114,15 +114,15 @@ public struct Axis {
         if let tickAlignment = tickAlignment {
             self.tickAlignment = tickAlignment
         } else {
-            switch (axisLocation, tickOrientation) {
-            case (.top, .inner), (.bottom, .outer):
+            switch (axisLocation) {
+            case .bottom:
                 self.tickAlignment = .top
-            case (.top, .outer), (.bottom, .inner):
+            case .top:
                 self.tickAlignment = .bottom
-            case (.leading, .inner), (.trailing, .outer):
-                self.tickAlignment = .leading
-            case (.leading, .outer), (.trailing, .inner):
+            case .leading:
                 self.tickAlignment = .trailing
+            case .trailing:
+                self.tickAlignment = .leading
             }
         }
         // style for the rule along the axis
