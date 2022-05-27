@@ -253,7 +253,7 @@ class ChartRenderer {
             case (.leading, .inner):
                 tickStart = CGPoint(x: ruleStart.x, y: aTick.rangeLocation)
                 tickEnd = CGPoint(x: ruleStart.x + axis.tickLength, y: aTick.rangeLocation)
-                labelPoint = CGPoint(x: ruleStart.x + axis.tickLength + axis.tickPadding,
+                labelPoint = CGPoint(x: ruleStart.x - axis.tickPadding,
                                      y: aTick.rangeLocation)
             case (.leading, .outer):
                 tickStart = CGPoint(x: ruleStart.x, y: aTick.rangeLocation)
@@ -263,7 +263,7 @@ class ChartRenderer {
             case (.trailing, .inner):
                 tickStart = CGPoint(x: ruleStart.x, y: aTick.rangeLocation)
                 tickEnd = CGPoint(x: ruleStart.x - axis.tickLength, y: aTick.rangeLocation)
-                labelPoint = CGPoint(x: ruleStart.x - axis.tickLength - axis.tickPadding,
+                labelPoint = CGPoint(x: ruleStart.x + axis.tickPadding,
                                      y: aTick.rangeLocation)
 
             case (.trailing, .outer):
@@ -276,7 +276,7 @@ class ChartRenderer {
                 tickStart = CGPoint(x: aTick.rangeLocation, y: ruleStart.y)
                 tickEnd = CGPoint(x: aTick.rangeLocation, y: ruleStart.y + axis.tickLength)
                 labelPoint = CGPoint(x: aTick.rangeLocation,
-                                     y: ruleStart.y + axis.tickLength + axis.tickPadding)
+                                     y: ruleStart.y - axis.tickPadding)
             case (.top, .outer):
                 tickStart = CGPoint(x: aTick.rangeLocation, y: ruleStart.y)
                 tickEnd = CGPoint(x: aTick.rangeLocation, y: ruleStart.y - axis.tickLength)
@@ -286,7 +286,7 @@ class ChartRenderer {
                 tickStart = CGPoint(x: aTick.rangeLocation, y: ruleStart.y)
                 tickEnd = CGPoint(x: aTick.rangeLocation, y: ruleStart.y - axis.tickLength)
                 labelPoint = CGPoint(x: aTick.rangeLocation,
-                                     y: ruleStart.y - axis.tickLength - axis.tickPadding)
+                                     y: ruleStart.y + axis.tickPadding)
             case (.bottom, .outer):
                 tickStart = CGPoint(x: aTick.rangeLocation, y: ruleStart.y)
                 tickEnd = CGPoint(x: aTick.rangeLocation, y: ruleStart.y + axis.tickLength)
