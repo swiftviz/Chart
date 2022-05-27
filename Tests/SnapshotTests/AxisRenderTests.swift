@@ -240,7 +240,7 @@ final class AxisRenderTests: XCTestCase {
         }
 
         func testAxisOptionsInner() throws {
-            let chart = Chart(margin: 10, inset: 10, _options: [.all]) {
+            let chart = Chart(_options: [.all]) {
                 LineMark(data: self.data,
                          x: QuantitativeVisualChannel(\.xValue),
                          y: QuantitativeVisualChannel(\.yValue))
