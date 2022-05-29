@@ -209,8 +209,23 @@ final class AxisRenderTests: XCTestCase {
             )
         }
 
+        func testAxisOptionsDefaultDebug() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .xAxis()
+                    .yAxis()
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
         func testAxisOptionsDefault() throws {
-            let chart = Chart(margin: 10, inset: 10, _options: [.all]) {
+            let chart = Chart {
                 LineMark(data: self.data,
                          x: QuantitativeVisualChannel(\.xValue),
                          y: QuantitativeVisualChannel(\.yValue))
@@ -225,7 +240,7 @@ final class AxisRenderTests: XCTestCase {
         }
 
         func testAxisOptionsNoRule() throws {
-            let chart = Chart(margin: 10, inset: 10, _options: [.all]) {
+            let chart = Chart(_options: [.all]) {
                 LineMark(data: self.data,
                          x: QuantitativeVisualChannel(\.xValue),
                          y: QuantitativeVisualChannel(\.yValue))
@@ -255,7 +270,7 @@ final class AxisRenderTests: XCTestCase {
         }
 
         func testAxisOptionsTickLength() throws {
-            let chart = Chart(margin: 10, inset: 10, _options: [.all]) {
+            let chart = Chart(_options: [.all]) {
                 LineMark(data: self.data,
                          x: QuantitativeVisualChannel(\.xValue),
                          y: QuantitativeVisualChannel(\.yValue))
@@ -270,7 +285,7 @@ final class AxisRenderTests: XCTestCase {
         }
 
         func testAxisOptionsTickPadding() throws {
-            let chart = Chart(margin: 10, inset: 10, _options: [.all]) {
+            let chart = Chart(_options: [.all]) {
                 LineMark(data: self.data,
                          x: QuantitativeVisualChannel(\.xValue),
                          y: QuantitativeVisualChannel(\.yValue))
@@ -285,7 +300,7 @@ final class AxisRenderTests: XCTestCase {
         }
 
         func testAxisOptionsTickLengthAndPadding() throws {
-            let chart = Chart(margin: 10, inset: 10, _options: [.all]) {
+            let chart = Chart(_options: [.all]) {
                 LineMark(data: self.data,
                          x: QuantitativeVisualChannel(\.xValue),
                          y: QuantitativeVisualChannel(\.yValue))

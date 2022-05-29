@@ -62,11 +62,18 @@ class ChartRenderer {
             // calculate the max width for labels on the X axis
             let maxHorizontalMarginAddition = self.widthFromListOfAxis(axisCollection.xAxisList, with: context, size: size) / 2.0
 
-            let insetLeading = specification.margin.leading + maxYAxisLeadingWidth + specification.inset.leading + maxHorizontalMarginAddition
-            let insetTrailing = specification.margin.trailing + maxYAxisTrailingWidth + specification.inset.trailing + maxHorizontalMarginAddition
+            // expand the margin from the specification, if it doesn't include sufficient space
+            // to view the labels from the displayed axis.
+            let margintop = max(specification.margin.top, maxVerticalMarginAddition)
+            let marginbottom = max(specification.margin.bottom, maxVerticalMarginAddition)
+            let marginleading = max(specification.margin.leading, maxHorizontalMarginAddition)
+            let margintrailing = max(specification.margin.trailing, maxHorizontalMarginAddition)
 
-            let insetTop = specification.margin.top + maxXAxisTopHeight + specification.inset.top + maxVerticalMarginAddition
-            let insetBottom = specification.margin.bottom + maxXAxisBottomHeight + specification.inset.bottom + maxVerticalMarginAddition
+            let chartInsetLeading = marginleading + maxYAxisLeadingWidth + specification.inset.leading
+            let chartInsetTrailing = margintrailing + maxYAxisTrailingWidth + specification.inset.trailing
+
+            let chartInsetTop = margintop + maxXAxisTopHeight + specification.inset.top
+            let chartInsetBottom = marginbottom + maxXAxisBottomHeight + specification.inset.bottom
 
             if opts.contains(.frame) {
                 self.frameArea(CGRect(origin: CGPoint.zero, size: size), context: &context)
@@ -74,7 +81,10 @@ class ChartRenderer {
             // With the X axis height, and Y axis width, we can calculate a proper internal
             // CGRect that is the inset area into which we want to draw the marks.
             let chartDataDrawArea = CGRect(origin: CGPoint.zero, size: size)
-                .inset(leading: insetLeading, top: insetTop, trailing: insetTrailing, bottom: insetBottom)
+                .inset(leading: chartInsetLeading,
+                       top: chartInsetTop,
+                       trailing: chartInsetTrailing,
+                       bottom: chartInsetBottom)
 
             if opts.contains(.chartarea) {
                 self.chartArea(chartDataDrawArea, context: &context)
@@ -85,7 +95,8 @@ class ChartRenderer {
 
             if !axisCollection.xAxisTopList.isEmpty {
                 // calculate area rect for top axis and draw it
-                let axisOrigin = CGPoint(x: specification.margin.leading + maxYAxisLeadingWidth + specification.inset.leading + maxHorizontalMarginAddition, y: specification.margin.top)
+                let axisOrigin = CGPoint(x: marginleading + maxYAxisLeadingWidth + specification.inset.leading,
+                                         y: margintop)
                 let axisSize = CGSize(width: chartDataDrawArea.size.width, height: maxXAxisTopHeight)
                 for topAxis in axisCollection.xAxisTopList {
                     if opts.contains(.axis) {
@@ -97,7 +108,8 @@ class ChartRenderer {
 
             if !axisCollection.xAxisBottomList.isEmpty {
                 // calculate area rect for bottom axis and draw it
-                let axisOrigin = CGPoint(x: specification.margin.leading + maxYAxisLeadingWidth + specification.inset.leading + maxHorizontalMarginAddition, y: size.height - (specification.margin.bottom + maxXAxisBottomHeight))
+                let axisOrigin = CGPoint(x: marginleading + maxYAxisLeadingWidth + specification.inset.leading,
+                                         y: size.height - (marginbottom + maxXAxisBottomHeight))
                 let axisSize = CGSize(width: chartDataDrawArea.size.width, height: maxXAxisBottomHeight)
                 for bottomAxis in axisCollection.xAxisBottomList {
                     if opts.contains(.axis) {
@@ -110,7 +122,8 @@ class ChartRenderer {
 
             if !axisCollection.yAxisLeadingList.isEmpty {
                 // calculate leading area rect and draw it
-                let axisOrigin = CGPoint(x: specification.margin.leading, y: specification.margin.top + maxXAxisTopHeight + specification.inset.top + maxVerticalMarginAddition)
+                let axisOrigin = CGPoint(x: marginleading,
+                                         y: margintop + maxXAxisTopHeight + specification.inset.top)
                 let axisSize = CGSize(width: maxYAxisLeadingWidth, height: chartDataDrawArea.size.height)
                 for leadingAxis in axisCollection.yAxisLeadingList {
                     if opts.contains(.axis) {
@@ -123,7 +136,8 @@ class ChartRenderer {
 
             if !axisCollection.yAxisTrailingList.isEmpty {
                 // calculate trailing area rect and draw it
-                let axisOrigin = CGPoint(x: size.width - (specification.margin.trailing + maxYAxisTrailingWidth), y: specification.margin.top + maxXAxisTopHeight + specification.inset.top + maxVerticalMarginAddition)
+                let axisOrigin = CGPoint(x: size.width - (margintrailing + maxYAxisTrailingWidth),
+                                         y: margintop + maxXAxisTopHeight + specification.inset.top)
                 let axisSize = CGSize(width: maxYAxisTrailingWidth, height: chartDataDrawArea.size.height)
                 for trailingAxis in axisCollection.yAxisTrailingList {
                     if opts.contains(.axis) {
