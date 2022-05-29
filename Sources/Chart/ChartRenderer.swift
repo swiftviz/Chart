@@ -222,19 +222,31 @@ class ChartRenderer {
     private func drawAxis(axis: Axis, within rect: CGRect, context: inout GraphicsContext) {
         let ruleStart: CGPoint
         let ruleEnd: CGPoint
-        switch axis.axisLocation {
-        case .leading:
+        switch (axis.axisLocation, axis.tickOrientation) {
+        case (.leading, .outer):
             ruleStart = CGPoint(x: rect.origin.x + rect.size.width, y: rect.origin.y)
             ruleEnd = CGPoint(x: rect.origin.x + rect.size.width, y: rect.origin.y + rect.size.height)
-        case .top:
+        case (.leading, .inner):
+            ruleStart = CGPoint(x: rect.origin.x + rect.size.width - axis.tickLength, y: rect.origin.y)
+            ruleEnd = CGPoint(x: rect.origin.x + rect.size.width - axis.tickLength, y: rect.origin.y + rect.size.height)
+        case (.top, .outer):
             ruleStart = CGPoint(x: rect.origin.x, y: rect.origin.y + rect.size.height)
             ruleEnd = CGPoint(x: rect.origin.x + rect.size.width, y: rect.origin.y + rect.size.height)
-        case .bottom:
+        case (.top, .inner):
+            ruleStart = CGPoint(x: rect.origin.x, y: rect.origin.y + rect.size.height - axis.tickLength)
+            ruleEnd = CGPoint(x: rect.origin.x + rect.size.width, y: rect.origin.y + rect.size.height - axis.tickLength)
+        case (.bottom, .outer):
             ruleStart = CGPoint(x: rect.origin.x, y: rect.origin.y)
             ruleEnd = CGPoint(x: rect.origin.x + rect.size.width, y: rect.origin.y)
-        case .trailing:
+        case (.bottom, .inner):
+            ruleStart = CGPoint(x: rect.origin.x, y: rect.origin.y + axis.tickLength)
+            ruleEnd = CGPoint(x: rect.origin.x + rect.size.width, y: rect.origin.y + axis.tickLength)
+        case (.trailing, .outer):
             ruleStart = CGPoint(x: rect.origin.x, y: rect.origin.y)
             ruleEnd = CGPoint(x: rect.origin.x, y: rect.origin.y + rect.size.height)
+        case (.trailing, .inner):
+            ruleStart = CGPoint(x: rect.origin.x + axis.tickLength, y: rect.origin.y)
+            ruleEnd = CGPoint(x: rect.origin.x + axis.tickLength, y: rect.origin.y + rect.size.height)
         }
         if axis.rule {
             let linePath = Path { p in
