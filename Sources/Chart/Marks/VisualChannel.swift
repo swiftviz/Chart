@@ -69,9 +69,9 @@ public struct QuantitativeVisualChannel<SomeDataType> {
     /// - Parameters:
     ///   - rangeLower: The lower value for the range.
     ///   - rangeHigher: The higher value for the range.
-    public func range(rangeLower: OutputPropertyType, rangeHigher: OutputPropertyType) -> Self {
+    public func range(reversed: Bool = false, rangeLower: OutputPropertyType, rangeHigher: OutputPropertyType) -> Self {
         var copyOfSelf = self
-        copyOfSelf.scale = scale.range(lower: rangeLower, higher: rangeHigher)
+        copyOfSelf.scale = scale.range(reversed: reversed, lower: rangeLower, higher: rangeHigher)
         return copyOfSelf
     }
 
@@ -83,19 +83,6 @@ public struct QuantitativeVisualChannel<SomeDataType> {
     /// Set the range for the visual channel's scale using ``range(rangeLower:rangeHigher:)`` before using this method to retrieve a scaled value.
     public func scaledValue(data: SomeDataType) -> OutputPropertyType? {
         scale.scale(valueProvider(data))
-    }
-
-    /// Returns the value referenced from the data you provide by the channel, scaled into the range defined by the range values you provide.
-    /// - Parameters:
-    ///   - data: The instance of the data to process through the visual channel.
-    ///   - rangeLower: The lower value for the range.
-    ///   - rangeHigher: The higher value for the range.
-    /// - Returns: The scaled value, or `nil` if the scaled value is not-a-number, or the scale is set to drop values scaled outside of the range defined.
-    ///
-    /// This method is useful for a single lookup of a value, but for processing more than a handful of values it is more efficient to update the visual channel
-    /// using ``range(rangeLower:rangeHigher:)``, then call ``scaledValue(data:)`` iteratively on the updated channel.
-    public func scaledValue(data: SomeDataType, rangeLower: OutputPropertyType, rangeHigher: OutputPropertyType) -> OutputPropertyType? {
-        scale.scale(valueProvider(data), from: rangeLower, to: rangeHigher)
     }
 
     // MARK: - VisualChannel Modifier Methods
@@ -175,19 +162,6 @@ public struct BandVisualChannel<SomeDataType> {
         precondition(scale.rangeLower != nil && scale.rangeHigher != nil, "Unable to scale values to an unset range.")
         return scale.scale(valueProvider(data))
     }
-
-    /// Returns the value referenced from the data you provide by the channel, scaled into the range defined by the range values you provide.
-    /// - Parameters:
-    ///   - data: The instance of the data to process through the visual channel.
-    ///   - rangeLower: The lower value for the range.
-    ///   - rangeHigher: The higher value for the range.
-    /// - Returns: The scaled value, or `nil` if the scaled value is not-a-number, or the scale is set to drop values scaled outside of the range defined.
-    ///
-    /// This method is useful for a single lookup of a value, but for processing more than a handful of values it is more efficient to update the visual channel
-    /// using ``range(rangeLower:rangeHigher:)``, then call ``scaledValue(data:)`` iteratively on the updated channel.
-    public func scaledValue(data: SomeDataType, rangeLower: CGFloat, rangeHigher: CGFloat) -> Band<String, CGFloat>? {
-        scale.scale(valueProvider(data), from: rangeLower, to: rangeHigher)
-    }
 }
 
 // MARK: - Visual Channel - Discrete/Point
@@ -260,19 +234,6 @@ public struct DiscreteVisualChannel<SomeDataType> {
     public func scaledValue(data: SomeDataType) -> OutputPropertyType? {
         precondition(scale.rangeLower != nil && scale.rangeHigher != nil, "Unable to scale values to an unset range.")
         return scale.scale(valueProvider(data))
-    }
-
-    /// Returns the value referenced from the data you provide by the channel, scaled into the range defined by the range values you provide.
-    /// - Parameters:
-    ///   - data: The instance of the data to process through the visual channel.
-    ///   - rangeLower: The lower value for the range.
-    ///   - rangeHigher: The higher value for the range.
-    /// - Returns: The scaled value, or `nil` if the scaled value is not-a-number, or the scale is set to drop values scaled outside of the range defined.
-    ///
-    /// This method is useful for a single lookup of a value, but for processing more than a handful of values it is more efficient to update the visual channel
-    /// using ``range(rangeLower:rangeHigher:)``, then call ``scaledValue(data:)`` iteratively on the updated channel.
-    public func scaledValue(data: SomeDataType, rangeLower: OutputPropertyType, rangeHigher: OutputPropertyType) -> OutputPropertyType? {
-        scale.scale(valueProvider(data), from: rangeLower, to: rangeHigher)
     }
 }
 
