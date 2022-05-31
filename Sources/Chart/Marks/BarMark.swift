@@ -65,29 +65,26 @@ public struct BarMark<DataSource>: Mark, MarkAxis {
         // - apply the range onto the various VisualChannel scales, or pass it along when creating
         //   the symbols with final values. (from VisualChannel.provideScaledValue()
         var symbols: [Sigil] = []
-//        print("Creating symbols within rect: \(rect)")
+
         switch orientation {
         case .vertical:
             let xScale = category.range(rangeLower: rect.origin.x, rangeHigher: rect.origin.x + rect.size.width)
-            let yScale = value.range(rangeLower: rect.origin.y, rangeHigher: rect.origin.y + rect.size.height)
-//            print("X scale: \(xScale)")
-//            print("Y scale: \(yScale)")
+            let yScale = value.range(reversed: true, rangeLower: rect.origin.y, rangeHigher: rect.origin.y + rect.size.height)
+
             for pointData in data {
                 if let xBand = xScale.scaledValue(data: pointData),
                    let yValue = yScale.scaledValue(data: pointData)
                 {
-                    let symbolRect = CGRect(x: xBand.lower + rect.origin.x, y: rect.height - yValue + rect.origin.y, width: xBand.higher - xBand.lower, height: yValue)
+                    let symbolRect = CGRect(x: xBand.lower + rect.origin.x, y: yValue, width: xBand.higher - xBand.lower, height: rect.height - yValue)
                     let barSymbol = IndividualRect(rect: symbolRect, category: xBand.value)
                     symbols.append(.rect(barSymbol))
-//                    print(" .. \(barSymbol)")
                 }
             }
 
         case .horizontal:
             let xScale = value.range(rangeLower: rect.origin.x, rangeHigher: rect.origin.x + rect.size.width)
             let yScale = category.range(rangeLower: rect.origin.y, rangeHigher: rect.origin.y + rect.size.height)
-//            print("X scale: \(xScale)")
-//            print("Y scale: \(yScale)")
+
             for pointData in data {
                 if let xValue = xScale.scaledValue(data: pointData),
                    let yBand = yScale.scaledValue(data: pointData)
@@ -95,7 +92,6 @@ public struct BarMark<DataSource>: Mark, MarkAxis {
                     let symbolRect = CGRect(x: rect.origin.x, y: rect.height - yBand.higher + rect.origin.y, width: xValue, height: yBand.higher - yBand.lower)
                     let barSymbol = IndividualRect(rect: symbolRect, category: yBand.value)
                     symbols.append(.rect(barSymbol))
-//                    print(" .. \(barSymbol)")
                 }
             }
         case .depth:

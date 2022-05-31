@@ -146,9 +146,9 @@ public struct BandVisualChannel<SomeDataType> {
     /// - Parameters:
     ///   - rangeLower: The lower value for the range.
     ///   - rangeHigher: The higher value for the range.
-    public func range(rangeLower: CGFloat, rangeHigher: CGFloat) -> Self {
+    public func range(reversed: Bool = false, rangeLower: CGFloat, rangeHigher: CGFloat) -> Self {
         var copyOfSelf = self
-        copyOfSelf.scale = scale.range(lower: rangeLower, higher: rangeHigher)
+        copyOfSelf.scale = scale.range(reversed: reversed, lower: rangeLower, higher: rangeHigher)
         return copyOfSelf
     }
 
@@ -219,9 +219,9 @@ public struct DiscreteVisualChannel<SomeDataType> {
     /// - Parameters:
     ///   - rangeLower: The lower value for the range.
     ///   - rangeHigher: The higher value for the range.
-    public func range(rangeLower: OutputPropertyType, rangeHigher: OutputPropertyType) -> Self {
+    public func range(reversed: Bool = false, rangeLower: OutputPropertyType, rangeHigher: OutputPropertyType) -> Self {
         var copyOfSelf = self
-        copyOfSelf.scale = scale.range(lower: rangeLower, higher: rangeHigher)
+        copyOfSelf.scale = scale.range(reversed: reversed, lower: rangeLower, higher: rangeHigher)
         return copyOfSelf
     }
 
