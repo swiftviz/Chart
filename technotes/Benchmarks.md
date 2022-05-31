@@ -1,7 +1,7 @@
 # Benchmarks
 
 ```bash
-BENCHMARK=1 swift build -c release && .build/release/chartrender-benchmark --iterations 1000 --time-unit ms
+BENCHMARK=1 swift build -c release && .build/release/chartrender-benchmark --iterations 500 --time-unit ms
 ```
 
 ## initial rendering, simple bar chart
