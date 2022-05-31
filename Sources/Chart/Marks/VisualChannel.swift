@@ -23,7 +23,7 @@ public struct QuantitativeVisualChannel<SomeDataType> {
     // that ultimately converts to a Double type, which this channel uses internally to then
     // scale and apply to the range later provided.
 
-    public var scale = AnyContinuousScale<Double, OutputPropertyType>(LinearScale())
+    var scale = AnyContinuousScale<Double, OutputPropertyType>(LinearScale())
     // a scale has an InputType and OutputType - and we need InputType to match 'PropertyType'
     // from above. And OutputType should probably just be CGFloat since we'll be using it in
     // that context.
@@ -116,7 +116,7 @@ public struct QuantitativeVisualChannel<SomeDataType> {
 public struct BandVisualChannel<SomeDataType> {
     private let valueProvider: (SomeDataType) -> String
 
-    public var scale = BandScale<String, CGFloat>()
+    var scale = BandScale<String, CGFloat>()
 
     /// Creates a new visual channel that references a property using the key-path you provide.
     /// - Parameter dataProperty: the key-path to the property to use for the visual channel.
@@ -202,7 +202,7 @@ public struct DiscreteVisualChannel<SomeDataType> {
 
     private let valueProvider: (SomeDataType) -> String
 
-    public var scale = PointScale<String, OutputPropertyType>()
+    var scale = PointScale<String, OutputPropertyType>()
 
     /// Creates a new visual channel that references a property using the key-path you provide.
     /// - Parameter dataProperty: the key-path to the property to use for the visual channel.
