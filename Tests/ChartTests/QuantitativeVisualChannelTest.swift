@@ -62,8 +62,8 @@ class QuantitativeVisualChannelTest: XCTestCase {
         let channel = QuantitativeVisualChannel<SampleData>(32)
         let domainConfigured = channel.applyDomain([data])
         let rangeConfigured = domainConfigured.range(reversed: false,
-                                  rangeLower: domainConfigured.scale.domainLower,
-                                  rangeHigher: domainConfigured.scale.domainHigher)
+                                                     rangeLower: domainConfigured.scale.domainLower,
+                                                     rangeHigher: domainConfigured.scale.domainHigher)
         // use computed domain values for range to create a 1:1 scale factor
         XCTAssertEqual(rangeConfigured.scaledValue(data: data), 32)
     }
@@ -72,8 +72,8 @@ class QuantitativeVisualChannelTest: XCTestCase {
         let channel = QuantitativeVisualChannel<SampleData>(5.5)
         let domainConfigured = channel.applyDomain([data])
         let rangeConfigured = domainConfigured.range(reversed: false,
-                                  rangeLower: domainConfigured.scale.domainLower,
-                                  rangeHigher: domainConfigured.scale.domainHigher)
+                                                     rangeLower: domainConfigured.scale.domainLower,
+                                                     rangeHigher: domainConfigured.scale.domainHigher)
         // use computed domain values for range to create a 1:1 scale factor
         XCTAssertEqual(rangeConfigured.scaledValue(data: data), 5.5)
     }
@@ -82,8 +82,8 @@ class QuantitativeVisualChannelTest: XCTestCase {
         let channel = QuantitativeVisualChannel<SampleData>(\.value)
         let domainConfigured = channel.applyDomain([data])
         let rangeConfigured = domainConfigured.range(reversed: false,
-                                  rangeLower: domainConfigured.scale.domainLower,
-                                  rangeHigher: domainConfigured.scale.domainHigher)
+                                                     rangeLower: domainConfigured.scale.domainLower,
+                                                     rangeHigher: domainConfigured.scale.domainHigher)
         // use computed domain values for range to create a 1:1 scale factor
         XCTAssertEqual(rangeConfigured.scaledValue(data: data), 3)
     }
@@ -92,8 +92,8 @@ class QuantitativeVisualChannelTest: XCTestCase {
         let channel = QuantitativeVisualChannel<SampleData>(\.xValue)
         let domainConfigured = channel.applyDomain([data])
         let rangeConfigured = domainConfigured.range(reversed: false,
-                                  rangeLower: domainConfigured.scale.domainLower,
-                                  rangeHigher: domainConfigured.scale.domainHigher)
+                                                     rangeLower: domainConfigured.scale.domainLower,
+                                                     rangeHigher: domainConfigured.scale.domainHigher)
 
         // use computed domain values for range to create a 1:1 scale factor
         XCTAssertEqual(rangeConfigured.scaledValue(data: data), Double.pi)
