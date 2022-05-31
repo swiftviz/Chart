@@ -60,38 +60,54 @@ class QuantitativeVisualChannelTest: XCTestCase {
 
     func testQuantitativeChannelConstantIntDomainAndScale() throws {
         let channel = QuantitativeVisualChannel<SampleData>(32)
-        let configured = channel.applyDomain([data])
+        let domainConfigured = channel.applyDomain([data])
+        let rangeConfigured = domainConfigured.range(reversed: false,
+                                  rangeLower: domainConfigured.scale.domainLower,
+                                  rangeHigher: domainConfigured.scale.domainHigher)
         // use computed domain values for range to create a 1:1 scale factor
-        XCTAssertEqual(configured.scaledValue(data: data, rangeLower: configured.scale.domainLower, rangeHigher: configured.scale.domainHigher), 32)
+        XCTAssertEqual(rangeConfigured.scaledValue(data: data), 32)
     }
 
     func testQuantitativeChannelConstantDoubleDomainAndScale() throws {
         let channel = QuantitativeVisualChannel<SampleData>(5.5)
-        let configured = channel.applyDomain([data])
+        let domainConfigured = channel.applyDomain([data])
+        let rangeConfigured = domainConfigured.range(reversed: false,
+                                  rangeLower: domainConfigured.scale.domainLower,
+                                  rangeHigher: domainConfigured.scale.domainHigher)
         // use computed domain values for range to create a 1:1 scale factor
-        XCTAssertEqual(configured.scaledValue(data: data, rangeLower: configured.scale.domainLower, rangeHigher: configured.scale.domainHigher), 5.5)
+        XCTAssertEqual(rangeConfigured.scaledValue(data: data), 5.5)
     }
 
     func testQuantitativeChannelKeypathIntDomainAndScale() throws {
         let channel = QuantitativeVisualChannel<SampleData>(\.value)
-        let configured = channel.applyDomain([data])
+        let domainConfigured = channel.applyDomain([data])
+        let rangeConfigured = domainConfigured.range(reversed: false,
+                                  rangeLower: domainConfigured.scale.domainLower,
+                                  rangeHigher: domainConfigured.scale.domainHigher)
         // use computed domain values for range to create a 1:1 scale factor
-        XCTAssertEqual(configured.scaledValue(data: data, rangeLower: configured.scale.domainLower, rangeHigher: configured.scale.domainHigher), 3)
+        XCTAssertEqual(rangeConfigured.scaledValue(data: data), 3)
     }
 
     func testQuantitativeChannelKeypathDoubleDomainAndScale() throws {
         let channel = QuantitativeVisualChannel<SampleData>(\.xValue)
-        let configured = channel.applyDomain([data])
+        let domainConfigured = channel.applyDomain([data])
+        let rangeConfigured = domainConfigured.range(reversed: false,
+                                  rangeLower: domainConfigured.scale.domainLower,
+                                  rangeHigher: domainConfigured.scale.domainHigher)
+
         // use computed domain values for range to create a 1:1 scale factor
-        XCTAssertEqual(configured.scaledValue(data: data, rangeLower: configured.scale.domainLower, rangeHigher: configured.scale.domainHigher), Double.pi)
+        XCTAssertEqual(rangeConfigured.scaledValue(data: data), Double.pi)
     }
 
     func testQuantitativeChannelClosureDomainAndScale() throws {
         let channel = QuantitativeVisualChannel<SampleData> { incoming in
             incoming.xValue + incoming.yValue
         }
-        let configured = channel.applyDomain([data])
+        let domainConfigured = channel.applyDomain([data])
+        let rangeConfigured = domainConfigured.range(reversed: false,
+                                                     rangeLower: domainConfigured.scale.domainLower,
+                                                     rangeHigher: domainConfigured.scale.domainHigher)
         // use computed domain values for range to create a 1:1 scale factor
-        XCTAssertEqual(configured.scaledValue(data: data, rangeLower: configured.scale.domainLower, rangeHigher: configured.scale.domainHigher), data.xValue + data.yValue)
+        XCTAssertEqual(rangeConfigured.scaledValue(data: data), data.xValue + data.yValue)
     }
 }
