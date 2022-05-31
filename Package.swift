@@ -18,6 +18,7 @@ let package = Package(
             name: "Chart",
             targets: ["Chart"]
         ),
+        .library(name: "ExampleChartViews", targets: ["ExampleChartViews"]),
     ],
     dependencies: [
         .package(url: "https://github.com/swiftviz/scale.git", branch: "main"),
@@ -30,6 +31,10 @@ let package = Package(
         .target(
             name: "Chart",
             dependencies: [.product(name: "SwiftVizScale", package: "Scale")]
+        ),
+        .target(
+            name: "ExampleChartViews",
+            dependencies: ["Chart"]
         ),
         .testTarget(
             name: "ChartTests",
