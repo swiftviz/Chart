@@ -19,11 +19,16 @@ let package = Package(
             targets: ["Chart"]
         ),
         .library(name: "ExampleChartViews", targets: ["ExampleChartViews"]),
+        // COMMENT OUT
+//        .executable(name: "chartrender-benchmark", targets: ["chartrender-benchmark"])
     ],
     dependencies: [
         .package(url: "https://github.com/swiftviz/scale.git", branch: "main"),
         // .package(url: "https://github.com/swiftviz/scale.git", from: "0.5.0"),
         .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.7.2"),
+        // COMMENT OUT:
+//        .package(url: "https://github.com/google/swift-benchmark", from: "0.1.0"),
+//        .package(url: "https://github.com/dehesa/CodableCSV", from: "0.1.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -59,6 +64,17 @@ let package = Package(
                 .product(name: "SwiftVizScale", package: "Scale"),
             ]
         ),
+        // COMMENT OUT
+//        .executableTarget(
+//            name: "chartrender-benchmark",
+//            dependencies: [
+//                "Chart",
+//                .product(name: "SwiftVizScale", package: "Scale"),
+//                .product(name: "Benchmark", package: "swift-benchmark"),
+//                .product(name: "CodableCSV", package: "CodableCSV")
+//            ],
+//            resources: [.process("fixtures")]
+//        )
     ]
 )
 
@@ -66,10 +82,10 @@ if ProcessInfo.processInfo.environment["BENCHMARK"] != nil {
     package.products.append(
         .executable(name: "chartrender-benchmark", targets: ["chartrender-benchmark"])
     )
-    package.dependencies.append(
-        //        .package(url: "https://github.com/apple/swift-collections-benchmark", from: "0.0.1"),
-        .package(url: "https://github.com/google/swift-benchmark", from: "0.1.0")
-    )
+    package.dependencies.append(contentsOf: [
+        .package(url: "https://github.com/google/swift-benchmark", from: "0.1.0"),
+        .package(url: "https://github.com/dehesa/CodableCSV", from: "0.1.0"),
+    ])
     package.targets.append(
         .executableTarget(
             name: "chartrender-benchmark",
@@ -77,6 +93,7 @@ if ProcessInfo.processInfo.environment["BENCHMARK"] != nil {
                 "Chart",
                 .product(name: "SwiftVizScale", package: "Scale"),
                 .product(name: "Benchmark", package: "swift-benchmark"),
+                .product(name: "CodableCSV", package: "CodableCSV"),
             ],
             resources: [.process("fixtures")]
         )

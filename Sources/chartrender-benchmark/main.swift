@@ -3,9 +3,8 @@
 //
 import Benchmark
 import Chart
+import CodableCSV
 import SwiftUI
-import TabularData
-// https://holyswift.app/crunching-data-with-the-new-apples-tabulardata-framework
 
 // BENCHMARK=1 swift build -c release && .build/release/chartrender-benchmark --iterations 1000 --time-unit ms
 
@@ -16,6 +15,22 @@ extension SwiftUI.View {
         frame(width: referenceSize.width, height: referenceSize.height).ignoresSafeArea()
     }
 }
+
+let athleteDecoder = CSVDecoder {
+    $0.headerStrategy = .firstLine
+    $0.dateStrategy = .formatted(Athletes.dateformatter)
+}
+
+let athlete_data = try athleteDecoder.decode([Athletes].self, from: Athletes.url)
+print("Loaded \(athlete_data.count) rows from \(Athletes.url)")
+
+let tempDecoder = CSVDecoder {
+    $0.headerStrategy = .firstLine
+    $0.dateStrategy = .formatted(SFTemps.dateformatter)
+}
+
+let temp_data = try tempDecoder.decode([SFTemps].self, from: SFTemps.url)
+print("Loaded \(temp_data.count) rows from \(SFTemps.url)")
 
 struct SampleData {
     let name: String
