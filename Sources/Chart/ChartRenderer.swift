@@ -62,6 +62,8 @@ class ChartRenderer {
             // calculate the max width for labels on the X axis
             let maxHorizontalMarginAddition = self.widthFromListOfAxis(axisCollection.xAxisList, with: context, size: size) / 2.0
 
+            let tickLabelHeight: CGFloat = context.resolve(Text("123").font(.caption)).measure(in: size).height
+
             // expand the margin from the specification, if it doesn't include sufficient space
             // to view the labels from the displayed axis.
             let margintop = max(specification.margin.top, maxVerticalMarginAddition)
@@ -89,6 +91,7 @@ class ChartRenderer {
             if opts.contains(.chartarea) {
                 self.chartArea(chartDataDrawArea, context: &context)
             }
+
             // The size calculation also plays into describing the rectangles for drawing the axis.
             // The width of any X axis is determined by that internal size, as is the height
             // for any Y axis.
@@ -102,7 +105,7 @@ class ChartRenderer {
                     if opts.contains(.axis) {
                         self.fillArea(CGRect(origin: axisOrigin, size: axisSize), context: &context)
                     }
-                    self.drawAxis(axis: topAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
+                    self.drawAxis(axis: topAxis, tickLabelHeight: tickLabelHeight, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
             }
 
@@ -116,7 +119,7 @@ class ChartRenderer {
                         self.fillArea(CGRect(origin: axisOrigin, size: axisSize), context: &context)
                     }
 
-                    self.drawAxis(axis: bottomAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
+                    self.drawAxis(axis: bottomAxis, tickLabelHeight: tickLabelHeight, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
             }
 
@@ -130,7 +133,7 @@ class ChartRenderer {
                         self.fillArea(CGRect(origin: axisOrigin, size: axisSize), context: &context)
                     }
 
-                    self.drawAxis(axis: leadingAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
+                    self.drawAxis(axis: leadingAxis, tickLabelHeight: tickLabelHeight, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
             }
 
@@ -144,7 +147,7 @@ class ChartRenderer {
                         self.fillArea(CGRect(origin: axisOrigin, size: axisSize), context: &context)
                     }
 
-                    self.drawAxis(axis: trailingAxis, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
+                    self.drawAxis(axis: trailingAxis, tickLabelHeight: tickLabelHeight, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
             }
 
@@ -233,7 +236,7 @@ class ChartRenderer {
 
     // MARK: - drawing methods
 
-    private func drawAxis(axis: Axis, within rect: CGRect, context: inout GraphicsContext) {
+    private func drawAxis(axis: Axis, tickLabelHeight: CGFloat, within rect: CGRect, context: inout GraphicsContext) {
         let ruleStart: CGPoint
         let ruleEnd: CGPoint
         switch (axis.axisLocation, axis.tickOrientation) {
@@ -265,6 +268,9 @@ class ChartRenderer {
 
         // Drawing the label for the axis
         if !axis.label.isEmpty {
+            // NOTE(heckj): this offset assumes tick labels are always present...
+            let tickOffset = axis.tickLength + axis.tickPadding + tickLabelHeight
+
             let resolvedLabel = context.resolve(Text(axis.label))
             context.rotate(by: axis.labelRotation)
             let axisLabelPoint: CGPoint
@@ -272,30 +278,30 @@ class ChartRenderer {
             case .leading:
                 switch axis.labelAlignment {
                 case .top, .topLeading, .topTrailing:
-                    axisLabelPoint = CGPoint(x: rect.origin.x + rect.size.width - axis.labelOffset,
+                    axisLabelPoint = CGPoint(x: rect.origin.x + rect.size.width - axis.labelOffset - tickOffset,
                                              y: rect.origin.y)
                     context.draw(resolvedLabel, at: axisLabelPoint, anchor: .top)
                 case .bottom, .bottomLeading, .bottomTrailing:
-                    axisLabelPoint = CGPoint(x: rect.origin.x + rect.size.width - axis.labelOffset,
+                    axisLabelPoint = CGPoint(x: rect.origin.x + rect.size.width - axis.labelOffset - tickOffset,
                                              y: rect.origin.y + rect.size.height)
                     context.draw(resolvedLabel, at: axisLabelPoint, anchor: .bottom)
                 default: // centered
-                    axisLabelPoint = CGPoint(x: rect.origin.x + rect.size.width - axis.labelOffset,
+                    axisLabelPoint = CGPoint(x: rect.origin.x + rect.size.width - axis.labelOffset - tickOffset,
                                              y: rect.origin.y + rect.size.height / 2.0)
                     context.draw(resolvedLabel, at: axisLabelPoint, anchor: .center)
                 }
             case .trailing:
                 switch axis.labelAlignment {
                 case .top, .topLeading, .topTrailing:
-                    axisLabelPoint = CGPoint(x: rect.origin.x + axis.labelOffset,
+                    axisLabelPoint = CGPoint(x: rect.origin.x + axis.labelOffset + tickOffset,
                                              y: rect.origin.y)
                     context.draw(resolvedLabel, at: axisLabelPoint, anchor: .top)
                 case .bottom, .bottomLeading, .bottomTrailing:
-                    axisLabelPoint = CGPoint(x: rect.origin.x + axis.labelOffset,
+                    axisLabelPoint = CGPoint(x: rect.origin.x + axis.labelOffset + tickOffset,
                                              y: rect.origin.y + rect.height)
                     context.draw(resolvedLabel, at: axisLabelPoint, anchor: .bottom)
                 default: // centered
-                    axisLabelPoint = CGPoint(x: rect.origin.x + axis.labelOffset,
+                    axisLabelPoint = CGPoint(x: rect.origin.x + axis.labelOffset + tickOffset,
                                              y: rect.origin.y + rect.height / 2.0)
                     context.draw(resolvedLabel, at: axisLabelPoint, anchor: .center)
                 }
@@ -303,30 +309,30 @@ class ChartRenderer {
                 switch axis.labelAlignment {
                 case .leading, .topLeading, .bottomLeading:
                     axisLabelPoint = CGPoint(x: rect.origin.x,
-                                             y: rect.origin.y + rect.height - axis.labelOffset)
+                                             y: rect.origin.y + rect.height - axis.labelOffset - tickOffset)
                     context.draw(resolvedLabel, at: axisLabelPoint, anchor: .leading)
                 case .trailing, .topTrailing, .bottomTrailing:
                     axisLabelPoint = CGPoint(x: rect.origin.x + rect.width,
-                                             y: rect.origin.y + rect.height - axis.labelOffset)
+                                             y: rect.origin.y + rect.height - axis.labelOffset - tickOffset)
                     context.draw(resolvedLabel, at: axisLabelPoint, anchor: .trailing)
                 default: // centered
                     axisLabelPoint = CGPoint(x: rect.origin.x + rect.width / 2.0,
-                                             y: rect.origin.y + rect.height - axis.labelOffset)
+                                             y: rect.origin.y + rect.height - axis.labelOffset - tickOffset)
                     context.draw(resolvedLabel, at: axisLabelPoint, anchor: .center)
                 }
             case .bottom:
                 switch axis.labelAlignment {
                 case .leading, .topLeading, .bottomLeading:
                     axisLabelPoint = CGPoint(x: rect.origin.x,
-                                             y: rect.origin.y + axis.labelOffset)
+                                             y: rect.origin.y + axis.labelOffset + tickOffset)
                     context.draw(resolvedLabel, at: axisLabelPoint, anchor: .leading)
                 case .trailing, .topTrailing, .bottomTrailing:
                     axisLabelPoint = CGPoint(x: rect.origin.x + rect.width,
-                                             y: rect.origin.y + axis.labelOffset)
+                                             y: rect.origin.y + axis.labelOffset + tickOffset)
                     context.draw(resolvedLabel, at: axisLabelPoint, anchor: .trailing)
                 default: // centered
                     axisLabelPoint = CGPoint(x: rect.origin.x + rect.width / 2.0,
-                                             y: rect.origin.y + axis.labelOffset)
+                                             y: rect.origin.y + axis.labelOffset + tickOffset)
                     context.draw(resolvedLabel, at: axisLabelPoint, anchor: .center)
                 }
             }
