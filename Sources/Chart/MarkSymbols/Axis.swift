@@ -57,6 +57,7 @@ public struct Axis {
     let tickOrientation: TickOrientation
     let tickPadding: CGFloat
     let tickAlignment: UnitPoint
+    let showTickLabels: Bool
     let chartRules: Bool // aka 'grid', but only for one direction
     let chartRuleStyle: StrokeStyle
     let chartRuleShading: GraphicsContext.Shading
@@ -95,6 +96,7 @@ public struct Axis {
                 tickOrientation: TickOrientation = .outer,
                 tickPadding: CGFloat = 5,
                 tickAlignment: UnitPoint? = nil,
+                showTickLabels: Bool = true,
                 chartRules: Bool = false,
                 label: String = "",
                 labelOffset: CGFloat = 0,
@@ -103,16 +105,12 @@ public struct Axis {
     {
         self.scale = scale
         self.axisLocation = axisLocation
+        // ticks
         self.tickLength = tickLength
         self.tickPadding = tickPadding
-
         self.tickOrientation = tickOrientation
-        self.rule = rule
-        self.chartRules = chartRules
-        self.label = label
-        self.labelOffset = labelOffset
-        self.labelAlignment = labelAlignment
         self.requestedTickValues = requestedTickValues
+        self.showTickLabels = showTickLabels
         if let tickAlignment = tickAlignment {
             self.tickAlignment = tickAlignment
         } else {
@@ -127,6 +125,13 @@ public struct Axis {
                 self.tickAlignment = .leading
             }
         }
+        // rules
+        self.rule = rule
+        self.chartRules = chartRules
+        // axis label
+        self.label = label
+        self.labelOffset = labelOffset
+        self.labelAlignment = labelAlignment
         if let labelRotation = labelRotation {
             self.labelRotation = labelRotation
         } else {
@@ -150,12 +155,6 @@ public struct Axis {
         chartRuleShading = ruleShading
         ticks = []
     }
-
-//    func addingTicks(_ ticks: [Tick<CGFloat>]) -> Self {
-//        var copy = self
-//        copy.ticks = ticks
-//        return copy
-//    }
 
     /// Resolves the ticks with labels and positions for the rectangular area that you provide.
     /// - Parameters:
