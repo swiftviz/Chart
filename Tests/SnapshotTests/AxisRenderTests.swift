@@ -314,5 +314,20 @@ final class AxisRenderTests: XCTestCase {
             )
         }
 
+        func testAxisOptionsHideTickLabels() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .xAxis(showTickLabels: false)
+                    .yAxis(showTickLabels: false)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
     #endif
 }
