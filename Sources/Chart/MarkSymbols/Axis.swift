@@ -67,6 +67,7 @@ public struct Axis {
     let label: String
     let labelAlignment: Alignment
     let labelOffset: CGFloat
+    let labelRotation: Angle
 
     // only available on a fully configured Axis specification
     // use `addingTicks()` to add on the configured values.
@@ -97,7 +98,8 @@ public struct Axis {
                 chartRules: Bool = false,
                 label: String = "",
                 labelOffset: CGFloat = 0,
-                labelAlignment: Alignment = .center)
+                labelAlignment: Alignment = .center,
+                labelRotation: Angle? = nil)
     {
         self.scale = scale
         self.axisLocation = axisLocation
@@ -123,6 +125,16 @@ public struct Axis {
                 self.tickAlignment = .trailing
             case .trailing:
                 self.tickAlignment = .leading
+            }
+        }
+        if let labelRotation = labelRotation {
+            self.labelRotation = labelRotation
+        } else {
+            switch axisLocation {
+            case .bottom, .top:
+                self.labelRotation = .degrees(0)
+            case .leading, .trailing:
+                self.labelRotation = .degrees(-90)
             }
         }
         // style for the rule along the axis

@@ -262,6 +262,77 @@ class ChartRenderer {
             ruleStart = CGPoint(x: rect.origin.x + axis.tickLength, y: rect.origin.y)
             ruleEnd = CGPoint(x: rect.origin.x + axis.tickLength, y: rect.origin.y + rect.size.height)
         }
+
+        // Drawing the label for the axis
+        if !axis.label.isEmpty {
+            let resolvedLabel = context.resolve(Text(axis.label))
+            context.rotate(by: axis.labelRotation)
+            let axisLabelPoint: CGPoint
+            switch axis.axisLocation {
+            case .leading:
+                switch axis.labelAlignment {
+                case .top, .topLeading, .topTrailing:
+                    axisLabelPoint = CGPoint(x: rect.origin.x + rect.size.width - axis.labelOffset,
+                                             y: rect.origin.y)
+                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .top)
+                case .bottom, .bottomLeading, .bottomTrailing:
+                    axisLabelPoint = CGPoint(x: rect.origin.x + rect.size.width - axis.labelOffset,
+                                             y: rect.origin.y + rect.size.height)
+                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .bottom)
+                default: // centered
+                    axisLabelPoint = CGPoint(x: rect.origin.x + rect.size.width - axis.labelOffset,
+                                             y: rect.origin.y + rect.size.height / 2.0)
+                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .center)
+                }
+            case .trailing:
+                switch axis.labelAlignment {
+                case .top, .topLeading, .topTrailing:
+                    axisLabelPoint = CGPoint(x: rect.origin.x + axis.labelOffset,
+                                             y: rect.origin.y)
+                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .top)
+                case .bottom, .bottomLeading, .bottomTrailing:
+                    axisLabelPoint = CGPoint(x: rect.origin.x + axis.labelOffset,
+                                             y: rect.origin.y + rect.height)
+                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .bottom)
+                default: // centered
+                    axisLabelPoint = CGPoint(x: rect.origin.x + axis.labelOffset,
+                                             y: rect.origin.y + rect.height / 2.0)
+                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .center)
+                }
+            case .top:
+                switch axis.labelAlignment {
+                case .leading, .topLeading, .bottomLeading:
+                    axisLabelPoint = CGPoint(x: rect.origin.x,
+                                             y: rect.origin.y + rect.height - axis.labelOffset)
+                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .leading)
+                case .trailing, .topTrailing, .bottomTrailing:
+                    axisLabelPoint = CGPoint(x: rect.origin.x + rect.width,
+                                             y: rect.origin.y + rect.height - axis.labelOffset)
+                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .trailing)
+                default: // centered
+                    axisLabelPoint = CGPoint(x: rect.origin.x + rect.width / 2.0,
+                                             y: rect.origin.y + rect.height - axis.labelOffset)
+                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .center)
+                }
+            case .bottom:
+                switch axis.labelAlignment {
+                case .leading, .topLeading, .bottomLeading:
+                    axisLabelPoint = CGPoint(x: rect.origin.x,
+                                             y: rect.origin.y + axis.labelOffset)
+                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .leading)
+                case .trailing, .topTrailing, .bottomTrailing:
+                    axisLabelPoint = CGPoint(x: rect.origin.x + rect.width,
+                                             y: rect.origin.y + axis.labelOffset)
+                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .trailing)
+                default: // centered
+                    axisLabelPoint = CGPoint(x: rect.origin.x + rect.width / 2.0,
+                                             y: rect.origin.y + axis.labelOffset)
+                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .center)
+                }
+            }
+            context.rotate(by: -axis.labelRotation)
+        }
+
         if axis.rule {
             let linePath = Path { p in
                 p.move(to: ruleStart)
@@ -273,51 +344,53 @@ class ChartRenderer {
         for aTick in axis.resolveTicks(rect, invertX: false, invertY: true) {
             let tickStart: CGPoint
             let tickEnd: CGPoint
-            let labelPoint: CGPoint
+            let tickLabelPoint: CGPoint
+
             switch (axis.axisLocation, axis.tickOrientation) {
             // Y Axis - vertical layout
             case (.leading, .inner):
                 tickStart = CGPoint(x: ruleStart.x, y: aTick.rangeLocation)
                 tickEnd = CGPoint(x: ruleStart.x + axis.tickLength, y: aTick.rangeLocation)
-                labelPoint = CGPoint(x: ruleStart.x - axis.tickPadding,
-                                     y: aTick.rangeLocation)
+                tickLabelPoint = CGPoint(x: ruleStart.x - axis.tickPadding,
+                                         y: aTick.rangeLocation)
+
             case (.leading, .outer):
                 tickStart = CGPoint(x: ruleStart.x, y: aTick.rangeLocation)
                 tickEnd = CGPoint(x: ruleStart.x - axis.tickLength, y: aTick.rangeLocation)
-                labelPoint = CGPoint(x: ruleStart.x - axis.tickLength - axis.tickPadding,
-                                     y: aTick.rangeLocation)
+                tickLabelPoint = CGPoint(x: ruleStart.x - axis.tickLength - axis.tickPadding,
+                                         y: aTick.rangeLocation)
             case (.trailing, .inner):
                 tickStart = CGPoint(x: ruleStart.x, y: aTick.rangeLocation)
                 tickEnd = CGPoint(x: ruleStart.x - axis.tickLength, y: aTick.rangeLocation)
-                labelPoint = CGPoint(x: ruleStart.x + axis.tickPadding,
-                                     y: aTick.rangeLocation)
+                tickLabelPoint = CGPoint(x: ruleStart.x + axis.tickPadding,
+                                         y: aTick.rangeLocation)
 
             case (.trailing, .outer):
                 tickStart = CGPoint(x: ruleStart.x, y: aTick.rangeLocation)
                 tickEnd = CGPoint(x: ruleStart.x + axis.tickLength, y: aTick.rangeLocation)
-                labelPoint = CGPoint(x: ruleStart.x + axis.tickLength + axis.tickPadding,
-                                     y: aTick.rangeLocation)
+                tickLabelPoint = CGPoint(x: ruleStart.x + axis.tickLength + axis.tickPadding,
+                                         y: aTick.rangeLocation)
             // X Axis - horizontal layout
             case (.top, .inner):
                 tickStart = CGPoint(x: aTick.rangeLocation, y: ruleStart.y)
                 tickEnd = CGPoint(x: aTick.rangeLocation, y: ruleStart.y + axis.tickLength)
-                labelPoint = CGPoint(x: aTick.rangeLocation,
-                                     y: ruleStart.y - axis.tickPadding)
+                tickLabelPoint = CGPoint(x: aTick.rangeLocation,
+                                         y: ruleStart.y - axis.tickPadding)
             case (.top, .outer):
                 tickStart = CGPoint(x: aTick.rangeLocation, y: ruleStart.y)
                 tickEnd = CGPoint(x: aTick.rangeLocation, y: ruleStart.y - axis.tickLength)
-                labelPoint = CGPoint(x: aTick.rangeLocation,
-                                     y: ruleStart.y - axis.tickLength - axis.tickPadding)
+                tickLabelPoint = CGPoint(x: aTick.rangeLocation,
+                                         y: ruleStart.y - axis.tickLength - axis.tickPadding)
             case (.bottom, .inner):
                 tickStart = CGPoint(x: aTick.rangeLocation, y: ruleStart.y)
                 tickEnd = CGPoint(x: aTick.rangeLocation, y: ruleStart.y - axis.tickLength)
-                labelPoint = CGPoint(x: aTick.rangeLocation,
-                                     y: ruleStart.y + axis.tickPadding)
+                tickLabelPoint = CGPoint(x: aTick.rangeLocation,
+                                         y: ruleStart.y + axis.tickPadding)
             case (.bottom, .outer):
                 tickStart = CGPoint(x: aTick.rangeLocation, y: ruleStart.y)
                 tickEnd = CGPoint(x: aTick.rangeLocation, y: ruleStart.y + axis.tickLength)
-                labelPoint = CGPoint(x: aTick.rangeLocation,
-                                     y: ruleStart.y + axis.tickLength + axis.tickPadding)
+                tickLabelPoint = CGPoint(x: aTick.rangeLocation,
+                                         y: ruleStart.y + axis.tickLength + axis.tickPadding)
             }
 
             let tickPath = Path { p in
@@ -326,7 +399,7 @@ class ChartRenderer {
             }
             context.stroke(tickPath, with: axis.tickShading, style: axis.tickStyle)
             context.draw(Text(aTick.label).font(.caption),
-                         at: labelPoint,
+                         at: tickLabelPoint,
                          anchor: axis.tickAlignment)
         }
     }
