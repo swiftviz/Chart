@@ -22,7 +22,7 @@ let athleteDecoder = CSVDecoder {
 }
 
 let athlete_data = try athleteDecoder.decode([Athletes].self, from: Athletes.url)
-print("Loaded \(athlete_data.count) rows from \(Athletes.url)")
+// print("Loaded \(athlete_data.count) rows from \(Athletes.url)")
 
 let tempDecoder = CSVDecoder {
     $0.headerStrategy = .firstLine
@@ -30,7 +30,7 @@ let tempDecoder = CSVDecoder {
 }
 
 let temp_data = try tempDecoder.decode([SFTemps].self, from: SFTemps.url)
-print("Loaded \(temp_data.count) rows from \(SFTemps.url)")
+// print("Loaded \(temp_data.count) rows from \(SFTemps.url)")
 
 struct SampleData {
     let name: String
