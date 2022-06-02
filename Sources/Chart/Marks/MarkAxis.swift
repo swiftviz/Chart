@@ -24,7 +24,7 @@ public protocol MarkAxis: Mark {
                chartRules: Bool,
                label: String,
                labelOffset: CGFloat,
-               labelAlignment: Alignment) -> Self
+               labelAlignment: HorizontalAlignment) -> Self
 
     /// Draws an X axis on the chart.
     func yAxis(_ location: Axis.AxisLocation,
@@ -38,7 +38,7 @@ public protocol MarkAxis: Mark {
                chartRules: Bool,
                label: String,
                labelOffset: CGFloat,
-               labelAlignment: Alignment) -> Self
+               labelAlignment: VerticalAlignment) -> Self
 }
 
 public extension MarkAxis {
@@ -54,7 +54,7 @@ public extension MarkAxis {
                chartRules: Bool = false,
                label: String = "",
                labelOffset: CGFloat = 0,
-               labelAlignment: Alignment = .center) -> Self
+               labelAlignment: HorizontalAlignment = .center) -> Self
     {
         precondition([.bottom, .top].contains(location), "An X axis can't be placed on leading or trailing edges")
         var newMark = self
@@ -70,11 +70,11 @@ public extension MarkAxis {
                               chartRules: chartRules,
                               label: label,
                               labelOffset: labelOffset,
-                              labelAlignment: labelAlignment)
+                              labelAlignment: Alignment(horizontal: labelAlignment, vertical: .center))
         return newMark
     }
 
-    /// Draws an X axis on the chart.
+    /// Draws an Y axis on the chart.
     func yAxis(_ location: Axis.AxisLocation = .leading,
                rule: Bool = true,
                values: [Double] = [],
@@ -86,7 +86,7 @@ public extension MarkAxis {
                chartRules: Bool = false,
                label: String = "",
                labelOffset: CGFloat = 0,
-               labelAlignment: Alignment = .center) -> Self
+               labelAlignment: VerticalAlignment = .center) -> Self
     {
         precondition([.leading, .trailing].contains(location), "A Y axis can't be placed on top or bottom edges")
         var newMark = self
@@ -102,7 +102,7 @@ public extension MarkAxis {
                               chartRules: chartRules,
                               label: label,
                               labelOffset: labelOffset,
-                              labelAlignment: labelAlignment)
+                              labelAlignment: Alignment(horizontal: .center, vertical: labelAlignment))
         return newMark
     }
 }
