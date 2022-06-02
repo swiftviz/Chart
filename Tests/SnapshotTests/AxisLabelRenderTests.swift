@@ -405,5 +405,134 @@ final class AxisLabelRenderTests: XCTestCase {
                 as: .image(size: referenceSize)
             )
         }
+
+        // MARK: Trailing Y Axis tests
+
+        func testTrailingYAxis_0offset_center_noTicks() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .yAxis(.trailing, showTickLabels: false, label: "Y axis label", labelOffset: 0, labelAlignment: .center)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+        func testTrailingYAxis_0offset_top_noTicks() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .yAxis(.trailing, showTickLabels: false, label: "Y axis label", labelOffset: 0, labelAlignment: .top)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+        func testTrailingYAxis_0offset_bottom_noTicks() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .yAxis(.trailing, showTickLabels: false, label: "Y axis label", labelOffset: 0, labelAlignment: .bottom)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+        func testTrailingYAxis_0offset_center() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .yAxis(.trailing, label: "Y axis label", labelOffset: 0, labelAlignment: .center)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+        func testTrailingYAxis_0offset_top() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .yAxis(.trailing, label: "Y axis label", labelOffset: 0, labelAlignment: .top)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+        func testTrailingYAxis_0offset_bottom() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .yAxis(.trailing, label: "Y axis label", labelOffset: 0, labelAlignment: .bottom)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+        func testTrailingYAxis_10offset_center() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .yAxis(.trailing, label: "Y axis label", labelOffset: 10, labelAlignment: .center)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+        func testTrailingYAxis_10offset_top() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .yAxis(.trailing, label: "Y axis label", labelOffset: 10, labelAlignment: .top)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+        func testTrailingYAxis_10offset_bottom() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .yAxis(.trailing, label: "Y axis label", labelOffset: 10, labelAlignment: .bottom)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
     #endif
 }
