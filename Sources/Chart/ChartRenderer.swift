@@ -74,13 +74,13 @@ class ChartRenderer {
                 maxVerticalMarginAddition = 0
             } else {
                 // calculate the max height for labels on the Y axis
-                maxVerticalMarginAddition = self.heightFromListOfAxis(axisCollection.yAxisList, with: context, size: size) / 2.0
+                maxVerticalMarginAddition = self.maxTickLabelHeightFromListOfAxis(axisCollection.yAxisList, with: context, size: size) / 2.0
             }
             if noXAxisTickLabelsShowing {
                 maxHorizontalMarginAddition = 0
             } else {
                 // calculate the max width for labels on the X axis
-                maxHorizontalMarginAddition = self.widthFromListOfAxis(axisCollection.xAxisList, with: context, size: size) / 2.0
+                maxHorizontalMarginAddition = self.maxTickLabelWidthFromListOfAxis(axisCollection.xAxisList, with: context, size: size) / 2.0
             }
 
             // expand the margin from the specification, if it doesn't include sufficient space
@@ -304,6 +304,7 @@ class ChartRenderer {
             }
         }
     }
+
     // MARK: - debug rendering methods
 
     private func frameArea(_ rect: CGRect, context: inout GraphicsContext) {
