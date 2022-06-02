@@ -28,7 +28,7 @@ let package = Package(
         .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.7.2"),
         // COMMENT OUT:
 //        .package(url: "https://github.com/google/swift-benchmark", from: "0.1.0"),
-//        .package(url: "https://github.com/dehesa/CodableCSV", from: "0.1.0")
+        .package(url: "https://github.com/dehesa/CodableCSV", from: "0.1.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -39,7 +39,10 @@ let package = Package(
         ),
         .target(
             name: "ExampleChartViews",
-            dependencies: ["Chart"]
+            dependencies: [
+                "Chart",
+               .product(name: "CodableCSV", package: "CodableCSV")
+            ]
         ),
         .testTarget(
             name: "ChartTests",
@@ -84,7 +87,6 @@ if ProcessInfo.processInfo.environment["BENCHMARK"] != nil {
     )
     package.dependencies.append(contentsOf: [
         .package(url: "https://github.com/google/swift-benchmark", from: "0.1.0"),
-        .package(url: "https://github.com/dehesa/CodableCSV", from: "0.1.0"),
     ])
     package.targets.append(
         .executableTarget(
