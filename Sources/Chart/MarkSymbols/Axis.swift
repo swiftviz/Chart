@@ -139,7 +139,7 @@ public struct Axis {
             case .bottom, .top:
                 self.labelRotation = .degrees(0)
             case .leading, .trailing:
-                self.labelRotation = .degrees(-90)
+                self.labelRotation = .degrees(90)
             }
         }
         // style for the rule along the axis

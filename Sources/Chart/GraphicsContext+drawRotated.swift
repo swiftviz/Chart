@@ -1,6 +1,6 @@
 //
 //  GraphicsContext+drawRotated.swift
-//  
+//
 //
 //  Created by Joseph Heck on 6/2/22.
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension GraphicsContext {
-    func drawRotatedText(_ text: Text, at: CGPoint, rotatedBy: Angle, fromCorner: UnitPoint = .topLeading) {
+    func drawRotatedText(_ text: Text, at: CGPoint, rotatedBy: Angle, fromCorner: UnitPoint) {
         // make a copy of the drawing context
         var localContext = self
         // assemble a transform that first rotates, then translates, to the location desired
