@@ -125,7 +125,7 @@ class ChartRenderer {
                     if opts.contains(.axis) {
                         self.fillArea(CGRect(origin: axisOrigin, size: axisSize), context: &context)
                     }
-                    self.drawAxis(axis: topAxis, tickLabelHeight: tickLabelHeight, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
+                    self.drawAxis(axis: topAxis, maxTickSpaceNeeded: maxXAxisTopHeight, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
             }
 
@@ -139,7 +139,7 @@ class ChartRenderer {
                         self.fillArea(CGRect(origin: axisOrigin, size: axisSize), context: &context)
                     }
 
-                    self.drawAxis(axis: bottomAxis, tickLabelHeight: tickLabelHeight, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
+                    self.drawAxis(axis: bottomAxis, maxTickSpaceNeeded: maxXAxisBottomHeight, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
             }
 
@@ -153,7 +153,7 @@ class ChartRenderer {
                         self.fillArea(CGRect(origin: axisOrigin, size: axisSize), context: &context)
                     }
 
-                    self.drawAxis(axis: leadingAxis, tickLabelHeight: tickLabelHeight, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
+                    self.drawAxis(axis: leadingAxis, maxTickSpaceNeeded: maxYAxisLeadingWidth, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
             }
 
@@ -167,7 +167,7 @@ class ChartRenderer {
                         self.fillArea(CGRect(origin: axisOrigin, size: axisSize), context: &context)
                     }
 
-                    self.drawAxis(axis: trailingAxis, tickLabelHeight: tickLabelHeight, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
+                    self.drawAxis(axis: trailingAxis, maxTickSpaceNeeded: maxYAxisTrailingWidth, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
                 }
             }
 
@@ -201,6 +201,12 @@ class ChartRenderer {
 
     internal func heightFromListOfAxis(_ axisList: [Axis], with context: GraphicsContext, size: CGSize) -> CGFloat {
         axisList.reduce(0.0) { partialResult, currentAxis in
+            let axisLabelTextSize: CGFloat
+            if !currentAxis.label.isEmpty {
+                axisLabelTextSize = context.resolve(Text(currentAxis.label)).measure(in: size).height
+            } else {
+                axisLabelTextSize = 0
+            }
             if currentAxis.showTickLabels {
                 // for the current axis, get the labels for the ticks that are associated
                 // with the scale for that axis.
@@ -209,27 +215,28 @@ class ChartRenderer {
                 // so that we can get the label's size. Right now this is presuming that the
                 // font of the tick label is using `.caption`. Once we have the CGSize sets,
                 // reduce that into a single (max) height value.
-                let maxResolvedLabelHeight = tickLabels.reduce(0.0) { partialResult, label in
+                let maxResolvedTickLabelHeight = tickLabels.reduce(0.0) { partialResult, label in
                     let captionedTextSampleSize: CGSize = context.resolve(Text(label).font(.caption)).measure(in: size)
                     return max(captionedTextSampleSize.height, partialResult)
                 }
-                let labelTextSize: CGFloat
-                if !currentAxis.label.isEmpty {
-                    labelTextSize = context.resolve(Text(currentAxis.label)).measure(in: size).height
-                } else {
-                    labelTextSize = 0
-                }
                 // use the tick length, padding, and the max label height to determine a maximum
                 // axis height
-                return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelHeight + currentAxis.labelOffset + labelTextSize)
+                return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedTickLabelHeight + currentAxis.labelOffset + axisLabelTextSize)
             } else {
-                return max(partialResult, currentAxis.tickLength + currentAxis.labelOffset)
+                return max(partialResult, currentAxis.tickLength + currentAxis.labelOffset + axisLabelTextSize)
             }
         }
     }
 
     internal func widthFromListOfAxis(_ axisList: [Axis], with context: GraphicsContext, size: CGSize) -> CGFloat {
         axisList.reduce(0.0) { partialResult, currentAxis in
+            let axisLabelTextSize: CGFloat
+            if !currentAxis.label.isEmpty {
+                // intentionally using the height of the axis label, since we rotating that content
+                axisLabelTextSize = context.resolve(Text(currentAxis.label)).measure(in: size).height
+            } else {
+                axisLabelTextSize = 0
+            }
             if currentAxis.showTickLabels {
                 // for the current axis, get the labels for the ticks that are associated
                 // with the scale for that axis.
@@ -238,22 +245,15 @@ class ChartRenderer {
                 // so that we can get the label's size. Right now this is presuming that the
                 // font of the tick label is using `.caption`. Once we have the CGSize sets,
                 // reduce that into a single (max) width value.
-                let maxResolvedLabelWidth = tickLabels.reduce(0.0) { partialResult, label in
+                let maxResolvedTickLabelWidth = tickLabels.reduce(0.0) { partialResult, label in
                     let captionedTextSampleSize: CGSize = context.resolve(Text(label).font(.caption)).measure(in: size)
                     return max(captionedTextSampleSize.width, partialResult)
                 }
-                let labelTextSize: CGFloat
-                if !currentAxis.label.isEmpty {
-                    // intentionally the height, since I'm presuming we're rotating this
-                    labelTextSize = context.resolve(Text(currentAxis.label)).measure(in: size).height
-                } else {
-                    labelTextSize = 0
-                }
                 // use the tick length, padding, and the max label width to determine a maximum
                 // axis width
-                return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedLabelWidth + currentAxis.labelOffset + labelTextSize)
+                return max(partialResult, currentAxis.tickLength + currentAxis.tickPadding + maxResolvedTickLabelWidth + currentAxis.labelOffset + axisLabelTextSize)
             } else {
-                return max(partialResult, currentAxis.tickLength + currentAxis.labelOffset)
+                return max(partialResult, currentAxis.tickLength + currentAxis.labelOffset + axisLabelTextSize)
             }
         }
     }
@@ -277,7 +277,7 @@ class ChartRenderer {
 
     // MARK: - drawing methods
 
-    private func drawAxis(axis: Axis, tickLabelHeight: CGFloat, within rect: CGRect, context: inout GraphicsContext) {
+    private func drawAxis(axis: Axis, maxTickSpaceNeeded: CGFloat, within rect: CGRect, context: inout GraphicsContext) {
         let ruleStart: CGPoint
         let ruleEnd: CGPoint
         switch (axis.axisLocation, axis.tickOrientation) {
@@ -310,78 +310,78 @@ class ChartRenderer {
         // Drawing the label for the axis
         if !axis.label.isEmpty {
             let tickOffset: CGFloat
-            if axis.showTickLabels {
-                tickOffset = axis.tickLength + axis.tickPadding + tickLabelHeight
+            if axis.showTickLabels { // 3 + 5 + 44
+                tickOffset = axis.tickLength + axis.tickPadding + maxTickSpaceNeeded
             } else {
                 tickOffset = axis.tickLength
             }
 
-            let resolvedLabel = context.resolve(Text(axis.label))
-            context.rotate(by: axis.labelRotation)
+//            let resolvedLabel = context.resolve(Text(axis.label))
+            
             let axisLabelPoint: CGPoint
             switch axis.axisLocation {
             case .leading:
-                switch axis.labelAlignment {
-                case .top, .topLeading, .topTrailing:
+                switch axis.labelAlignment.vertical {
+                case .top:
                     axisLabelPoint = CGPoint(x: rect.origin.x + rect.size.width - axis.labelOffset - tickOffset,
                                              y: rect.origin.y)
-                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .top)
-                case .bottom, .bottomLeading, .bottomTrailing:
+                    context.drawRotatedText(Text(axis.label), at: axisLabelPoint, rotatedBy: axis.labelRotation, fromCorner: .bottomTrailing)
+                case .bottom:
                     axisLabelPoint = CGPoint(x: rect.origin.x + rect.size.width - axis.labelOffset - tickOffset,
                                              y: rect.origin.y + rect.size.height)
-                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .bottom)
+                    context.drawRotatedText(Text(axis.label), at: axisLabelPoint, rotatedBy: axis.labelRotation, fromCorner: .bottomLeading)
                 default: // centered
                     axisLabelPoint = CGPoint(x: rect.origin.x + rect.size.width - axis.labelOffset - tickOffset,
                                              y: rect.origin.y + rect.size.height / 2.0)
-                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .center)
+                    context.drawRotatedText(Text(axis.label), at: axisLabelPoint, rotatedBy: axis.labelRotation, fromCorner: .bottom)
                 }
             case .trailing:
-                switch axis.labelAlignment {
-                case .top, .topLeading, .topTrailing:
+                switch axis.labelAlignment.vertical {
+                case .top:
                     axisLabelPoint = CGPoint(x: rect.origin.x + axis.labelOffset + tickOffset,
                                              y: rect.origin.y)
-                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .top)
-                case .bottom, .bottomLeading, .bottomTrailing:
+//                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .top)
+                case .bottom:
                     axisLabelPoint = CGPoint(x: rect.origin.x + axis.labelOffset + tickOffset,
                                              y: rect.origin.y + rect.height)
-                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .bottom)
+//                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .bottom)
                 default: // centered
                     axisLabelPoint = CGPoint(x: rect.origin.x + axis.labelOffset + tickOffset,
                                              y: rect.origin.y + rect.height / 2.0)
-                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .center)
+//                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .center)
                 }
             case .top:
-                switch axis.labelAlignment {
-                case .leading, .topLeading, .bottomLeading:
+                switch axis.labelAlignment.horizontal {
+                case .leading:
                     axisLabelPoint = CGPoint(x: rect.origin.x,
                                              y: rect.origin.y + rect.height - axis.labelOffset - tickOffset)
-                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .leading)
-                case .trailing, .topTrailing, .bottomTrailing:
+//                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .leading)
+                case .trailing:
                     axisLabelPoint = CGPoint(x: rect.origin.x + rect.width,
                                              y: rect.origin.y + rect.height - axis.labelOffset - tickOffset)
-                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .trailing)
+//                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .trailing)
                 default: // centered
                     axisLabelPoint = CGPoint(x: rect.origin.x + rect.width / 2.0,
                                              y: rect.origin.y + rect.height - axis.labelOffset - tickOffset)
-                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .center)
+//                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .center)
                 }
             case .bottom:
-                switch axis.labelAlignment {
-                case .leading, .topLeading, .bottomLeading:
+                switch axis.labelAlignment.horizontal {
+                case .leading:
                     axisLabelPoint = CGPoint(x: rect.origin.x,
                                              y: rect.origin.y + axis.labelOffset + tickOffset)
-                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .leading)
-                case .trailing, .topTrailing, .bottomTrailing:
+                    context.drawRotatedText(Text(axis.label), at: axisLabelPoint, rotatedBy: axis.labelRotation, fromCorner: .topLeading)
+                case .trailing:
                     axisLabelPoint = CGPoint(x: rect.origin.x + rect.width,
                                              y: rect.origin.y + axis.labelOffset + tickOffset)
-                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .trailing)
+                    context.drawRotatedText(Text(axis.label), at: axisLabelPoint, rotatedBy: axis.labelRotation, fromCorner: .topTrailing)
                 default: // centered
                     axisLabelPoint = CGPoint(x: rect.origin.x + rect.width / 2.0,
                                              y: rect.origin.y + axis.labelOffset + tickOffset)
-                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .center)
+                    context.drawRotatedText(Text(axis.label), at: axisLabelPoint, rotatedBy: axis.labelRotation, fromCorner: .top)
                 }
             }
-            context.rotate(by: -axis.labelRotation)
+            
         }
 
         if axis.rule {
