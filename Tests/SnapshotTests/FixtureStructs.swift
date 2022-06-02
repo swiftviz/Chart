@@ -7,7 +7,9 @@ import Foundation
 
 let fixtureURL = URL(fileURLWithPath: #file)
     .deletingLastPathComponent() // FixtureStructs.swift
-    .deletingLastPathComponent() // ExampleChartViews directory
+    .deletingLastPathComponent() // SnapshotTests directory
+    .deletingLastPathComponent() // Tests directory
+    .appendingPathComponent("Sources")
     .appendingPathComponent("chartrender-benchmark")
     .appendingPathComponent("fixtures")
 
