@@ -1,0 +1,7 @@
+name,time,std,iterations
+create small bar chart,0.005291,3.0664249878483565,500.0
+create medium point chart,0.7935,3.0206790937197225,500.0
+create large line chart,0.766833,1.6937021403362396,500.0
+snapshot small bar chart,1.9110835,118.6770765922873,500.0
+snapshot medium point chart,15.174771,12.74904169255591,500.0
+snapshot large line chart,28.5626665,7.679923554456798,500.0
