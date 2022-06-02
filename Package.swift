@@ -57,6 +57,7 @@ let package = Package(
                 "Chart",
                 .product(name: "SwiftVizScale", package: "Scale"),
                 .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+                .product(name: "CodableCSV", package: "CodableCSV"),
             ],
             resources: [.process("__SnapShots__")]
         ),
