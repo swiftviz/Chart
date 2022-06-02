@@ -6,6 +6,7 @@
 //
 
 import Chart
+import CodableCSV
 // conceptually, I'm hoping to create views that loosely match the kind of interactive exploration you can find with Observable's Plot at
 // https://observablehq.com/@observablehq/plot-cheatsheets
 import SwiftUI
