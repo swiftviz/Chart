@@ -21,6 +21,9 @@ final class AxisLabelRenderTests: XCTestCase {
     ]
 
     #if os(macOS)
+
+        // MARK: Bottom X Axis Tests
+
         func testBottomXAxis_0offset_center() throws {
             let chart = Chart(_options: [.all]) {
                 LineMark(data: self.data,
@@ -105,6 +108,50 @@ final class AxisLabelRenderTests: XCTestCase {
             )
         }
 
+        func testBottomXAxis_10offset_center_noticks() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .xAxis(.bottom, showTickLabels: false, label: "X axis label", labelOffset: 10)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+        func testBottomXAxis_10offset_leading_noticks() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .xAxis(.bottom, showTickLabels: false, label: "X axis label", labelOffset: 10, labelAlignment: .leading)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+        func testBottomXAxis_10offset_trailing_noticks() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .xAxis(.bottom, showTickLabels: false, label: "X axis label", labelOffset: 10, labelAlignment: .trailing)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+        // MARK: Leading Y Axis tests
+
         func testLeadingYAxis_0offset_center_noTicks() throws {
             let chart = Chart(_options: [.all]) {
                 LineMark(data: self.data,
@@ -115,7 +162,7 @@ final class AxisLabelRenderTests: XCTestCase {
 
             assertSnapshot(
                 matching: chart.referenceFrame(),
-                as: .image(size: referenceSize), record: true
+                as: .image(size: referenceSize)
             )
         }
 
@@ -129,7 +176,7 @@ final class AxisLabelRenderTests: XCTestCase {
 
             assertSnapshot(
                 matching: chart.referenceFrame(),
-                as: .image(size: referenceSize), record: true
+                as: .image(size: referenceSize)
             )
         }
 
@@ -143,7 +190,7 @@ final class AxisLabelRenderTests: XCTestCase {
 
             assertSnapshot(
                 matching: chart.referenceFrame(),
-                as: .image(size: referenceSize), record: true
+                as: .image(size: referenceSize)
             )
         }
 
@@ -157,7 +204,7 @@ final class AxisLabelRenderTests: XCTestCase {
 
             assertSnapshot(
                 matching: chart.referenceFrame(),
-                as: .image(size: referenceSize), record: true
+                as: .image(size: referenceSize)
             )
         }
 
@@ -171,7 +218,7 @@ final class AxisLabelRenderTests: XCTestCase {
 
             assertSnapshot(
                 matching: chart.referenceFrame(),
-                as: .image(size: referenceSize), record: true
+                as: .image(size: referenceSize)
             )
         }
 
@@ -185,7 +232,7 @@ final class AxisLabelRenderTests: XCTestCase {
 
             assertSnapshot(
                 matching: chart.referenceFrame(),
-                as: .image(size: referenceSize), record: true
+                as: .image(size: referenceSize)
             )
         }
 
@@ -199,7 +246,7 @@ final class AxisLabelRenderTests: XCTestCase {
 
             assertSnapshot(
                 matching: chart.referenceFrame(),
-                as: .image(size: referenceSize), record: true
+                as: .image(size: referenceSize)
             )
         }
 
@@ -213,7 +260,7 @@ final class AxisLabelRenderTests: XCTestCase {
 
             assertSnapshot(
                 matching: chart.referenceFrame(),
-                as: .image(size: referenceSize), record: true
+                as: .image(size: referenceSize)
             )
         }
 
@@ -227,7 +274,135 @@ final class AxisLabelRenderTests: XCTestCase {
 
             assertSnapshot(
                 matching: chart.referenceFrame(),
-                as: .image(size: referenceSize), record: true
+                as: .image(size: referenceSize)
+            )
+        }
+
+        // MARK: Top X Axis Tests
+
+        func testTopXAxis_0offset_center() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .xAxis(.top, label: "X axis label", labelOffset: 0, labelAlignment: .center)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+        func testTopXAxis_0offset_leading() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .xAxis(.top, label: "X axis label", labelOffset: 0, labelAlignment: .leading)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+        func testTopXAxis_0offset_trailing() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .xAxis(.top, label: "X axis label", labelOffset: 0, labelAlignment: .trailing)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+        func testTopXAxis_10offset_center() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .xAxis(.top, label: "X axis label", labelOffset: 10, labelAlignment: .center)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+        func testTopXAxis_10offset_leading() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .xAxis(.top, label: "X axis label", labelOffset: 10, labelAlignment: .leading)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+        func testTopXAxis_10offset_trailing() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .xAxis(.top, label: "X axis label", labelOffset: 10, labelAlignment: .trailing)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+        func testTopXAxis_10offset_center_noticks() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .xAxis(.top, showTickLabels: false, label: "X axis label", labelOffset: 10)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+        func testTopXAxis_10offset_leading_noticks() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .xAxis(.top, showTickLabels: false, label: "X axis label", labelOffset: 10, labelAlignment: .leading)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
+            )
+        }
+
+        func testTopXAxis_10offset_trailing_noticks() throws {
+            let chart = Chart(_options: [.all]) {
+                LineMark(data: self.data,
+                         x: QuantitativeVisualChannel(\.xValue),
+                         y: QuantitativeVisualChannel(\.yValue))
+                    .xAxis(.top, showTickLabels: false, label: "X axis label", labelOffset: 10, labelAlignment: .trailing)
+            }
+
+            assertSnapshot(
+                matching: chart.referenceFrame(),
+                as: .image(size: referenceSize)
             )
         }
     #endif

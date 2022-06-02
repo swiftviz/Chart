@@ -400,15 +400,15 @@ class ChartRenderer {
                 case .leading:
                     axisLabelPoint = CGPoint(x: rect.origin.x,
                                              y: rect.origin.y + rect.height - axis.labelOffset - tickandTickLabelOffset)
-//                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .leading)
+                    context.drawRotatedText(Text(axis.label), at: axisLabelPoint, rotatedBy: axis.labelRotation, fromCorner: .bottomLeading)
                 case .trailing:
                     axisLabelPoint = CGPoint(x: rect.origin.x + rect.width,
                                              y: rect.origin.y + rect.height - axis.labelOffset - tickandTickLabelOffset)
-//                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .trailing)
+                    context.drawRotatedText(Text(axis.label), at: axisLabelPoint, rotatedBy: axis.labelRotation, fromCorner: .bottomTrailing)
                 default: // centered
                     axisLabelPoint = CGPoint(x: rect.origin.x + rect.width / 2.0,
                                              y: rect.origin.y + rect.height - axis.labelOffset - tickandTickLabelOffset)
-//                    context.draw(resolvedLabel, at: axisLabelPoint, anchor: .center)
+                    context.drawRotatedText(Text(axis.label), at: axisLabelPoint, rotatedBy: axis.labelRotation, fromCorner: .bottom)
                 }
             case .bottom:
                 switch axis.labelAlignment.horizontal {
