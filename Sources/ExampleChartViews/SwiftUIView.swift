@@ -14,9 +14,9 @@ import SwiftUI
 struct SwiftUIView: View {
     var body: some View {
         Chart(_options: [.all]) {
-            PointMark(data: [1, 2, 3, 10, 11], x: QuantitativeVisualChannel(13), y: QuantitativeVisualChannel(\.self))
-                .xAxis(showTickLabels: false, label: "fredd", labelOffset: 10)
-                .yAxis(label: "i was here really, really, really long title that explodes out of the available space")
+            PointMark(data: SFTemps.provideData(), x: QuantitativeVisualChannel(\SFTemps.high), y: QuantitativeVisualChannel(\SFTemps.low))
+                .xAxis()
+                .yAxis()
         }.frame(width: 400, height: 200, alignment: .center)
     }
 }
