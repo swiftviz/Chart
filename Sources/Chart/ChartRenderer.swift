@@ -503,16 +503,10 @@ class ChartRenderer {
                 let chartRuleStart: CGPoint
                 let chartRuleEnd: CGPoint
                 switch axis.axisLocation {
-                case .leading:
+                case .leading, .trailing:
                     chartRuleStart = CGPoint(x: chartRect.origin.x, y: aTick.rangeLocation)
-                    chartRuleEnd = CGPoint(x: chartRect.origin.x + chartRect.height, y: aTick.rangeLocation)
-                case .trailing:
-                    chartRuleStart = CGPoint(x: chartRect.origin.x, y: aTick.rangeLocation)
-                    chartRuleEnd = CGPoint(x: chartRect.origin.x + chartRect.height, y: aTick.rangeLocation)
-                case .top:
-                    chartRuleStart = CGPoint(x: aTick.rangeLocation, y: chartRect.origin.y)
-                    chartRuleEnd = CGPoint(x: aTick.rangeLocation, y: chartRect.origin.y + chartRect.height)
-                case .bottom:
+                    chartRuleEnd = CGPoint(x: chartRect.origin.x + chartRect.width, y: aTick.rangeLocation)
+                case .top, .bottom:
                     chartRuleStart = CGPoint(x: aTick.rangeLocation, y: chartRect.origin.y)
                     chartRuleEnd = CGPoint(x: aTick.rangeLocation, y: chartRect.origin.y + chartRect.height)
                 }
