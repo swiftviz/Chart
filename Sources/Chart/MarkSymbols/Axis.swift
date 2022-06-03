@@ -151,8 +151,8 @@ public struct Axis {
         // color/shading for the rule
         ruleShading = tickShading
 
-        chartRuleStyle = tickStyle
-        chartRuleShading = ruleShading
+        chartRuleStyle = StrokeStyle(lineWidth: 0.1, lineCap: .round, lineJoin: .round, miterLimit: 0.1)
+        chartRuleShading = .color(.primary)
         ticks = []
     }
 
