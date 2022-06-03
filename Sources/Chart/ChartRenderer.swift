@@ -126,7 +126,7 @@ class ChartRenderer {
                     if opts.contains(.axis) {
                         self.fillArea(CGRect(origin: axisOrigin, size: axisSize), context: &context)
                     }
-                    self.drawAxis(axis: topAxis, maxTickSpaceNeeded: tickSpaceNeeded, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
+                    self.drawAxis(axis: topAxis, maxTickSpaceNeeded: tickSpaceNeeded, within: CGRect(origin: axisOrigin, size: axisSize), chartRect: chartDataDrawArea, context: &context)
                 }
             }
 
@@ -140,7 +140,7 @@ class ChartRenderer {
                     if opts.contains(.axis) {
                         self.fillArea(CGRect(origin: axisOrigin, size: axisSize), context: &context)
                     }
-                    self.drawAxis(axis: bottomAxis, maxTickSpaceNeeded: tickSpaceNeeded, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
+                    self.drawAxis(axis: bottomAxis, maxTickSpaceNeeded: tickSpaceNeeded, within: CGRect(origin: axisOrigin, size: axisSize), chartRect: chartDataDrawArea, context: &context)
                 }
             }
 
@@ -154,7 +154,7 @@ class ChartRenderer {
                     if opts.contains(.axis) {
                         self.fillArea(CGRect(origin: axisOrigin, size: axisSize), context: &context)
                     }
-                    self.drawAxis(axis: leadingAxis, maxTickSpaceNeeded: tickSpaceNeeded, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
+                    self.drawAxis(axis: leadingAxis, maxTickSpaceNeeded: tickSpaceNeeded, within: CGRect(origin: axisOrigin, size: axisSize), chartRect: chartDataDrawArea, context: &context)
                 }
             }
 
@@ -168,7 +168,7 @@ class ChartRenderer {
                     if opts.contains(.axis) {
                         self.fillArea(CGRect(origin: axisOrigin, size: axisSize), context: &context)
                     }
-                    self.drawAxis(axis: trailingAxis, maxTickSpaceNeeded: tickSpaceNeeded, within: CGRect(origin: axisOrigin, size: axisSize), context: &context)
+                    self.drawAxis(axis: trailingAxis, maxTickSpaceNeeded: tickSpaceNeeded, within: CGRect(origin: axisOrigin, size: axisSize), chartRect: chartDataDrawArea, context: &context)
                 }
             }
 
@@ -324,7 +324,7 @@ class ChartRenderer {
 
     // MARK: - drawing methods
 
-    private func drawAxis(axis: Axis, maxTickSpaceNeeded: CGFloat, within rect: CGRect, context: inout GraphicsContext) {
+    private func drawAxis(axis: Axis, maxTickSpaceNeeded: CGFloat, within rect: CGRect, chartRect: CGRect, context: inout GraphicsContext) {
         let ruleStart: CGPoint
         let ruleEnd: CGPoint
         switch (axis.axisLocation, axis.tickOrientation) {
@@ -497,6 +497,30 @@ class ChartRenderer {
                 context.draw(Text(aTick.label).font(.caption),
                              at: tickLabelPoint,
                              anchor: axis.tickAlignment)
+            }
+
+            if axis.chartRules {
+                let chartRuleStart: CGPoint
+                let chartRuleEnd: CGPoint
+                switch axis.axisLocation {
+                case .leading:
+                    chartRuleStart = CGPoint(x: chartRect.origin.x, y: aTick.rangeLocation)
+                    chartRuleEnd = CGPoint(x: chartRect.origin.x + chartRect.height, y: aTick.rangeLocation)
+                case .trailing:
+                    chartRuleStart = CGPoint(x: chartRect.origin.x, y: aTick.rangeLocation)
+                    chartRuleEnd = CGPoint(x: chartRect.origin.x + chartRect.height, y: aTick.rangeLocation)
+                case .top:
+                    chartRuleStart = CGPoint(x: aTick.rangeLocation, y: chartRect.origin.y)
+                    chartRuleEnd = CGPoint(x: aTick.rangeLocation, y: chartRect.origin.y + chartRect.height)
+                case .bottom:
+                    chartRuleStart = CGPoint(x: aTick.rangeLocation, y: chartRect.origin.y)
+                    chartRuleEnd = CGPoint(x: aTick.rangeLocation, y: chartRect.origin.y + chartRect.height)
+                }
+                let chartRulePath = Path { p in
+                    p.move(to: chartRuleStart)
+                    p.addLine(to: chartRuleEnd)
+                }
+                context.stroke(chartRulePath, with: axis.chartRuleShading, style: axis.chartRuleStyle)
             }
         }
     }
