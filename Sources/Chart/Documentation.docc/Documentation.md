@@ -17,6 +17,8 @@ The core concept behind declarative charting is explored in quite a bit of detai
 
 - ``Chart/Chart``
 
+<!-- I'm hoping to create views that loosely match the kind of interactive exploration you can find with [Observable's Plot cheatsheets](https://observablehq.com/@observablehq/plot-cheatsheets) -->
+
 ### Marks
 
 - ``Chart/LineMark``
