@@ -24,6 +24,8 @@ public struct PointMark<DataSource>: Mark, MarkAxis {
     public var _xAxis: Axis?
     public var _yAxis: Axis?
 
+    private var sizeChannel: QuantitativeVisualChannel<DataSource>
+
     public init(data: [DataSource],
                 x xChannel: QuantitativeVisualChannel<DataSource>,
                 y yChannel: QuantitativeVisualChannel<DataSource>)
@@ -33,6 +35,7 @@ public struct PointMark<DataSource>: Mark, MarkAxis {
         y = yChannel.applyDomain(data)
         _xAxis = nil
         _yAxis = nil
+        sizeChannel = QuantitativeVisualChannel<DataSource>(5)
     }
 
     /// Creates a list of symbols to render into a rectangular drawing area that you specify.
@@ -52,11 +55,26 @@ public struct PointMark<DataSource>: Mark, MarkAxis {
                 let newPoint = IndividualPoint(
                     x: xValue,
                     y: yValue,
-                    shape: PlotShape(Circle()), size: 5
+                    shape: PlotShape(Circle()),
+                    size: sizeChannel.valueProvider(pointData)
                 )
                 symbols.append(.point(newPoint))
             }
         }
         return symbols
+    }
+
+    // MARK: - PointMark Modifier Methods
+
+    public func size(_ constantValue: CGFloat) -> Self {
+        var copyOfSelf = self
+        copyOfSelf.sizeChannel = QuantitativeVisualChannel<DataSource>(constantValue)
+        return copyOfSelf
+    }
+
+    public func size(_ channel: QuantitativeVisualChannel<DataSource>) -> Self {
+        var copyOfSelf = self
+        copyOfSelf.sizeChannel = channel
+        return copyOfSelf
     }
 }
