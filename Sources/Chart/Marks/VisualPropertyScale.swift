@@ -12,7 +12,7 @@ import SwiftVizScale
 /// A type that represents the scale associated with a visual property.
 public enum VisualPropertyScale {
     /// A continuous scale.
-    case continuous(AnyContinuousScale<Double, CGFloat>)
+    case continuous(ContinuousScale<Double, CGFloat>)
     /// A discrete scale that returns a band as an output value.
     case band(BandScale<String, CGFloat>)
     /// A discrete scale that returns a point as an output value.
