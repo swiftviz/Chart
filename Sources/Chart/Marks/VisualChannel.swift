@@ -23,7 +23,7 @@ public struct QuantitativeVisualChannel<SomeDataType> {
     // that ultimately converts to a Double type, which this channel uses internally to then
     // scale and apply to the range later provided.
 
-    var scale = AnyContinuousScale<Double, OutputPropertyType>(LinearScale())
+    var scale = ContinuousScale<Double, OutputPropertyType>()
     // a scale has an InputType and OutputType - and we need InputType to match 'PropertyType'
     // from above. And OutputType should probably just be CGFloat since we'll be using it in
     // that context.
