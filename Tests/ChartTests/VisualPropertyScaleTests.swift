@@ -11,7 +11,7 @@ import XCTest
 
 class VisualPropertyScaleTests: XCTestCase {
     func testContinousScaleTicksDefault() throws {
-        let linear = VisualPropertyScale.continuous(ContinuousScale<Double, CGFloat>().domain(lower: 0, higher: 23))
+        let linear = VisualPropertyScale.continuous(ContinuousScale<CGFloat>().domain(lower: 0, higher: 23))
         let labels = linear.tickLabels()
 
         XCTAssertEqual(labels, ["0.0", "5.0", "10.0", "15.0", "20.0", "25.0"])
@@ -23,7 +23,7 @@ class VisualPropertyScaleTests: XCTestCase {
     }
 
     func testContinousScaleTicksProvided() throws {
-        let linear = VisualPropertyScale.continuous(ContinuousScale<Double, CGFloat>().domain(lower: 0, higher: 23))
+        let linear = VisualPropertyScale.continuous(ContinuousScale<CGFloat>().domain(lower: 0, higher: 23))
         let labels = linear.tickLabels(values: [10, 20, 30])
 
         XCTAssertEqual(labels, ["10.0", "20.0"])
