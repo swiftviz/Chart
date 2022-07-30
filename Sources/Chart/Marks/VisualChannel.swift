@@ -23,7 +23,7 @@ public struct QuantitativeVisualChannel<SomeDataType> {
     // that ultimately converts to a Double type, which this channel uses internally to then
     // scale and apply to the range later provided.
 
-    var scale = ContinuousScale<Double, OutputPropertyType>()
+    var scale = ContinuousScale<OutputPropertyType>()
     // a scale has an InputType and OutputType - and we need InputType to match 'PropertyType'
     // from above. And OutputType should probably just be CGFloat since we'll be using it in
     // that context.
@@ -32,9 +32,19 @@ public struct QuantitativeVisualChannel<SomeDataType> {
     /// - Parameter dataProperty: the key-path to the property to use for the visual channel.
     ///
     /// example: `VisualChannel<SomeDataType>(\.node)`
-    public init<T: ConvertibleWithDouble>(_ dataProperty: KeyPath<SomeDataType, T>) {
+    public init<T: BinaryFloatingPoint>(_ dataProperty: KeyPath<SomeDataType, T>) {
         valueProvider = { dataSource in
-            dataSource[keyPath: dataProperty].toDouble()
+            Double(dataSource[keyPath: dataProperty])
+        }
+    }
+
+    /// Creates a new visual channel that references a property using the key-path you provide.
+    /// - Parameter dataProperty: the key-path to the property to use for the visual channel.
+    ///
+    /// example: `VisualChannel<SomeDataType>(\.node)`
+    public init<T: BinaryInteger>(_ dataProperty: KeyPath<SomeDataType, T>) {
+        valueProvider = { dataSource in
+            Double(dataSource[keyPath: dataProperty])
         }
     }
 
@@ -42,19 +52,38 @@ public struct QuantitativeVisualChannel<SomeDataType> {
     /// - Parameter value: The constant value to use for the visual channel.
     ///
     /// example: `VisualChannel(13.0)`
-    public init<T: ConvertibleWithDouble>(_ value: T) {
+    public init<T: BinaryFloatingPoint>(_ value: T) {
         valueProvider = { _ in
-            value.toDouble()
+            Double(value)
+        }
+    }
+
+    /// Creates a new visual channel that returns a constant value that you provide.
+    /// - Parameter value: The constant value to use for the visual channel.
+    ///
+    /// example: `VisualChannel(13.0)`
+    public init<T: BinaryInteger>(_ value: T) {
+        valueProvider = { _ in
+            Double(value)
         }
     }
 
     /// Creates a new visual channel that returns a value using the closure that you provide.
     /// - Parameter closure: A closure that accepts the data provided to the visual channel and returns a value to use for the visual channel.
-    public init<T: ConvertibleWithDouble>(_ closure: @escaping (SomeDataType) -> T) {
+    public init<T: BinaryFloatingPoint>(_ closure: @escaping (SomeDataType) -> T) {
         valueProvider = { dataSource in
-            closure(dataSource).toDouble()
+            Double(closure(dataSource))
         }
     }
+
+    /// Creates a new visual channel that returns a value using the closure that you provide.
+    /// - Parameter closure: A closure that accepts the data provided to the visual channel and returns a value to use for the visual channel.
+    public init<T: BinaryInteger>(_ closure: @escaping (SomeDataType) -> T) {
+        valueProvider = { dataSource in
+            Double(closure(dataSource))
+        }
+    }
+
 
     /// Returns a new visual channel with the domain for its scale set using the series of values provided to the channel.
     /// - Parameter values: The list of values to use to infer a domain.
