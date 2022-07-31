@@ -84,7 +84,6 @@ public struct QuantitativeVisualChannel<SomeDataType> {
         }
     }
 
-
     /// Returns a new visual channel with the domain for its scale set using the series of values provided to the channel.
     /// - Parameter values: The list of values to use to infer a domain.
     public func applyDomain(_ values: [SomeDataType]) -> Self {
