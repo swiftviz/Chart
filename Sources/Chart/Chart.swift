@@ -40,7 +40,7 @@ public struct Chart: View {
      */
 
     public var body: some View {
-        chartRenderer.createView(specCollection, opts: self.debugRenderOptions)
+        chartRenderer.createView(specCollection, opts: debugRenderOptions)
     }
 
     @_disfavoredOverload
