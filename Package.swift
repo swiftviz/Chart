@@ -25,7 +25,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/swiftviz/scale.git", branch: "main"),
         // .package(url: "https://github.com/swiftviz/scale.git", from: "0.5.0"),
-        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.7.2"),
+        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.11.1"),
         // COMMENT OUT:
 //        .package(url: "https://github.com/google/swift-benchmark", from: "0.1.0"),
         .package(url: "https://github.com/dehesa/CodableCSV", from: "0.1.0"),

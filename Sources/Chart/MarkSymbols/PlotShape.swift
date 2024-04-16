@@ -5,7 +5,7 @@
 import SwiftUI
 
 /// A type that determines how the path that makes up the plot shape is rendered.
-public enum DrawingMode {
+public enum DrawingMode: Sendable {
     /// The path is drawn as a stroked line.
     case stroke
     /// The path is filled.
@@ -17,7 +17,7 @@ public struct PlotShape: Shape {
     /// The mode use to render the path returned by the shape.
     let mode: DrawingMode
 
-    var toPath: (CGRect) -> Path
+    var toPath: @Sendable (CGRect) -> Path
     // fillShading instead of fillColor? (https://developer.apple.com/documentation/swiftui/graphicscontext/shading)
     let fillColor: SwiftUI.Color // (https://developer.apple.com/documentation/swiftui/color)
     // strokeShading instead of strokeColor?
